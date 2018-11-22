@@ -25,4 +25,20 @@ public abstract class Media {
         return genre[i];
     }
 
+    /**
+     * Get a Media based on its assosiated MediaType
+     * @param mediaType
+     * @param information
+     * @return
+     */
+    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ){
+        switch (mediaType){
+            case MOVIE:
+                return new Movie( information[0], information[1], information[2], information[3]);
+            case SERIES:
+                return  new Serie( information[0], information[1], information[2], information[2], information[3]);
+            default:
+                return null;
+        }
+    }
 }
