@@ -7,9 +7,10 @@ public class Serie extends Media {
 
     protected HashMap<Integer, ArrayList<Integer>> episodes; //Første input i hashmappet er sæsoner, andet er en array af episoder
 
-    public Serie(String title, String rating, String year, String genre, String episodes) {
+    public Serie(String title, String rating, String year, String genre, String episodes, String age) {
 
         this.title = title;
+        this.age_restriction = age;
         this.rating = Double.parseDouble(rating);
         this.year = Integer.parseInt(year);
         this.genre = genre.split(",");
