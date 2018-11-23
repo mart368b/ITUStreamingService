@@ -1,7 +1,7 @@
 package medias;
 
 public enum MediaTypes {
-    MOVIE(4, "movies"),
+    MOVIE(5, "movies"),
     SERIES(5, "series"),
     NONE(0, "unknown");
 

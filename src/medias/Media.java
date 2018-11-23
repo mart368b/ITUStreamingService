@@ -2,11 +2,12 @@ package medias;
 import java.util.ArrayList;
 
 public abstract class Media {
-
     protected String title;
-    protected double rating;
     protected String year;
+    protected double rating;
+    protected int ageResctriction;
     protected String[] genre;
+
 
     //GETTERS
 
@@ -51,9 +52,9 @@ public abstract class Media {
     public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ){
         switch (mediaType){
             case MOVIE:
-                return new Movie( information[0], information[1], information[2], information[3]);
+                return new Movie( information[0], information[1], information[2], information[3], information[4]);
             case SERIES:
-                return  new Serie( information[0], information[1], information[2], information[2], information[3]);
+                return  new Serie( information[0], information[1], information[2], information[3], information[4], information[5]);
             default:
                 return null;
         }
