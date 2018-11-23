@@ -42,7 +42,7 @@ public enum MediaTypes {
      * Specify which media to be loaded
      * @return : Array containing all MediaTypes to be loaded
      */
-    public static String[] getLoadedMediaNames(){
+    public static String[] getLoadedMediaTypes(){
         return new String[]{"movies", "series"};
     }
 }

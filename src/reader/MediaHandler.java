@@ -13,25 +13,25 @@ import java.util.List;
 /**
  * class reasponsible for reading all medias
  */
-public class MediaReader{
+public class MediaHandler{
 
     public static void main(String[]args){
-        MediaReader.getInstance();
+        MediaHandler.getInstance();
     }
 
     // Make it a singleton since there is no reason to read all media multiple times
-    private static MediaReader instance = new MediaReader();
-    public static MediaReader getInstance(){
+    private static MediaHandler instance = new MediaHandler();
+    public static MediaHandler getInstance(){
         return instance;
     }
 
     // Container of all media present in the project
     private List<Media> medias;
 
-    private MediaReader(){
+    private MediaHandler(){
         this.medias = new ArrayList<Media>();
         // Get list of media to be loaded
-        String[] loadedMedias = MediaTypes.getLoadedMediaNames();
+        String[] loadedMedias = MediaTypes.getLoadedMediaTypes();
         for ( String media: loadedMedias ){
             // Get path to media csv file
             String mediaPath = "res/" + media + ".csv";
