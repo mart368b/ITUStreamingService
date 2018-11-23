@@ -5,7 +5,7 @@ public abstract class Media {
 
     protected String title;
     protected double rating;
-    protected int year;
+    protected String year;
     protected String[] genre;
 
     //GETTERS
@@ -18,11 +18,28 @@ public abstract class Media {
         return rating;
     }
 
-    public int getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
+    public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
         return year;
     }
     public String getGenre(int i){
         return genre[i];
+    }
+
+    public StringBuilder getMediaInfo(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Title = ");
+        builder.append(title);
+        builder.append(", Rating = ");
+        builder.append(rating);
+        builder.append(", Year = ");
+        builder.append(year);
+        builder.append("Genre(s) = ");
+        builder.append(String.join(", ", genre));
+        return builder;
+    }
+
+    public String toString(){
+        return getMediaInfo().toString();
     }
 
     /**
