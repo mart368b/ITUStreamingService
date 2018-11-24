@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Logger {
-
     private static final String SAVEPATH = "res/log";
     private static final int LOGLIMIT = 5;
 
@@ -97,7 +96,13 @@ public class Logger {
     }
 
     private static String getCallerClassName() {
-        StackTraceElement stElements = Thread.currentThread().getStackTrace()[4];
-        return stElements.getClassName();
+        StackTraceElement[] stackTraces = Thread.currentThread().getStackTrace();
+        for ( int i = stackTraces.length - 1; i > 0; i--){
+            StackTraceElement e = stackTraces[i];
+            if ( e.getClassName() != Logger.class.getName()){
+                return e.getClassName();
+            }
+        }
+        return "Logger";
     }
 }

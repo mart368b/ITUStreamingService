@@ -14,29 +14,65 @@ public class Serie extends Media {
         this.title = title;
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
-        this.genre = genre.split(",");
-        this.ageResctriction = Integer.parseInt(ageResriction);
+        this.genre = Categories.getCategoriesByNames(genre.split(","));
+
+        if (ageResriction.length() == 0){
+            this.ageResctriction = "Unknown";
+        }else{
+            this.ageResctriction = ageResriction;
+        }
 
         this.episodes = new HashMap<>();
-        String[] seasonArr = seasons.split(",");
+        String[] seasonArr = seasons.split("_");
         for ( String season: seasonArr){
-            // season = "seasonID-(Episode)(Episode)"
-            String[] info = season.split("-");
-            int seasonNumber = Integer.parseInt(info[0]);
-            if ( !this.episodes.containsKey(seasonNumber) ){
-                this.episodes.put(seasonNumber, new ArrayList<SeriesEpisode>());
+            addSeason(season);
+        }
+    }
+
+    private void addSeason(String season) {
+        // season = "seasonID-(Episode)(Episode)"
+        int splitter = season.indexOf("-");
+        int seasonNumber = Integer.parseInt(season.substring(0, splitter));
+        if ( !this.episodes.containsKey(seasonNumber) ){
+            this.episodes.put(seasonNumber, new ArrayList<SeriesEpisode>());
+        }
+        String episodesInfo = season.substring(splitter, season.length() - 1);
+        ArrayList<SeriesEpisode> episodeContainer = this.episodes.get(seasonNumber);
+        if ( episodesInfo.length() <= 2){
+            return;
+        }
+        String[] episodes = episodesInfo.split("\\)\\(");
+        for (int i = 0; i < episodes.length; i++){
+            String episode = episodes[i];
+            addEpisode( seasonNumber, i, episodes.length, episode);
+        }
+    }
+
+    private void addEpisode(int seasonNumber, int episodeNumber, int numberOfEpisodes, String episode) {
+        if (episodeNumber == 0){
+            episode = episode.substring(2);
+        }else if (episodeNumber == numberOfEpisodes){
+            episode = episode.substring(0, episode.length());
+        }
+        String[] episodeInfo = episode.split("%");
+
+        String timeString = episodeInfo[1].replace("h", "h-").replace("min","m");
+        String[] timeArr = timeString.split("-");
+        int duration = 0; // episode duration in seconds
+        for( String timePart: timeArr){
+            if (timePart.length() == 0){
+                continue;
             }
-            ArrayList<SeriesEpisode> episodeContainer = this.episodes.get(seasonNumber);
-            String episodeArr = info[1];
-            if ( episodeArr.length() > 2){
-                String[] episodes = episodeArr.substring(1, episodeArr.length() - 1).split("\\)\\(");
-                for( String episode: episodes ){
-                    String[] episodeInfo = episode.split(":");
-                    SeriesEpisode newEpisode = new SeriesEpisode(info[1], episodeInfo[0], episodeInfo[1], episodeInfo[2]);
-                    episodeContainer.add(newEpisode);
-                }
+            switch (timePart.charAt(timePart.length() - 1)){
+                case 'h':
+                    duration += Integer.parseInt(timePart.substring(0, timePart.length() - 1)) * 3600;
+                    break;
+                case 'm':
+                    duration += Integer.parseInt(timePart.substring(0, timePart.length() - 1)) * 60;
             }
         }
+        SeriesEpisode episodeClass = new SeriesEpisode(seasonNumber, episodeNumber, episodeInfo[0], duration);
+        this.episodes.get(seasonNumber).add(episodeClass);
     }
 
     @Override
