@@ -1,9 +1,7 @@
 package debugging.exceptions;
 
-import medias.Media;
-
 public class MediaCreationException extends Exception {
-    public MediaCreationException (){
-        super("Failed on creation of media");
+    public MediaCreationException( ExceptionInInitializerError e){
+        super("Error while creating media", e.getCause());
     }
 }

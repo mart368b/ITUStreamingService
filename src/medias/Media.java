@@ -1,13 +1,14 @@
 package medias;
+import debugging.exceptions.MediaCreationException;
+
 import java.util.ArrayList;
 
 public abstract class Media {
     protected String title;
     protected String year;
     protected double rating;
-    protected int ageResctriction;
-    protected String[] genre;
-
+    protected String ageResctriction;
+    protected Categories[] genre;
 
     //GETTERS
 
@@ -22,7 +23,7 @@ public abstract class Media {
     public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
         return year;
     }
-    public String getGenre(int i){
+    public Categories getGenre(int i){
         return genre[i];
     }
 
@@ -35,7 +36,12 @@ public abstract class Media {
         builder.append(", Year = ");
         builder.append(year);
         builder.append("Genre(s) = ");
-        builder.append(String.join(", ", genre));
+        for (int i = 0; i < genre.length; i++){
+            if ( i != 0){
+                builder.append(" ,");
+            }
+            builder.append(genre[i].getName());
+        }
         return builder;
     }
 
@@ -49,14 +55,18 @@ public abstract class Media {
      * @param information
      * @return
      */
-    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ){
-        switch (mediaType){
-            case MOVIE:
-                return new Movie( information[0], information[1], information[2], information[3], information[4]);
-            case SERIES:
-                return  new Serie( information[0], information[1], information[2], information[3], information[4], information[5]);
-            default:
-                return null;
+    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws MediaCreationException {
+        try {
+            switch (mediaType) {
+                case MOVIE:
+                    return new Movie(information[0], information[1], information[2], information[3]);
+                case SERIES:
+                    return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
+                default:
+                    return null;
+            }
+        } catch (ExceptionInInitializerError e){
+            throw new MediaCreationException(e);
         }
     }
 }

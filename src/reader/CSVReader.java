@@ -67,13 +67,11 @@ public class CSVReader {
                     errorMsg.append("\n    ").append(failedRow);
                 }
                 Logger.log(errorMsg.toString(), LogTypes.SOFTERROR);
-            }else{
-                Logger.log("No errors were found");
             }
             Logger.log("Found " + content.size() + " valid rows in file");
             reader.close();
         } catch (IOException e){
-            Logger.log(e.getMessage(), LogTypes.FATALERROR);
+            Logger.log(e.toString(), LogTypes.FATALERROR);
             e.printStackTrace();
         }
     }

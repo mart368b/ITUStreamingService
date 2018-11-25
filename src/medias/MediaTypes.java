@@ -1,8 +1,8 @@
 package medias;
 
 public enum MediaTypes {
-    MOVIE(5, "movies"),
-    SERIES(5, "series"),
+    MOVIE(4, "movies"),
+    SERIES(6, "series"),
     NONE(0, "unknown");
 
     private int columnCount; // Number of required columns in csv file
