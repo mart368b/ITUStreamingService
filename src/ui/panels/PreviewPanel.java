@@ -3,7 +3,7 @@ package ui.panels;
 import javax.swing.*;
 import java.awt.*;
 
-public class PreviewPanel extends Panel{
+public class PreviewPanel extends JPanel {
 
     public PreviewPanel(){
         super();

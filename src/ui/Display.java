@@ -1,5 +1,6 @@
 package ui;
 
+import ui.panels.LogInPanel;
 import ui.panels.PreviewPanel;
 
 import javax.swing.*;
@@ -27,7 +28,8 @@ public class Display extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        initializeBody();
+        //initializeBody();
+        initEksFuckingDee();
 
         pack();
     }
@@ -42,5 +44,10 @@ public class Display extends JFrame {
         Dimension d = headerPanel.getPreferredSize();
         d.width += 100;
         this.setMinimumSize(d);
+    }
+
+    private void initEksFuckingDee(){
+        LogInPanel panel = new LogInPanel();
+        add(panel, BorderLayout.CENTER);
     }
 }
