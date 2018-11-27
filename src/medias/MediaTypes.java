@@ -39,6 +39,16 @@ public enum MediaTypes {
         }
     }
 
+    public static MediaTypes getMediaType( Media media ){
+        if (media instanceof Movie){
+            return MOVIE;
+        }
+        if (media instanceof Series){
+            return SERIES;
+        }
+        return NONE;
+    }
+
     /**
      * Specify which media to be loaded
      * @return : Array containing all MediaTypes to be loaded
