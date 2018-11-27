@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * class reasponsible for reading all medias
  */
-public class MediaHandler{
+public class MediaHandler {
 
     public static void main(String[]args){
         MediaHandler.getInstance();

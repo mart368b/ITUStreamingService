@@ -74,6 +74,7 @@ public abstract class Media {
      * @param information
      * @return
      */
+
     public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws MediaCreationException {
         try {
             switch (mediaType) {

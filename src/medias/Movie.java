@@ -6,6 +6,8 @@ public class Movie extends Media{
 
     Movie(String title, String year, String genre, String rating, String ageResctriction, String duration){
         this.title = title;
+        this.age_restriction = age;
+        this.runtime = Integer.parseInt(runtime);
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
         this.genre = Categories.getCategoriesByNames(genre.split(","));

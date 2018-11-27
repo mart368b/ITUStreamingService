@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Serie extends Media {
 
     //private HashMap<Integer, ArrayList<Integer>> episodes; //Første input i hashmappet er sæsoner, andet er en array af episoder
-
+    
     private HashMap<Integer, ArrayList<SeriesEpisode>> episodes;
 
     Serie(String title, String year, String genre, String rating, String ageResriction, String seasons) {
