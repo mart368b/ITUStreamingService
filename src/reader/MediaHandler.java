@@ -2,7 +2,6 @@ package reader;
 
 import debugging.LogTypes;
 import debugging.Logger;
-import debugging.exceptions.MediaCreationException;
 import medias.Media;
 import medias.MediaTypes;
 
@@ -45,40 +44,43 @@ public class MediaHandler {
      * @param mediaType : MediaType to convert rows in csv file to
      */
     private void loadMedia( String path, MediaTypes mediaType ){
+
+        CSVReader reader = null;
         try {
-            // Read file
-            CSVReader reader = new CSVReader(path, mediaType.getColumnCount());
-            Iterator<String[]> ite = reader.getIterator();
-            // Iterate over all rows in the csv file
-            ArrayList<MediaCreationException> errors = new ArrayList<>();
-            int mediaCount = 0;
-            while (ite.hasNext()){
-                // Create Media of MediaType using MediaFactory
-                Media media = null;
-                try {
-                    media = Media.getMediaByMediaType(mediaType, ite.next());
-                    mediaCount++;
-                } catch (MediaCreationException e) {
-                    errors.add(e);
-                }
-                if ( media != null ){
-                    medias.add(media);
-                }
-            }
-            if (errors.size() > 0){
-                StringBuilder builder = new StringBuilder();
-                builder.append("Errors during creation of " + mediaType.getName());
-                for (MediaCreationException e: errors){
-                    builder.append("\n");
-                    builder.append(e.getMessage().toString());
-                }
-                Logger.log(builder.toString(), LogTypes.SOFTERROR);
-            }
-            Logger.log("Created " + mediaCount + " " + mediaType.getName());
-        } catch ( FileNotFoundException e){
-            // This is reached if there is a typo in the csv file path for the media, or if the file does not exists
-            Logger.log("Failed to find media at: " + path, LogTypes.SOFTERROR);
+            reader = new CSVReader(path, mediaType.getColumnCount());
+        } catch (FileNotFoundException e) {
+            Logger.log("Failed to file for " + mediaType.getName() + " at " + path, LogTypes.SOFTERROR);
+            return;
         }
+
+        Iterator<String[]> ite = reader.getIterator();
+        // Iterate over all rows in the csv file
+        ArrayList<ExceptionInInitializerError> errors = new ArrayList<>();
+        int mediaCount = 0;
+        while (ite.hasNext()){
+            // Create Media of MediaType using MediaFactory
+            Media media = null;
+            try {
+                media = Media.getMediaByMediaType(mediaType, ite.next());
+                mediaCount++;
+            } catch (ExceptionInInitializerError e) {
+                errors.add(e);
+            }
+            if ( media != null ){
+                medias.add(media);
+            }
+        }
+        if (errors.size() > 0){
+            StringBuilder builder = new StringBuilder();
+            builder.append("Errors during creation of " + mediaType.getName());
+            for (ExceptionInInitializerError e: errors){
+                builder.append("\n");
+                builder.append(e.getCause().getMessage().toString());
+            }
+            Logger.log(builder.toString(), LogTypes.SOFTERROR);
+        }
+        Logger.log("Created " + mediaCount + " " + mediaType.getName());
+
     }
 
     /**

@@ -1,7 +1,11 @@
 package medias;
-import debugging.exceptions.MediaCreationException;
 
-import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public abstract class Media {
     protected String title;
@@ -9,8 +13,18 @@ public abstract class Media {
     protected double rating;
     protected String ageResctriction;
     protected Categories[] genre;
+    protected BufferedImage img;
 
-    //GETTERS
+    protected void loadImage() throws FileNotFoundException{
+        File f = new File("res/" + MediaTypes.getMediaType(this).getName() + "-images/" + title + ".jpg");
+        try {
+            img = ImageIO.read(f);
+        }catch (FileNotFoundException e){
+            throw e;
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getTitle() { //Returnerer mediets titel
         return title;
@@ -75,18 +89,14 @@ public abstract class Media {
      * @return
      */
 
-    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws MediaCreationException {
-        try {
-            switch (mediaType) {
-                case MOVIE:
-                    return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
-                case SERIES:
-                    return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
-                default:
-                    return null;
-            }
-        } catch (ExceptionInInitializerError e){
-            throw new MediaCreationException(e);
+    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws ExceptionInInitializerError {
+        switch (mediaType) {
+            case MOVIE:
+                return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
+            case SERIES:
+                return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
+            default:
+                return null;
         }
     }
 }

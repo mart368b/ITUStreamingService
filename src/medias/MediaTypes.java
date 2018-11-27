@@ -43,7 +43,7 @@ public enum MediaTypes {
         if (media instanceof Movie){
             return MOVIE;
         }
-        if (media instanceof Series){
+        if (media instanceof Serie){
             return SERIES;
         }
         return NONE;
