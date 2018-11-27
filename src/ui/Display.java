@@ -34,6 +34,7 @@ public class Display extends JFrame {
 
     private void initializeBody() {
         setLayout(new BorderLayout());
+
         HeaderPanel headerPanel = new HeaderPanel(this);
         add(headerPanel, BorderLayout.PAGE_START);
 
