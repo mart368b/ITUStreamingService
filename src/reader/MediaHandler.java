@@ -81,4 +81,17 @@ public class MediaHandler{
         }
     }
 
+    /**
+     * Get a Media by its title
+     * @param title The title of the Media
+     * @return return either the Media or Null
+     */
+    public Media getMedia(String title){
+        for(Media m : medias){
+            if(m.getTitle().toLowerCase().equals(title.toLowerCase())){
+                return m;
+            }
+        }
+        return null;
+    }
 }
