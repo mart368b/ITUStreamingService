@@ -56,21 +56,7 @@ public class Serie extends Media {
         }
         String[] episodeInfo = episode.split("%");
 
-        String timeString = episodeInfo[1].replace("h", "h-").replace("min","m");
-        String[] timeArr = timeString.split("-");
-        int duration = 0; // episode duration in seconds
-        for( String timePart: timeArr){
-            if (timePart.length() == 0){
-                continue;
-            }
-            switch (timePart.charAt(timePart.length() - 1)){
-                case 'h':
-                    duration += Integer.parseInt(timePart.substring(0, timePart.length() - 1)) * 3600;
-                    break;
-                case 'm':
-                    duration += Integer.parseInt(timePart.substring(0, timePart.length() - 1)) * 60;
-            }
-        }
+        int duration = getTimeInMinutes(episodeInfo[1]); // episode duration in seconds
         SeriesEpisode episodeClass = new SeriesEpisode(seasonNumber, episodeNumber, episodeInfo[0], duration);
         this.episodes.get(seasonNumber).add(episodeClass);
     }

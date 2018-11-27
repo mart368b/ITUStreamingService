@@ -45,6 +45,25 @@ public abstract class Media {
         return builder;
     }
 
+    public static int getTimeInMinutes(String time){
+        String timeString = time.replace("h", "h-").replace("min","m");
+        String[] timeArr = timeString.split("-");
+        int duration = 0;
+        for( String timePart: timeArr){
+            if (timePart.length() == 0){
+                continue;
+            }
+            switch (timePart.charAt(timePart.length() - 1)){
+                case 'h':
+                    duration += Integer.parseInt(timePart.substring(0, timePart.length() - 1)) * 3600;
+                    break;
+                case 'm':
+                    duration += Integer.parseInt(timePart.substring(0, timePart.length() - 1)) * 60;
+            }
+        }
+        return duration;
+    }
+
     public String toString(){
         return getMediaInfo().toString();
     }
@@ -59,7 +78,7 @@ public abstract class Media {
         try {
             switch (mediaType) {
                 case MOVIE:
-                    return new Movie(information[0], information[1], information[2], information[3]);
+                    return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
                 case SERIES:
                     return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
                 default:
