@@ -1,5 +1,6 @@
 package medias;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ public class Serie extends Media {
     private HashMap<Integer, ArrayList<SeriesEpisode>> episodes;
 
     Serie(String title, String year, String genre, String rating, String ageResriction, String seasons) {
-
         this.title = title;
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
@@ -27,6 +27,9 @@ public class Serie extends Media {
         for ( String season: seasonArr){
             addSeason(season);
         }
+
+        loadImage();
+        createPreviewCard();
     }
 
     private void addSeason(String season) {

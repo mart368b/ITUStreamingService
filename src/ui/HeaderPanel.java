@@ -8,10 +8,7 @@ import medias.SortTypes;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class HeaderPanel extends JPanel {
@@ -101,6 +98,7 @@ public class HeaderPanel extends JPanel {
 
     private JPanel getSearchField(){
         JPanel panel = new JPanel();
+        panel.setBackground(Color.CYAN);
 
         JLabel categoryText = new JLabel("categories:");
         panel.add(categoryText);
@@ -114,35 +112,29 @@ public class HeaderPanel extends JPanel {
 
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(100, 20));
-
-        textField.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    String categoryName = (String) categoriesBox.getSelectedItem();
-                    Categories category = Categories.getCategoryByName(categoryName);
-
-                    String sortTypeName = (String) sortTypeBox.getSelectedItem();
-                    SortTypes sortType = SortTypes.valueOf(sortTypeName.toUpperCase());
-
-                    String searchedName = textField.getText();
-
-                    System.out.println( "Search for " + category.name() + " " + searchedName + " sorted by " + sortType.name());
-                }
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {}
-
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        });
-
         panel.add(textField);
 
-        panel.setBackground(Color.CYAN);
+        textField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                peformeSearch(textField, sortTypeBox, categoriesBox);
+            }
+        });
+
         return panel;
+    }
+
+    private void peformeSearch(JTextField textField, JComboBox sortTypeBox, JComboBox categoriesBox){
+        String categoryName = (String) categoriesBox.getSelectedItem();
+        Categories category = Categories.getCategoryByName(categoryName);
+
+        String sortTypeName = (String) sortTypeBox.getSelectedItem();
+        SortTypes sortType = SortTypes.valueOf(sortTypeName.toUpperCase());
+
+        String searchedName = textField.getText();
+
+        Display.getDisplay().displayOnPreview(category, sortType, searchedName);
+        System.out.println( "Search for " + category.name() + " " + searchedName + " sorted by " + sortType.name());
     }
 
 }

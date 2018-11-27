@@ -96,4 +96,11 @@ public class MediaHandler {
         }
         return null;
     }
+
+    public void getAllMedia(ArrayList<Media> mediaList){
+        mediaList.clear();
+        for (Media media: medias){
+            mediaList.add(media);
+        }
+    }
 }

@@ -55,6 +55,9 @@ public enum Categories {
 
 
     public static Categories getCategoryByName( String name ){
+        if(name.length() == 0){
+            return null;
+        }
         for (Categories category: Categories.values()){
             if ( name.trim().equals(category.getName()) ){
                 return category;

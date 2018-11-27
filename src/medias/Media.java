@@ -1,7 +1,10 @@
 package medias;
 
 
+import ui.MediaPreviewCard;
+
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,16 +17,33 @@ public abstract class Media {
     protected String ageResctriction;
     protected Categories[] genre;
     protected BufferedImage img;
+    protected MediaPreviewCard previewCard;
 
-    protected void loadImage() throws FileNotFoundException{
-        File f = new File("res/" + MediaTypes.getMediaType(this).getName() + "-images/" + title + ".jpg");
+    protected void loadImage() throws ExceptionInInitializerError{
+        String path = "res/" + MediaTypes.getMediaType(this).getName() + "-images/" + title + ".jpg";
+        File f = new File(path);
+        if (!f.exists()){
+            throw new ExceptionInInitializerError(new FileNotFoundException("Failed to find file " + path));
+        }
         try {
             img = ImageIO.read(f);
         }catch (FileNotFoundException e){
-            throw e;
+            throw new ExceptionInInitializerError(e);
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void createPreviewCard(){
+        previewCard = new MediaPreviewCard(this);
+    }
+
+    public BufferedImage getImage(){
+        return img;
+    }
+
+    public MediaPreviewCard getPreviewCard(){
+        return previewCard;
     }
 
     public String getTitle() { //Returnerer mediets titel
@@ -98,5 +118,14 @@ public abstract class Media {
             default:
                 return null;
         }
+    }
+
+    public boolean haveCategory(Categories category){
+        for(Categories genreCategory: genre){
+            if (genreCategory.equals(category)){
+                return true;
+            }
+        }
+        return false;
     }
 }
