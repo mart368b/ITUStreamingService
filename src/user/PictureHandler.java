@@ -18,11 +18,9 @@ public class PictureHandler {
     private String[] types = new String[]{"default", "mummy", "pig", "space"};
     private String[] names = new String[]{"cyan", "green", "grey", "orange", "red"};
 
-    private PictureHandler() {
-        init();
-    }
+    private PictureHandler(){}
 
-    private void init(){
+    public void init(){
         // creates fresh hashmap
         images = new HashMap<String, BufferedImage>();
         try {

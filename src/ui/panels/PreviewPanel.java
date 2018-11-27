@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class PreviewPanel extends Panel{
+public class PreviewPanel extends JPanel {
 
     private ArrayList<Media> displayedMedia = new ArrayList<Media>();
     private JPanel previewMenu;
@@ -28,6 +28,8 @@ public class PreviewPanel extends Panel{
     public PreviewPanel( Display display){
         super();
         setLayout(new BorderLayout());
+        Dimension d = new Dimension(720, 480);
+        setSize(d);
 
         add(display.getHeaderPanel(), BorderLayout.PAGE_START);
 
@@ -61,6 +63,9 @@ public class PreviewPanel extends Panel{
         updatePreview();
 
         add(cardPreviewPanel, BorderLayout.CENTER);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.BLUE);
     }
 
     private JPanel getOptionMenu(){

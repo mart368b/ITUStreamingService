@@ -1,15 +1,13 @@
 package ui;
 
+
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
-import reader.MediaHandler;
+import ui.panels.LogInPanel;
 import ui.panels.PreviewPanel;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class Display extends JFrame  {
 
@@ -84,5 +82,11 @@ public class Display extends JFrame  {
 
     public HeaderPanel getHeaderPanel(){
         return headerPanel;
+    }
+
+    private void initEksFuckingDee(){
+        setLayout(new BorderLayout());
+        LogInPanel panel = new LogInPanel();
+        add(panel, BorderLayout.CENTER);
     }
 }
