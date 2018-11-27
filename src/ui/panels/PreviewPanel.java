@@ -8,6 +8,8 @@ public class PreviewPanel extends JPanel {
     public PreviewPanel(){
         super();
         setLayout(new BorderLayout());
+        Dimension d = new Dimension(720, 480);
+        setSize(d);
 
         add(getOptionMenu(), BorderLayout.PAGE_START);
         add(getPreviewMenu(), BorderLayout.CENTER);
@@ -17,6 +19,7 @@ public class PreviewPanel extends JPanel {
     private JPanel getPreviewMenu() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLUE);
+
         return panel;
     }
 

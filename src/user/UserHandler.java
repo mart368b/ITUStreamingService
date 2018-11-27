@@ -19,8 +19,6 @@ public class UserHandler {
     private List<User> users;
 
     private UserHandler() {
-        init();
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (instance != null){
                 this.save();
@@ -28,7 +26,7 @@ public class UserHandler {
         }));
     }
 
-    private void init(){
+    public void init(){
         // Creates new user list
         users = new ArrayList<User>();
         try {
@@ -144,5 +142,35 @@ public class UserHandler {
      */
     public void removeUser(User user){
         users.remove(user);
+    }
+
+    /**
+     * Checks if a user with this username already exists
+     * @param username The username to be checked
+     * @return returns true if user exists, else returns false
+     */
+    public boolean hasUser(String username){
+        for(User user : users){
+            if(user.getUsername().toLowerCase().equals(username.toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if there is a user with known username and password
+     * @param username The username of the user
+     * @param password The password of the user
+     * @return returns a user if found otherwise null
+     */
+    public User getUser(String username, String password){
+        for(User user : users){
+            if(user.getUsername().toLowerCase().equals(username.toLowerCase())
+                && user.getPassword().equals(password)){
+                return user;
+            }
+        }
+        return null;
     }
 }

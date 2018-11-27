@@ -8,10 +8,6 @@ import java.awt.*;
 
 public class Display extends JFrame {
 
-    public static void main(String[] args){
-        Display.getDisplay();
-    }
-
     private static Display instance = null;
 
     public static Display getDisplay(){
@@ -48,6 +44,7 @@ public class Display extends JFrame {
     }
 
     private void initEksFuckingDee(){
+        setLayout(new BorderLayout());
         LogInPanel panel = new LogInPanel();
         add(panel, BorderLayout.CENTER);
     }
