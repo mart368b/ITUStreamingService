@@ -8,7 +8,7 @@ public enum MediaTypes {
     private int columnCount; // Number of required columns in csv file
     private String name; // name of the media
 
-    private MediaTypes( final int columnCount, final String name){
+    MediaTypes(final int columnCount, final String name){
         this.columnCount = columnCount;
         this.name = name;
     }
@@ -18,6 +18,7 @@ public enum MediaTypes {
     public int getColumnCount(){
         return columnCount;
     }
+
     public String getName(){
         return name;
     }
@@ -25,7 +26,7 @@ public enum MediaTypes {
     /**
      * Guess the MediaType based on a string
      * @param mediaType : name of MediaType
-     * @return
+     * @return : MediaType corresponding to string
      */
     public static MediaTypes getTypeFromString( String mediaType){
         switch(mediaType.toLowerCase().trim()){
@@ -42,7 +43,7 @@ public enum MediaTypes {
      * Specify which media to be loaded
      * @return : Array containing all MediaTypes to be loaded
      */
-    public static String[] getLoadedMediaNames(){
+    public static String[] getLoadedMediaTypes(){
         return new String[]{"movies", "series"};
     }
 }

@@ -1,9 +1,9 @@
 package reader;
 
+import debugging.LogTypes;
+import debugging.Logger;
 import medias.Media;
 import medias.MediaTypes;
-import medias.Movie;
-import medias.Serie;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,27 +13,26 @@ import java.util.List;
 /**
  * class reasponsible for reading all medias
  */
-public class MediaReader{
+public class MediaHandler {
 
     public static void main(String[]args){
-        MediaReader.getInstance();
+        MediaHandler.getInstance();
     }
 
     // Make it a singleton since there is no reason to read all media multiple times
-    private static MediaReader instance = new MediaReader();
-    public static MediaReader getInstance(){
-        return instance;
-    }
+    private static MediaHandler instance = new MediaHandler();
+    public static MediaHandler getInstance(){ return instance;}
 
     // Container of all media present in the project
     private List<Media> medias;
 
-    private MediaReader(){
-        this.medias = new ArrayList<Media>();
+    private MediaHandler(){
+        this.medias = new ArrayList<>();
         // Get list of media to be loaded
-        String[] loadedMedias = MediaTypes.getLoadedMediaNames();
+        String[] loadedMedias = MediaTypes.getLoadedMediaTypes();
         for ( String media: loadedMedias ){
             // Get path to media csv file
+            Logger.log("Initializing " + media);
             String mediaPath = "res/" + media + ".csv";
             loadMedia( mediaPath, MediaTypes.getTypeFromString(media) );
         }
@@ -59,7 +58,7 @@ public class MediaReader{
             }
         } catch ( FileNotFoundException e){
             // This is reached if there is a typo in the csv file path for the media, or if the file does not exists
-            System.out.println("Failed to find media at: " + path);
+            Logger.log("Failed to find media at: " + path, LogTypes.SOFTERROR);
         }
     }
 

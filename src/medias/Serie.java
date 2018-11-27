@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Serie extends Media {
 
-    protected HashMap<Integer, ArrayList<Integer>> episodes; //Første input i hashmappet er sæsoner, andet er en array af episoder
+    private HashMap<Integer, ArrayList<Integer>> episodes; //Første input i hashmappet er sæsoner, andet er en array af episoder
 
     public Serie(String title, String rating, String year, String genre, String episodes, String age) {
 
@@ -15,24 +15,20 @@ public class Serie extends Media {
         this.year = Integer.parseInt(year);
         this.genre = genre.split(",");
 
-        System.out.println(this);
         this.episodes = new HashMap<>();
         initializeSeasons(episodes);
     }
 
-    public String toString(){
-        return title + " : " + rating + " : " + year + " : " + genre;
+    @Override
+    public StringBuilder getMediaInfo(){
+        StringBuilder builder = super.getMediaInfo();
+        builder.insert(0, "Serie: ");
+        return builder;
     }
-
 
     public void initializeSeasons(String episodes){
         String[] episodeArr = episodes.split(","); //Laver en array, der sepererer således: 1-13 2-13 osv.
-
     }
-
-
-
-
 
 
 
