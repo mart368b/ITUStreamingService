@@ -103,4 +103,13 @@ public class MediaHandler {
             mediaList.add(media);
         }
     }
+
+    public void getAllMedia(ArrayList<Media> mediaList, MediaTypes mediaTypes){
+        mediaList.clear();
+        for (Media media: medias){
+            if (mediaTypes.equals(media)){
+                mediaList.add(media);
+            }
+        }
+    }
 }

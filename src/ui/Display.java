@@ -15,7 +15,7 @@ public class Display extends JFrame  {
 
     private static Display instance = null;
 
-    private HeaderPanel headerPanel;
+    public HeaderPanel headerPanel;
 
     public static Display getDisplay(){
         if ( instance == null ){
@@ -107,9 +107,9 @@ public class Display extends JFrame  {
         }
     }
 
-    public void displayOnPreview(Categories categories, SortTypes sortType, String name){
+    public void displayOnPreview(Categories categories, String name){
         PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
-        previewPanel.setDisplayedMedia(categories, sortType);
+        previewPanel.setDisplayedMedia(categories);
         setPanel(previewPanel);
     }
 

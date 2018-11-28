@@ -2,6 +2,7 @@ package ui.panels;
 
 import maincomponents.AvMinArm;
 import ui.Display;
+import ui.HeaderPanel;
 import ui.ProfileCard;
 import user.Profile;
 import user.User;
@@ -81,6 +82,8 @@ public class UserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
+                Display d = Display.getDisplay();
+                d.headerPanel.setProfilePicture(profile);
                 Display.getDisplay().setPanel(Display.PREVIEWPANEL);
                 //TODO: GO TO PREVIEWPAGE
             }

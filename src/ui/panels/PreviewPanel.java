@@ -10,8 +10,11 @@ import reader.MediaHandler;
 import ui.Display;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -50,27 +53,42 @@ public class PreviewPanel extends JPanel {
         initializeNoResultMessage();
 
         previewMenu = new JPanel();
+        previewMenu.setBorder(BorderFactory.createEmptyBorder());
         previewMenu.setAutoscrolls(true);
-        previewMenu.setBackground(Color.BLUE);
         previewMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         JScrollPane scrollPane = new JScrollPane(previewMenu, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setViewportView(previewMenu);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         MediaHandler.getInstance().getAllMedia(displayedMedia);
 
         cardPreviewPanel.add(scrollPane, BorderLayout.CENTER);
-        updatePreview();
+        sortPreview(SortTypes.ALPHABETICLY);
 
         add(cardPreviewPanel, BorderLayout.CENTER);
 
         JPanel panel = new JPanel();
-        panel.setBackground(Color.BLUE);
     }
 
     private JPanel getOptionMenu(){
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.RED);
+        JPanel panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+
+        panel.setBorder(BorderFactory.createEmptyBorder());
+
+        JLabel sortText = new JLabel("sort:");
+        panel.add(sortText);
+        JComboBox<String> sortTypeBox = new JComboBox<String>(SortTypes.getSortTypeNames());
+        sortTypeBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String item = (String) sortTypeBox.getSelectedItem();
+                SortTypes sortTypes = SortTypes.valueOf(item.toUpperCase());
+                sortPreview(sortTypes);
+            }
+        });
+        panel.add(sortTypeBox);
+
         return panel;
     }
 
@@ -83,11 +101,14 @@ public class PreviewPanel extends JPanel {
                 previewMenu.add(media.getPreviewCard());
             }
         }
+        Dimension d = getSize();
+        setViewPortWidth(d.width);
+        validate();
+        repaint();
     }
 
     private void initializeNoResultMessage() {
         noResult = new JPanel();
-        noResult.setBackground(Color.GRAY);
         JLabel title = new JLabel("No results could be found");
         noResult.add(title);
     }
@@ -99,9 +120,25 @@ public class PreviewPanel extends JPanel {
         previewMenu.setPreferredSize(d);
     }
 
-    public void setDisplayedMedia(Categories category, SortTypes sortTypes){
+    public void setDisplayedMedia(){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
+        updatePreview();
+    }
+
+    public void setDisplayedMedia(MediaTypes mediaTypes){
+        displayedMedia.clear();
+        MediaHandler.getInstance().getAllMedia(displayedMedia, mediaTypes);
+        updatePreview();
+    }
+
+    public void setDisplayedMedia(Categories category){
+        displayedMedia.clear();
+        MediaHandler.getInstance().getAllMedia(displayedMedia);
+        filterDisplayedMedia(category);
+    }
+
+    public void filterDisplayedMedia(Categories category){
         if (category != Categories.ANY){
             for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
                 Media m = it.next();
@@ -110,12 +147,11 @@ public class PreviewPanel extends JPanel {
                 }
             }
         }
-
-        sortPreview(sortTypes);
         updatePreview();
     }
 
     public void sortPreview(SortTypes sortType){
         Collections.sort(displayedMedia, sortType.getComparator());
+        updatePreview();
     }
 }

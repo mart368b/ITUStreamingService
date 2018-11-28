@@ -4,10 +4,18 @@ import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
 import javafx.scene.input.KeyCode;
 import maincomponents.AvMinArm;
 import medias.Categories;
+import medias.MediaTypes;
 import medias.SortTypes;
+import ui.components.ImageButton;
+import ui.panels.PreviewPanel;
+import user.Profile;
 import user.User;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,18 +25,16 @@ import java.util.zip.DeflaterInputStream;
 public class HeaderPanel extends JPanel {
 
     private Display display;
+    private ImageButton userButton;
 
     public HeaderPanel(Display display){
         super();
-        setBackground(Color.WHITE);
+        Border border = BorderFactory.createMatteBorder(0,0,2,0, Color.LIGHT_GRAY);
+        setBorder(border);
 
         JPanel leftPanel = getLeftPanel();
         JPanel centerPanel = getCenterPanel();
         JPanel rightPanel = getRightPanel();
-
-        leftPanel.setBackground( Color.RED );
-        centerPanel.setBackground( Color.GREEN  );
-        rightPanel.setBackground( Color.BLUE );
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -41,11 +47,14 @@ public class HeaderPanel extends JPanel {
     private JPanel getLeftPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JButton startButton = new JButton("Start");
+        ImageButton startButton = new ImageButton(AvMinArm.logoImage);
+        startButton.setBorderPainted(false);
+        startButton.setPrefferedHeight(30);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Start pressed");
+                PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+                previewPanel.setDisplayedMedia();
             }
         });
         panel.add(startButton);
@@ -60,14 +69,16 @@ public class HeaderPanel extends JPanel {
         addButton(panel, "Movies", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                System.out.println("Movie pressed");
+                PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+                previewPanel.setDisplayedMedia(MediaTypes.MOVIE);
             }
         });
 
         addButton(panel, "Series", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                System.out.println("Series pressed");
+                PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+                previewPanel.setDisplayedMedia(MediaTypes.SERIES);
             }
         });
 
@@ -85,9 +96,8 @@ public class HeaderPanel extends JPanel {
 
     private JPanel getRightPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-        System.out.println(AvMinArm.user);
-        JButton userButton = new JButton("Users");
+        userButton = new ImageButton(null);
+        userButton.setPreferredSize(new Dimension(40,40));
         userButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,17 +118,12 @@ public class HeaderPanel extends JPanel {
 
     private JPanel getSearchField(){
         JPanel panel = new JPanel();
-        panel.setBackground(Color.CYAN);
+        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
         JLabel categoryText = new JLabel("categories:");
         panel.add(categoryText);
         JComboBox<String> categoriesBox = new JComboBox<String>(Categories.getCategorieNames());
         panel.add(categoriesBox);
-
-        JLabel sortText = new JLabel("sort:");
-        panel.add(sortText);
-        JComboBox<String> sortTypeBox = new JComboBox<String>(SortTypes.getSortTypeNames());
-        panel.add(sortTypeBox);
 
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(100, 20));
@@ -127,24 +132,26 @@ public class HeaderPanel extends JPanel {
         textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                peformeSearch(textField, sortTypeBox, categoriesBox);
+                peformeSearch(textField, categoriesBox);
             }
         });
 
         return panel;
     }
 
-    private void peformeSearch(JTextField textField, JComboBox sortTypeBox, JComboBox categoriesBox){
+    private void peformeSearch(JTextField textField, JComboBox categoriesBox){
         String categoryName = (String) categoriesBox.getSelectedItem();
         Categories category = Categories.getCategoryByName(categoryName);
 
-        String sortTypeName = (String) sortTypeBox.getSelectedItem();
-        SortTypes sortType = SortTypes.valueOf(sortTypeName.toUpperCase());
-
         String searchedName = textField.getText();
 
-        Display.getDisplay().displayOnPreview(category, sortType, searchedName);
-        System.out.println( "Search for " + category.name() + " " + searchedName + " sorted by " + sortType.name());
+        Display.getDisplay().displayOnPreview(category, searchedName);
+        System.out.println( "Search for " + category.name() + " " + searchedName);
+    }
+
+    public void setProfilePicture(Profile profile){
+        userButton.setImgage(profile.getImage());
+        userButton.repaint();
     }
 
 }
