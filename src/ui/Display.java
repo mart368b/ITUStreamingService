@@ -6,6 +6,8 @@ import debugging.Logger;
 import medias.*;
 import ui.panels.LogInPanel;
 import ui.panels.PreviewPanel;
+import ui.panels.UserPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -41,21 +43,29 @@ public class Display extends JFrame  {
         initializeDisplay();
 
         pack();
+        setLocationRelativeTo(null);
     }
 
     private void initializeDisplay() {
 
-        menues[0] = new PreviewPanel(this);
-        PreviewPanel previewPanel = (PreviewPanel) menues[0];
+        //TODO:
+        //menues[0] = new PreviewPanel(this);
+        //PreviewPanel previewPanel = (PreviewPanel) menues[0];
+        //Dimension d = previewPanel.getPreferredSize();
 
-        Dimension d = previewPanel.getPreferredSize();
+        menues[0] = new UserPanel();
+        UserPanel userpanel = (UserPanel) menues[0];
+        Dimension d = userpanel.getPreferredSize();
+
         d.width = (140 + 10)*6 + 100;
         setMinimumSize(d);
         d.height += 500;
         setPreferredSize(d);
-        previewPanel.setViewPortWidth(getWidth());
 
-        add(previewPanel);
+        //previewPanel.setViewPortWidth(getWidth());
+        //add(previewPanel);
+
+        add(userpanel);
     }
 
     public void setMenu( int menuIndex ){

@@ -17,6 +17,9 @@ public class LogInPanel extends JPanel {
 
     private final Font HEADER = new Font("Arial", Font.PLAIN, 24);
 
+    private JPanel panel;
+    private JButton button;
+    private Border blackline = BorderFactory.createLineBorder(Color.black);
 
     public LogInPanel(){
         super();
@@ -47,7 +50,7 @@ public class LogInPanel extends JPanel {
     }
 
     public JPanel getLogIn(){
-        JPanel panel = new JPanel();
+        panel = new JPanel();
 
         JLabel header = new JLabel("Log In");
         header.setFont(HEADER);
@@ -77,7 +80,7 @@ public class LogInPanel extends JPanel {
                 addComponent(password).addComponent(passtext));
         layout.setVerticalGroup(vGroup);
 
-        JButton button = new JButton("Log in");
+        button = new JButton("Log in");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,9 +94,9 @@ public class LogInPanel extends JPanel {
                                 "Password or username is wrong!");
                         passtext.setText("");
                     }else{
-                        AvMinArm.setUser(user);
+                        AvMinArm.user = user;
                         Logger.log("User with name: " + usertext.getText() + " logged in!");
-                        //TODO: GO BACK TO MOVIE PREVIEW
+                        //TODO: GO TO USERPAGE
                     }
                 }
             }
@@ -116,7 +119,6 @@ public class LogInPanel extends JPanel {
         c.gridy = 2;
         panel.add(button, c);
 
-        Border blackline = BorderFactory.createLineBorder(Color.black);
         TitledBorder title = BorderFactory.createTitledBorder(
                 blackline, "Already have an account?");
         title.setTitleJustification(TitledBorder.CENTER);
@@ -126,7 +128,7 @@ public class LogInPanel extends JPanel {
     }
 
     public JPanel getSignUp(){
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1));
 
         JLabel header = new JLabel("Sign up");
@@ -161,7 +163,7 @@ public class LogInPanel extends JPanel {
                 addComponent(conpassword).addComponent(conpasstext));
         layout.setVerticalGroup(vGroup);
 
-        JButton button = new JButton("Sign up and Log in");
+        button = new JButton("Sign up and Log in");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -186,7 +188,7 @@ public class LogInPanel extends JPanel {
                     }
                 }
                 Logger.log("New user created with name: " + usertext.getText());
-                //TODO: GO BACK TO MOVIE PREVIEW
+                //TODO: GO TO USERPAGE
             }
         });
 
@@ -208,7 +210,6 @@ public class LogInPanel extends JPanel {
         c.gridy = 2;
         panel.add(button, c);
 
-        Border blackline = BorderFactory.createLineBorder(Color.black);
         TitledBorder title = BorderFactory.createTitledBorder(
                 blackline, "I'm new, and I want to join!");
         title.setTitleJustification(TitledBorder.CENTER);

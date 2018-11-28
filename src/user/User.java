@@ -7,7 +7,7 @@ public class User {
 
     private String username;
     private String password;
-    private List<Profile> profiles;
+    private ArrayList<Profile> profiles;
     private boolean admin;
 
     /**
@@ -52,7 +52,7 @@ public class User {
     /**
      * @return return the profiles to this User
      */
-    public List<Profile> getProfiles(){
+    public ArrayList<Profile> getProfiles(){
         return profiles;
     }
 

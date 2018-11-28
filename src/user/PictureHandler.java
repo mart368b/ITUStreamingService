@@ -32,6 +32,8 @@ public class PictureHandler {
                     images.put(result, ImageIO.read(f));
                 }
             }
+            File f = new File("res/user-images/create.jpg");
+            images.put("create", ImageIO.read(f));
         }catch(Exception e){
             Logger.log("No file was found! ", LogTypes.FATALERROR);
             e.printStackTrace();
