@@ -1,6 +1,7 @@
 package ui.panels;
 
 import maincomponents.AvMinArm;
+import ui.Display;
 import ui.ProfileCard;
 import user.Profile;
 import user.User;
@@ -32,6 +33,7 @@ public class UserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
+                Display.getDisplay().setPanel(Display.LOGINPANEL);
                 //TODO: GO TO LOGIN/SIGNUP PAGE
             }
         });
@@ -74,10 +76,12 @@ public class UserPanel extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton button = new ProfileCard(profile);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
+                Display.getDisplay().setPanel(Display.PREVIEWPANEL);
                 //TODO: GO TO PREVIEWPAGE
             }
         });

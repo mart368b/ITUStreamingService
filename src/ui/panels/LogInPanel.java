@@ -3,6 +3,7 @@ package ui.panels;
 
 import debugging.Logger;
 import maincomponents.AvMinArm;
+import ui.Display;
 import user.User;
 import user.UserHandler;
 
@@ -15,7 +16,7 @@ import java.awt.event.ActionListener;
 
 public class LogInPanel extends JPanel {
 
-    private final Font HEADER = new Font("Arial", Font.PLAIN, 24);
+    private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
 
     private JPanel panel;
     private JButton button;
@@ -96,6 +97,9 @@ public class LogInPanel extends JPanel {
                     }else{
                         AvMinArm.user = user;
                         Logger.log("User with name: " + usertext.getText() + " logged in!");
+                        usertext.setText("");
+                        passtext.setText("");
+                        Display.getDisplay().setPanel(Display.USERPANEL);
                         //TODO: GO TO USERPAGE
                     }
                 }

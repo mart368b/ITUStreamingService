@@ -2,14 +2,17 @@ package ui;
 
 import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
 import javafx.scene.input.KeyCode;
+import maincomponents.AvMinArm;
 import medias.Categories;
 import medias.SortTypes;
+import user.User;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.zip.DeflaterInputStream;
 
 public class HeaderPanel extends JPanel {
 
@@ -83,7 +86,14 @@ public class HeaderPanel extends JPanel {
     private JPanel getRightPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        JButton userButton = new JButton("User");
+        System.out.println(AvMinArm.user);
+        JButton userButton = new JButton("Users");
+        userButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Display.getDisplay().setPanel(Display.USERPANEL);
+            }
+        });
         panel.add(userButton);
 
 
