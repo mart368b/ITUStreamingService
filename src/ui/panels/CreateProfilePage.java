@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CreateProfilePanel extends JPanel {
+public class CreateProfilePage extends Page {
 
     private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
     private static final Font HUGE = new Font("Arial", Font.PLAIN, 28);
@@ -22,7 +22,7 @@ public class CreateProfilePanel extends JPanel {
     private JPanel panel;
     private JButton button;
 
-    public CreateProfilePanel(){
+    public CreateProfilePage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -40,7 +40,7 @@ public class CreateProfilePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getDisplay().setPanel(Display.USERPANEL);
+                Display.getInstance().setPage(Page.USERPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -104,9 +104,12 @@ public class CreateProfilePanel extends JPanel {
                         }else {
                             Logger.log("New profile " + nametext.getText() + " for user: " + AvMinArm.user.getUsername());
                             Profile profile = new Profile(nametext.getText(), Integer.parseInt(agetext.getText()), selected, new String[]{});
+
                             AvMinArm.user.signUpProfile(profile);
-                            Display.getDisplay().updatePanel(Display.USERPANEL);
-                            Display.getDisplay().setPanel(Display.USERPANEL);
+
+                            UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
+                            userpage.updateUsers();
+                            Display.getInstance().setPage(userpage);
                         }
                     }
                 }

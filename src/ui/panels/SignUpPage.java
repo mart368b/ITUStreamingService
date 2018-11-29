@@ -5,19 +5,18 @@ import ui.Display;
 import user.UserHandler;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SignUpPanel extends JPanel {
+public class SignUpPage extends Page {
 
     private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
 
     private JPanel panel;
     private JButton button;
 
-    public SignUpPanel(){
+    public SignUpPage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -32,7 +31,7 @@ public class SignUpPanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getDisplay().setPanel(Display.LOGINPANEL);
+                Display.getInstance().setPage(Page.LOGINPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -100,7 +99,7 @@ public class SignUpPanel extends JPanel {
                         }else{
                             UserHandler.getInstance().signUpUser(usertext.getText(), String.copyValueOf(passtext.getPassword()));
                             Logger.log("New user created with name: " + usertext.getText());
-                            Display.getDisplay().setPanel(Display.USERPANEL);
+                            Display.getInstance().setPage(Page.USERPAGE);
                         }
                     }
                 }

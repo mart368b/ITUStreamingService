@@ -25,14 +25,6 @@ public class Display extends JFrame  {
         return instance;
     }
 
-    public final static int USERPANEL = 0;
-    public final static int PREVIEWPANEL = 1;
-    public final static int LOGINPANEL = 2;
-    public final static int SIGNUPPANEL = 3;
-    public final static int CREATEPROFILEPANEL = 4;
-    private int currentDisplayIndex = -1;
-
-    private JPanel[] menues = new JPanel[5];
     private int currentPageIndex = -1;
 
     private Display (){
@@ -59,21 +51,7 @@ public class Display extends JFrame  {
         d.height += 500;
         setPreferredSize(d);
 
-        menues[1] = new PreviewPage(this);
-        PreviewPage previewPanel = (PreviewPage) menues[1];
-
-        menues[2] = new LogInPage();
-        menues[3] = new SignUpPanel();
-        menues[4] = new CreateProfilePanel();
-
-        previewPanel.setViewPortWidth(getWidth());
-        //add(previewPanel);
-
-        setPage(USERPANEL);
-    }
-
-    public void updatePanel(int panel){
-        if(panel == USERPANEL) menues[panel] = new UserPage();
+        setPage(userPage);
     }
 
     public void setPage( Page newPage ) {

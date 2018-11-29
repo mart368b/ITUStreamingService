@@ -34,7 +34,7 @@ public class LogInPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Display.getInstance().setPage(Display.SIGNUPPANEL);
+               Display.getInstance().setPage(Page.SIGNUPPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
