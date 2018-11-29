@@ -20,7 +20,7 @@ public class UserPage extends Page {
     private final Font font = new Font("Arial", Font.PLAIN, 24);
     private final Font font2 = new Font("Arial", Font.PLAIN, 18);
 
-    public UserPage(){
+    protected UserPage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

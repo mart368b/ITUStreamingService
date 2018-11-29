@@ -22,7 +22,7 @@ public class LogInPage extends Page {
     private JButton button;
     private Border blackline = BorderFactory.createLineBorder(Color.black);
 
-    public LogInPage(){
+    protected LogInPage(){
         super();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();

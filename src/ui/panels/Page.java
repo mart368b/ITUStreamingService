@@ -45,6 +45,6 @@ public abstract class Page extends JPanel {
         pages[0] = new UserPage();
         pages[1] = new PreviewPage(d);
         pages[2] = new LogInPage();
-        pages[3] = new MediaPreviewPage(d);
+        pages[3] = new MediaPreviewPage();
     }
 }
