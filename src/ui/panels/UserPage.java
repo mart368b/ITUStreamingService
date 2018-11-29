@@ -89,7 +89,6 @@ public class UserPage extends Page {
                 AvMinArm.profile = profile;
                 HeaderCard.getInstance().setProfilePicture(profile);
                 Display.getInstance().setPage(Page.PREVIEWPAGE);
-                //Display.getInstance().setPanel(Display.MEDIAPREVIEW);
             }
         });
         p.add(button);

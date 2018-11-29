@@ -14,22 +14,28 @@ public class ProfileCard extends JButton {
 
     public ProfileCard(Profile profile){
         super();
-
-        this.image = profile.getImage();
-        setMaximumSize(new Dimension(SIZE, SIZE));
+        setPicture(profile.getImage(), SIZE);
     }
 
     public ProfileCard(){
         super();
-        this.image = PictureHandler.getInstance().getPicture("create");
-        setMaximumSize(new Dimension(SIZE, SIZE));
+        setPicture("create", SIZE);
     }
 
-    public ProfileCard(String pic, int size){
+    public ProfileCard(String ImageName, int size){
         super();
-        this.image = PictureHandler.getInstance().getPicture(pic);
+        setPicture(ImageName, size);
+    }
+
+    public void setPicture(String ImageName, int size){
+        setPicture(PictureHandler.getInstance().getPicture(ImageName), size);
+    }
+
+    public void setPicture(BufferedImage image, int size){
+        this.image = image;
         SIZE = size;
         setMaximumSize(new Dimension(SIZE, SIZE));
+        repaint();
     }
 
     @Override

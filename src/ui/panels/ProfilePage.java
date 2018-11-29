@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class ProfilePage extends Page {
 
@@ -18,24 +19,28 @@ public class ProfilePage extends Page {
 
     private String selected = "";
     private JButton button;
+    private ProfileCard pic;
+    private JLabel nametext, agetext, picturetext;
+    private Random rand = new Random();
 
     public ProfilePage(){
         super();
-    }
-
-    public void open(Profile profile){
-        removeAll();
-        selected = AvMinArm.profile.getProfilePicture();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
-        ProfileCard pic = new ProfileCard(AvMinArm.profile.getProfilePicture(), 256);
+        pic = new ProfileCard("create", 256);
         pic.setBorderPainted(false);
         pic.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(pic);
-
         add(getInformation());
-        validate();
-        repaint();
+    }
+    private String a = "";
+
+    public void open(Profile profile){
+        selected = AvMinArm.profile.getProfilePicture();
+        String profilePicName = AvMinArm.profile.getProfilePicture();
+        pic.setPicture(profilePicName, 256);
+        nametext.setText(AvMinArm.profile.getName());
+        agetext.setText(Integer.toString(AvMinArm.profile.getAge()));
+        picturetext.setText(AvMinArm.profile.getProfilePicture().toString());
     }
 
     public JPanel getInformation(){
@@ -47,7 +52,7 @@ public class ProfilePage extends Page {
         panel.add(label);
 
         JLabel name = new JLabel("Profile name:");
-        JLabel nametext = new JLabel(AvMinArm.profile.getName());
+        nametext = new JLabel("");
         JTextField namechange = new JTextField(20);
         namechange.setMaximumSize(new Dimension(230,0));
         JButton namebutton = new JButton("Change");
@@ -66,14 +71,13 @@ public class ProfilePage extends Page {
 
                         ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
                         profilePage.open(AvMinArm.profile);
-                        Display.getInstance().setPage(profilePage);
                     }
                 }
             }
         });
 
         JLabel age = new JLabel("Profile age:");
-        JLabel agetext = new JLabel("" + AvMinArm.profile.getAge());
+        agetext = new JLabel("");
         JTextField agechange = new JTextField();
         agechange.setMaximumSize(new Dimension(230,0));
         JButton agebutton = new JButton("Change");
@@ -92,14 +96,17 @@ public class ProfilePage extends Page {
 
                         ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
                         profilePage.open(AvMinArm.profile);
-                        Display.getInstance().setPage(profilePage);
                     }
                 }
             }
         });
 
         JLabel picture = new JLabel("Profile picture:");
-        JLabel picturetext = new JLabel(AvMinArm.profile.getProfilePicture());
+        picturetext = new JLabel("");
+        Dimension d = new Dimension(100,20);
+        picturetext.setMinimumSize(d);
+        picturetext.setPreferredSize(d);
+
         JPanel picturechange = getPics();
         JButton picturebutton = new JButton("Change");
         picturebutton.addActionListener(new ActionListener() {
@@ -108,7 +115,6 @@ public class ProfilePage extends Page {
                 AvMinArm.profile.setPicture(selected);
                 ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
                 profilePage.open(AvMinArm.profile);
-                Display.getInstance().setPage(profilePage);
             }
         });
 
@@ -117,6 +123,7 @@ public class ProfilePage extends Page {
         grid.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
+
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
         hGroup.addGroup(layout.createParallelGroup()
                 .addComponent(name).addComponent(age).addComponent(picture));
