@@ -8,6 +8,8 @@ import ui.components.ImageViewer;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 public class MediaPreviewPage extends Page {
 
@@ -17,21 +19,18 @@ public class MediaPreviewPage extends Page {
     private JPanel genreContainer;
     private PreviewPage previewPanel;
 
-    public MediaPreviewPage(Display display){
+    protected MediaPreviewPage(){
         super(new BorderLayout());
 
-        JPanel titleWrapper = new JPanel();
-        Border underlineBorder = BorderFactory.createMatteBorder(0,0,4,0, Color.LIGHT_GRAY);
-        titleWrapper.setBorder(underlineBorder);
+        JPanel titlePanel = getTitlePanel();
+        add(titlePanel, BorderLayout.PAGE_START);
 
-        title = new Label("The God Father");
-        title.setForeground(Color.BLACK);
-        title.setFont(titleFont);
-        titleWrapper.add(title);
+        JPanel body = getBody();
+        add(body, BorderLayout.CENTER);
+    }
 
-        add(titleWrapper, BorderLayout.PAGE_START);
-
-        JPanel bioWrapper = new JPanel(new GridBagLayout());
+    private JPanel getBody(){
+        JPanel body = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel bioContianer = getBioContainer();
@@ -40,19 +39,18 @@ public class MediaPreviewPage extends Page {
         c.gridy = 0;
         c.weightx = 0.6;
         c.weighty = 1;
-        bioWrapper.add(bioContianer, c);
+        body.add(bioContianer, c);
 
         JPanel imageContainer = getImageContainer();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 1;
         c.gridy = 0;
         c.weightx = 0.1;
-        bioWrapper.add(imageContainer, c);
-
-        add(bioWrapper, BorderLayout.CENTER);
+        body.add(imageContainer, c);
+        return body;
     }
 
-    public JPanel getBioContainer(){
+    private JPanel getBioContainer(){
         JPanel panel = new JPanel( new BorderLayout());
 
         panel.add(getBioBody(panel), BorderLayout.CENTER);
@@ -68,11 +66,10 @@ public class MediaPreviewPage extends Page {
         genreContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.add(genreContainer);
 
-
         return panel;
     }
 
-    public JPanel getImageContainer(){
+    private JPanel getImageContainer(){
         JPanel panel = new JPanel();
         imagePanel = new ImageViewer(null);
         Dimension d = new Dimension(280, 418);
@@ -82,6 +79,18 @@ public class MediaPreviewPage extends Page {
         return panel;
     }
 
+    private JPanel getTitlePanel(){
+        JPanel titleWrapper = new JPanel();
+        Border underlineBorder = BorderFactory.createMatteBorder(0,0,4,0, Color.LIGHT_GRAY);
+        titleWrapper.setBorder(underlineBorder);
+
+        title = new Label("The God Father");
+        title.setForeground(Color.BLACK);
+        title.setFont(titleFont);
+        titleWrapper.add(title);
+        return titleWrapper;
+    }
+
     public void setGenre(Categories[] genres ){
         genreContainer.removeAll();
         for (Categories genre: genres){
@@ -89,7 +98,7 @@ public class MediaPreviewPage extends Page {
         }
     }
 
-    public void setMedia(Media media){
+    public void setMedia(Media media) {
         title.setText(media.getTitle());
         setGenre(media.getGenres());
     }

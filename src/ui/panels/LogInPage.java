@@ -19,7 +19,7 @@ public class LogInPage extends Page {
     private JPanel panel;
     private JButton button;
 
-    public LogInPage(){
+    protected LogInPage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

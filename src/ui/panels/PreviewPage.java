@@ -25,7 +25,7 @@ public class PreviewPage extends Page {
 
     private JPanel noResult;
 
-    public PreviewPage(Display display){
+    protected PreviewPage(Display display){
         super();
         setLayout(new BorderLayout());
         Dimension d = new Dimension(720, 480);

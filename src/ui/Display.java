@@ -5,8 +5,6 @@ import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
 import ui.cards.HeaderCard;
-import ui.panels.*;
-import ui.panels.LogInPage;
 import ui.panels.MediaPreviewPage;
 import ui.panels.Page;
 import ui.panels.PreviewPage;
@@ -79,12 +77,12 @@ public class Display extends JFrame  {
         if ( pageIndex < 0 && pageIndex >= Page.pageCount()){
             Logger.log("Failed to find menu " + pageIndex, LogTypes.SOFTERROR);
         }else{
-            Page lastPanel = null;
+            Page lastPage = null;
             if (currentPageIndex != -1){
-                lastPanel = Page.getPage(currentPageIndex);
+                lastPage = Page.getPage(currentPageIndex);
             }
             Page nextPage = Page.getPage(pageIndex);
-            changePage(lastPanel, nextPage, pageIndex);
+            changePage(lastPage, nextPage, pageIndex);
         }
     }
 
@@ -99,9 +97,9 @@ public class Display extends JFrame  {
     }
 
     public void displayOnPreview(Categories categories, String name){
-        PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-        previewPanel.setDisplayedMedia(categories);
-        setPage(previewPanel);
+        PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
+        previewPage.setDisplayedMedia(categories);
+        setPage(previewPage);
     }
 
     public void displayMedia(Media media){

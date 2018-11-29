@@ -50,11 +50,7 @@ public abstract class Page extends JPanel {
         pages[2] = new LogInPage();
         pages[3] = new SignUpPage();
         pages[4] = new CreateProfilePage();
-        pages[5] = new MediaPreviewPage(d);
+        pages[5] = new MediaPreviewPage();
         pages[6] = new ProfilePage();
-    }
-
-    public void updatePage(int i){
-        if(i == USERPAGE) pages[USERPAGE] = new UserPage();
     }
 }
