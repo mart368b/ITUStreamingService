@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class UserPanel extends JPanel {
 
     private JPanel panel;
-    private User user = AvMinArm.user;
     private final Font font = new Font("Arial", Font.PLAIN, 24);
     private final Font font2 = new Font("Arial", Font.PLAIN, 18);
 
@@ -34,7 +33,6 @@ public class UserPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
                 Display.getDisplay().setPanel(Display.LOGINPANEL);
-                //TODO: GO TO LOGIN/SIGNUP PAGE
             }
         });
 
@@ -47,11 +45,11 @@ public class UserPanel extends JPanel {
 
     private JPanel getContent(){
         panel = new JPanel();
-        ArrayList<Profile> profiles = user.getProfiles();
+        ArrayList<Profile> profiles = AvMinArm.user.getProfiles();
 
         panel.setLayout(new BoxLayout(panel,BoxLayout.LINE_AXIS));
 
-        for(Profile profile : user.getProfiles()){
+        for(Profile profile : AvMinArm.user.getProfiles()){
             JPanel comp = getProfile(profile);
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
             panel.add(comp);
@@ -84,7 +82,6 @@ public class UserPanel extends JPanel {
                 Display d = Display.getDisplay();
                 d.headerPanel.setProfilePicture(profile);
                 Display.getDisplay().setPanel(Display.PREVIEWPANEL);
-                //TODO: GO TO PREVIEWPAGE
             }
         });
 
@@ -105,7 +102,7 @@ public class UserPanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: GO CREATE PROFILEPAGE
+                Display.getDisplay().setPanel(Display.CREATEPROFILEPANEL);
             }
         });
 

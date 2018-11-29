@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class ProfileCard extends JButton {
 
     private BufferedImage image;
-    private final int SIZE = 128;
+    private int SIZE = 128;
 
     public ProfileCard(Profile profile){
         super();
@@ -25,13 +25,20 @@ public class ProfileCard extends JButton {
         setMaximumSize(new Dimension(SIZE, SIZE));
     }
 
+    public ProfileCard(String pic, int size){
+        super();
+        this.image = PictureHandler.getInstance().getPicture(pic);
+        SIZE = size;
+        setMaximumSize(new Dimension(SIZE, SIZE));
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(resize(image, SIZE, SIZE), 0, 0, this); // see javadoc for more info on the parameters
     }
 
-    private BufferedImage resize(BufferedImage img, int newW, int newH) {
+    public static BufferedImage resize(BufferedImage img, int newW, int newH) {
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
         BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 

@@ -5,9 +5,7 @@ import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
 import ui.cards.HeaderCard;
-import ui.panels.LogInPanel;
-import ui.panels.PreviewPanel;
-import ui.panels.UserPanel;
+import ui.panels.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +26,11 @@ public class Display extends JFrame  {
     public final static int USERPANEL = 0;
     public final static int PREVIEWPANEL = 1;
     public final static int LOGINPANEL = 2;
+    public final static int SIGNUPPANEL = 3;
+    public final static int CREATEPROFILEPANEL = 4;
     private int currentDisplayIndex = -1;
 
-    private JPanel[] menues = new JPanel[3];
+    private JPanel[] menues = new JPanel[5];
 
     private Display (){
         super("ITUStreaming");
@@ -60,11 +60,17 @@ public class Display extends JFrame  {
         PreviewPanel previewPanel = (PreviewPanel) menues[1];
 
         menues[2] = new LogInPanel();
+        menues[3] = new SignUpPanel();
+        menues[4] = new CreateProfilePanel();
 
         previewPanel.setViewPortWidth(getWidth());
         //add(previewPanel);
 
         setPanel(USERPANEL);
+    }
+
+    public void updatePanel(int panel){
+        if(panel == USERPANEL) menues[panel] = new UserPanel();
     }
 
     public void setPanel( JPanel newMenu ){
