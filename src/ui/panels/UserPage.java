@@ -55,6 +55,7 @@ public class UserPage extends Page {
 
         userprofiles.setLayout(new BoxLayout(userprofiles,BoxLayout.LINE_AXIS));
 
+        userprofiles.add(Box.createRigidArea(new Dimension(60, 0)));
         for(Profile profile : AvMinArm.user.getProfiles()){
             JPanel comp = getProfile(profile);
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -65,6 +66,7 @@ public class UserPage extends Page {
             JPanel comp = getCreate();
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
             userprofiles.add(comp);
+            userprofiles.add(Box.createRigidArea(new Dimension(60, 0)));
         }
         userprofiles.add(Box.createRigidArea(new Dimension(0,80)));
         validate();
@@ -90,8 +92,24 @@ public class UserPage extends Page {
                 //Display.getInstance().setPanel(Display.MEDIAPREVIEW);
             }
         });
-
         p.add(button);
+
+        p.add(Box.createRigidArea(new Dimension(0,10)));
+
+        button = new JButton("Profile");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AvMinArm.profile = profile;
+                ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
+                profilePage.open(profile);
+                Display.getInstance().setPage(Page.PROFILEPAGE);
+            }
+        });
+        p.add(button);
+        p.add(Box.createRigidArea(new Dimension(0,10)));
         p.add(label);
         return p;
     }

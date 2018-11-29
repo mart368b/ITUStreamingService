@@ -83,6 +83,16 @@ public class User {
     }
 
     /**
+     * Remove a profile from the user
+     * @param profile The profile which is to be removed
+     */
+    public void removeProfile(Profile profile){
+        if(hasProfile(profile.getName())){
+            profiles.remove(profile);
+        }
+    }
+
+    /**
      * @return returns true if user is admin
      */
     public boolean isAdmin(){

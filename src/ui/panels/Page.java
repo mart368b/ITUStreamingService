@@ -14,8 +14,9 @@ public abstract class Page extends JPanel {
     public final static int SIGNUPPAGE = 3;
     public final static int CREATEPROFILEPAGE = 4;
     public final static int MEDIAPREVIEWPAGE = 5;
+    public final static int PROFILEPAGE = 6;
 
-    private static Page[] pages = new Page[6];
+    private static Page[] pages = new Page[7];
 
     public Page() {
         super();
@@ -50,5 +51,6 @@ public abstract class Page extends JPanel {
         pages[3] = new SignUpPage();
         pages[4] = new CreateProfilePage();
         pages[5] = new MediaPreviewPage();
+        pages[6] = new ProfilePage();
     }
 }

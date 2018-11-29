@@ -110,4 +110,18 @@ public class Profile {
     public String getProfilePicture(){
         return picture;
     }
+
+    /**
+     * @param name The new username for this profile
+     */
+    public void setName(String name){
+        this.name = name;
+    }
+
+    /**
+     * @param age The new age for this profile
+     */
+    public void setAge(int age){
+        this.age = age;
+    }
 }
