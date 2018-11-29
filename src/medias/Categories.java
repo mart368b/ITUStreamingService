@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public enum Categories {
+    ANY("Any"),
     CRIME("Crime"),
     DRAMA("Drama"),
     BIOGRAPHY("Biography"),
@@ -52,7 +53,11 @@ public enum Categories {
         return categories.toArray(new Categories[categories.size()]);
     }
 
+
     public static Categories getCategoryByName( String name ){
+        if(name.length() == 0){
+            return null;
+        }
         for (Categories category: Categories.values()){
             if ( name.trim().equals(category.getName()) ){
                 return category;
@@ -60,6 +65,15 @@ public enum Categories {
         }
         Logger.log(name + " is not recognized as a category: consider adding " + name.toUpperCase() + "(\"" + name + "\")", LogTypes.SOFTERROR);
         return null;
+    }
+
+    public static String[] getCategorieNames(){
+        Categories[] categoryList = values();
+        String[] categories = new String[categoryList.length];
+        for (int i = 0; i < categoryList.length; i++){
+            categories[i] = categoryList[i].getName();
+        }
+        return categories;
     }
 
 }

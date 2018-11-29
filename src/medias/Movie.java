@@ -1,5 +1,8 @@
 package medias;
 
+import java.awt.image.BufferedImage;
+import java.time.Year;
+
 public class Movie extends Media{
 
     private int duration;
@@ -11,6 +14,9 @@ public class Movie extends Media{
         this.genre = Categories.getCategoriesByNames(genre.split(","));
         this.ageResctriction = ageResctriction;
         this.duration = getTimeInMinutes(duration);
+
+        loadImage();
+        createPreviewCard();
     }
 
     @Override
@@ -19,4 +25,5 @@ public class Movie extends Media{
         builder.insert(0, "Movie: ");
         return builder;
     }
+
 }

@@ -1,7 +1,13 @@
 package medias;
-import debugging.exceptions.MediaCreationException;
 
-import java.util.ArrayList;
+
+import ui.cards.MediaPreviewCard;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public abstract class Media {
     protected String title;
@@ -9,8 +15,35 @@ public abstract class Media {
     protected double rating;
     protected String ageResctriction;
     protected Categories[] genre;
+    protected BufferedImage img;
+    protected MediaPreviewCard previewCard;
 
-    //GETTERS
+    protected void loadImage() throws ExceptionInInitializerError{
+        String path = "res/" + MediaTypes.getMediaType(this).getName() + "-images/" + title + ".jpg";
+        File f = new File(path);
+        if (!f.exists()){
+            throw new ExceptionInInitializerError(new FileNotFoundException("Failed to find file " + path));
+        }
+        try {
+            img = ImageIO.read(f);
+        }catch (FileNotFoundException e){
+            throw new ExceptionInInitializerError(e);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void createPreviewCard(){
+        previewCard = new MediaPreviewCard(this);
+    }
+
+    public BufferedImage getImage(){
+        return img;
+    }
+
+    public MediaPreviewCard getPreviewCard(){
+        return previewCard;
+    }
 
     public String getTitle() { //Returnerer mediets titel
         return title;
@@ -75,18 +108,23 @@ public abstract class Media {
      * @return
      */
 
-    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws MediaCreationException {
-        try {
-            switch (mediaType) {
-                case MOVIE:
-                    return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
-                case SERIES:
-                    return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
-                default:
-                    return null;
-            }
-        } catch (ExceptionInInitializerError e){
-            throw new MediaCreationException(e);
+    public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws ExceptionInInitializerError {
+        switch (mediaType) {
+            case MOVIE:
+                return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
+            case SERIES:
+                return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
+            default:
+                return null;
         }
+    }
+
+    public boolean haveCategory(Categories category){
+        for(Categories genreCategory: genre){
+            if (genreCategory.equals(category)){
+                return true;
+            }
+        }
+        return false;
     }
 }
