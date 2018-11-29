@@ -1,1 +1,1 @@
-Kaare;1234;false;Per,20,space-cyan,;
+Kaare;1234;false;Per,20,default-grey,;

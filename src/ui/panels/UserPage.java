@@ -104,7 +104,7 @@ public class UserPage extends Page {
                 AvMinArm.profile = profile;
                 ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
                 profilePage.open(profile);
-                Display.getInstance().setPage(Page.PROFILEPAGE);
+                Display.getInstance().setPage(profilePage);
             }
         });
         p.add(button);

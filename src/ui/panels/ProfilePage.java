@@ -1,5 +1,6 @@
 package ui.panels;
 
+import com.sun.deploy.util.StringUtils;
 import debugging.Logger;
 import maincomponents.AvMinArm;
 import ui.Display;
@@ -31,6 +32,7 @@ public class ProfilePage extends Page {
         pic.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(pic);
         add(getInformation());
+        setSize(new Dimension(400,400));
     }
     private String a = "";
 
@@ -41,6 +43,7 @@ public class ProfilePage extends Page {
         nametext.setText(AvMinArm.profile.getName());
         agetext.setText(Integer.toString(AvMinArm.profile.getAge()));
         picturetext.setText(AvMinArm.profile.getProfilePicture().toString());
+        validate();
     }
 
     public JPanel getInformation(){
@@ -88,7 +91,7 @@ public class ProfilePage extends Page {
                     JOptionPane.showMessageDialog(new JFrame(),
                             "Please insert a new age!");
                 }else{
-                    if(!CreateProfilePage.isNumber(agechange.getText())){
+                    if(isNumber(agechange.getText())){
                         JOptionPane.showMessageDialog(new JFrame(),
                                 "Age has to be a number!");
                     }else{
@@ -224,5 +227,12 @@ public class ProfilePage extends Page {
         grid.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         return grid;
+    }
+
+    public static boolean isNumber(String s){
+        try {
+            Integer.parseInt(s);
+            return true;
+        }catch (Exception e){return false;}
     }
 }

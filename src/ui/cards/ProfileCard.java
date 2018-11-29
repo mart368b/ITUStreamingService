@@ -1,5 +1,6 @@
 package ui.cards;
 
+import ui.components.ImageButton;
 import user.PictureHandler;
 import user.Profile;
 
@@ -9,26 +10,27 @@ import java.awt.image.BufferedImage;
 
 public class ProfileCard extends JButton {
 
-    private BufferedImage image;
     private int SIZE = 128;
+    private BufferedImage image;
 
     public ProfileCard(Profile profile){
         super();
-        setPicture(profile.getImage(), SIZE);
+        setPicture(PictureHandler.getInstance().getPicture(profile.getProfilePicture()), SIZE);
     }
 
     public ProfileCard(){
         super();
-        setPicture("create", SIZE);
+        setPicture(PictureHandler.getInstance().getPicture("create"), SIZE);
     }
 
     public ProfileCard(String ImageName, int size){
         super();
+        image = PictureHandler.getInstance().getPicture(ImageName);
         setPicture(ImageName, size);
     }
 
-    public void setPicture(String ImageName, int size){
-        setPicture(PictureHandler.getInstance().getPicture(ImageName), size);
+    public void setPicture(String imageName, int size){
+        setPicture(PictureHandler.getInstance().getPicture(imageName), size);
     }
 
     public void setPicture(BufferedImage image, int size){
@@ -41,17 +43,10 @@ public class ProfileCard extends JButton {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(resize(image, SIZE, SIZE), 0, 0, this); // see javadoc for more info on the parameters
-    }
-
-    public static BufferedImage resize(BufferedImage img, int newW, int newH) {
-        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g2d = dimg.createGraphics();
-        g2d.drawImage(tmp, 0, 0, null);
-        g2d.dispose();
-
-        return dimg;
+        if (image == null){
+            return;
+        }
+        Image img = image.getScaledInstance(SIZE, SIZE, BufferedImage.SCALE_SMOOTH);
+        g.drawImage(img, 0, 0, SIZE, SIZE, this); // see javadoc for more info on the parameters
     }
 }
