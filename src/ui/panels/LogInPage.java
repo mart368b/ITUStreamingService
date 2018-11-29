@@ -104,6 +104,11 @@ public class LogInPage extends Page {
         panel.add(grid);
         panel.add(button);
 
+        // YOU SHOULD NEVER DO THIS IN A REAL PROJECT!!!!
+        usertext.setText("Kaare");
+        passfield.setText("1234");
+
+
         return panel;
     }
 }

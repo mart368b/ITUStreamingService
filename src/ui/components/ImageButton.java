@@ -8,7 +8,6 @@ public class ImageButton extends JButton {
 
     protected BufferedImage img;
     protected double widthAspect, heightAspect;
-    private int padding = 10;
 
     public ImageButton (BufferedImage img, LayoutManager layoutManager){
         setLayout(layoutManager);

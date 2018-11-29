@@ -52,7 +52,7 @@ public enum Categories {
         return panel;
     }
 
-    private Font getFont(){
+    public static Font getFont(){
         if (genreFont == null){
             genreFont = new Font("Arial", Font.PLAIN, 24);
         }

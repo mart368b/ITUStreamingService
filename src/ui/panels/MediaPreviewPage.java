@@ -1,23 +1,35 @@
 package ui.panels;
 
+import debugging.LogTypes;
+import debugging.Logger;
 import medias.Categories;
 import medias.Media;
 import ui.Display;
 import ui.components.ImageViewer;
+import ui.components.PartialImageView;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MediaPreviewPage extends Page {
 
     public static Font titleFont = new Font("Arial", Font.PLAIN, 40);
     private ImageViewer imagePanel;
     private Label title;
-    private JPanel genreContainer;
-    private PreviewPage previewPanel;
+    private JPanel genreContainer, ratingContainer;
+    private Label genreText, ratingText;
+    private BufferedImage starImg;
+    private Media currentMedia;
 
     protected MediaPreviewPage(){
         super(new BorderLayout());
@@ -27,6 +39,21 @@ public class MediaPreviewPage extends Page {
 
         JPanel body = getBody();
         add(body, BorderLayout.CENTER);
+
+        File f = new File("res/button-images/Rating.png");
+        if (!f.exists()){
+            try {
+                throw new FileNotFoundException();
+            } catch (FileNotFoundException e) {
+                Logger.log("Failed to find star image", LogTypes.FATALERROR);
+                e.printStackTrace();
+            }
+        }
+        try {
+            starImg = ImageIO.read(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private JPanel getBody(){
@@ -53,20 +80,62 @@ public class MediaPreviewPage extends Page {
     private JPanel getBioContainer(){
         JPanel panel = new JPanel( new BorderLayout());
 
-        panel.add(getBioBody(panel), BorderLayout.CENTER);
+        panel.add(getBioBody(), BorderLayout.CENTER);
 
         return panel;
     }
 
-    private JPanel getBioBody(JPanel con) {
-        JPanel panel = new JPanel();
-        BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
-        panel.setLayout(layout);
+    private JPanel getBioBody() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JPanel informationPanel = new JPanel();
+        BoxLayout layout = new BoxLayout(informationPanel, BoxLayout.Y_AXIS);
+        informationPanel.setLayout(layout);
 
         genreContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(genreContainer);
+        genreText = new Label("Genre: ");
+        genreText.setFont(Categories.getFont());
+        genreContainer.add(genreText);
+        informationPanel.add(genreContainer);
 
+        ratingContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ratingText = new Label("Genre: ");
+        ratingText.setFont(Categories.getFont());
+        ratingContainer.add(ratingText);
+        informationPanel.add(ratingContainer);
+
+        panel.add(informationPanel, BorderLayout.PAGE_START);
+        panel.add(getActionPanel(), BorderLayout.CENTER);
         return panel;
+    }
+
+    private JPanel getActionPanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+
+        JPanel wrapper = new JPanel(new FlowLayout());
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Display.getInstance().setPage(Page.PREVIEWPAGE);
+            }
+        });
+        wrapper.add(backButton);
+
+        JButton playButton = new JButton("Play");
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("PLay + " + currentMedia.toString());
+            }
+        });
+        wrapper.add(playButton);
+
+        panel.add(wrapper);
+        return panel;
+
+
     }
 
     private JPanel getImageContainer(){
@@ -93,13 +162,32 @@ public class MediaPreviewPage extends Page {
 
     public void setGenre(Categories[] genres ){
         genreContainer.removeAll();
+        genreContainer.add(genreText);
         for (Categories genre: genres){
             genreContainer.add(genre.getGenreCard());
+        }
+    }
+
+    public void setRating(double rating){
+        ratingContainer.removeAll();
+        ratingContainer.add(ratingText);
+        int wholeStars = (int) Math.floor(rating/2);
+        for (int i = 0; i < wholeStars; i++){
+            ImageViewer star = new ImageViewer(starImg);
+            star.setPrefferedWidth(40);
+            ratingContainer.add(star);
+        }
+        double remaining = (rating - (wholeStars*2))/2;
+        if (remaining > 0){
+            PartialImageView partialStar = new PartialImageView(starImg, remaining);
+            partialStar.setPrefferedWidth(40);
+            ratingContainer.add(partialStar);
         }
     }
 
     public void setMedia(Media media) {
         title.setText(media.getTitle());
         setGenre(media.getGenres());
+        setRating(media.getRating());
     }
 }

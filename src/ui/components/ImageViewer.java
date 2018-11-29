@@ -6,21 +6,47 @@ import java.awt.image.BufferedImage;
 
 public class ImageViewer extends JPanel {
 
-    private BufferedImage img;
+    protected BufferedImage img;
+    protected double widthAspect, heightAspect;
 
     public ImageViewer(LayoutManager layoutManager, BufferedImage image){
         super(layoutManager);
         this.img = image;
+        if (img != null){
+            recalculateAspectRation();
+        }
     }
 
     public ImageViewer(BufferedImage image){
         super();
         this.img = image;
+        if (img != null){
+            recalculateAspectRation();
+        }
+    }
+
+    private void recalculateAspectRation(){
+        widthAspect = img.getHeight() / (img.getWidth() + 0.);
+        heightAspect = img.getWidth() / (img.getHeight() + 0.);
+    }
+
+    public void setPrefferedWidth(int width){
+        Dimension d = new Dimension(width, (int)(width*widthAspect));
+        setPreferredSize(d);
+    }
+
+    public void setPrefferedHeight(int height){
+        Dimension d = new Dimension((int)(height*heightAspect), height);
+        setPreferredSize(d);
+    }
+
+    protected void clearGraphics(Graphics g){
+        super.paintComponent(g);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        clearGraphics(g);
         if (img != null){
             Image scaledImage = img.getScaledInstance(getWidth(), getHeight(), BufferedImage.SCALE_SMOOTH);
             g.drawImage(scaledImage, 0, 0, getWidth(), getHeight(), null);
