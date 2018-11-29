@@ -2,6 +2,7 @@ package ui.panels;
 
 import maincomponents.AvMinArm;
 import ui.Display;
+import ui.cards.HeaderCard;
 import ui.cards.ProfileCard;
 import user.Profile;
 import user.User;
@@ -12,14 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class UserPanel extends JPanel {
+public class UserPage extends Page {
 
     private JPanel panel;
     private User user = AvMinArm.user;
     private final Font font = new Font("Arial", Font.PLAIN, 24);
     private final Font font2 = new Font("Arial", Font.PLAIN, 18);
 
-    public UserPanel(){
+    public UserPage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -33,7 +34,7 @@ public class UserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
-                Display.getDisplay().setPanel(Display.LOGINPANEL);
+                Display.getInstance().setPage(Page.LOGINPAGE);
                 //TODO: GO TO LOGIN/SIGNUP PAGE
             }
         });
@@ -81,10 +82,9 @@ public class UserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
-                Display d = Display.getDisplay();
-                d.headerPanel.setProfilePicture(profile);
-                Display.getDisplay().setPanel(Display.PREVIEWPANEL);
-                //TODO: GO TO PREVIEWPAGE
+                HeaderCard.getInstance().setProfilePicture(profile);
+                Display.getInstance().setPage(Page.PREVIEWPAGE);
+                //Display.getInstance().setPanel(Display.MEDIAPREVIEW);
             }
         });
 

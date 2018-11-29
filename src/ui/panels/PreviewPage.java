@@ -1,17 +1,14 @@
 package ui.panels;
 
-import com.sun.javafx.css.Rule;
 import medias.Categories;
 import medias.Media;
 import medias.MediaTypes;
 import medias.SortTypes;
-import org.omg.PortableInterceptor.DISCARDING;
 import reader.MediaHandler;
 import ui.Display;
+import ui.cards.HeaderCard;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,20 +18,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class PreviewPanel extends JPanel {
+public class PreviewPage extends Page {
 
     private ArrayList<Media> displayedMedia = new ArrayList<Media>();
     private JPanel previewMenu;
 
     private JPanel noResult;
 
-    public PreviewPanel( Display display){
+    public PreviewPage(Display display){
         super();
         setLayout(new BorderLayout());
         Dimension d = new Dimension(720, 480);
         setSize(d);
 
-        add(display.getHeaderPanel(), BorderLayout.PAGE_START);
+        add(HeaderCard.getInstance(), BorderLayout.PAGE_START);
 
         JPanel cardPreviewPanel = new JPanel();
         cardPreviewPanel.setLayout(new BorderLayout());
@@ -68,7 +65,6 @@ public class PreviewPanel extends JPanel {
 
         add(cardPreviewPanel, BorderLayout.CENTER);
 
-        JPanel panel = new JPanel();
     }
 
     private JPanel getOptionMenu(){

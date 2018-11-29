@@ -5,9 +5,11 @@ import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
 import ui.cards.HeaderCard;
-import ui.panels.LogInPanel;
-import ui.panels.PreviewPanel;
-import ui.panels.UserPanel;
+import ui.panels.LogInPage;
+import ui.panels.MediaPreviewPage;
+import ui.panels.Page;
+import ui.panels.PreviewPage;
+import ui.panels.UserPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,28 +18,20 @@ public class Display extends JFrame  {
 
     private static Display instance = null;
 
-    public HeaderCard headerPanel;
-
-    public static Display getDisplay(){
+    public static Display getInstance(){
         if ( instance == null ){
             instance = new Display();
         }
         return instance;
     }
 
-    public final static int USERPANEL = 0;
-    public final static int PREVIEWPANEL = 1;
-    public final static int LOGINPANEL = 2;
-    private int currentDisplayIndex = -1;
-
-    private JPanel[] menues = new JPanel[3];
+    private int currentPageIndex = -1;
 
     private Display (){
         super("ITUStreaming");
+        HeaderCard.createHeader(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-
-        headerPanel = new HeaderCard(this);
 
         initializeDisplay();
 
@@ -47,80 +41,72 @@ public class Display extends JFrame  {
 
     private void initializeDisplay() {
 
-        menues[0] = new UserPanel();
-        UserPanel userpanel = (UserPanel) menues[0];
-        Dimension d = userpanel.getPreferredSize();
+        Page.initializePages(this);
+
+        UserPage userPage = (UserPage) Page.getPage(Page.USERPAGE);
+        Dimension d = userPage.getPreferredSize();
 
         d.width = (140 + 10)*6 + 100;
         setMinimumSize(d);
         d.height += 500;
         setPreferredSize(d);
 
-        menues[1] = new PreviewPanel(this);
-        PreviewPanel previewPanel = (PreviewPanel) menues[1];
-
-        menues[2] = new LogInPanel();
-
-        previewPanel.setViewPortWidth(getWidth());
-        //add(previewPanel);
-
-        setPanel(USERPANEL);
+        setPage(userPage);
     }
 
-    public void setPanel( JPanel newMenu ){
+    public void setPage( Page newPage ) {
         int index = -1;
-        for (int i = 0; i < menues.length; i++){
-            if (menues[i].equals(newMenu)){
+        for (int i = 0; i < Page.pageCount(); i++) {
+            if (Page.getPage(i).equals(newPage)) {
                 index = i;
                 break;
             }
         }
-        if (index == -1){
+        if (index == -1) {
             return;
         }
-        Container contentPane = getContentPane();
-        contentPane.removeAll();
+        Page lastPanel = null;
+        if (currentPageIndex != -1) {
+            lastPanel = Page.getPage(currentPageIndex);
+        }
+        changePage(lastPanel, newPage, index);
+    }
 
-        contentPane.add(newMenu);
+    public void setPage( int pageIndex ){
+        if ( pageIndex == currentPageIndex ){
+            return;
+        }
+        if ( pageIndex < 0 && pageIndex >= Page.pageCount()){
+            Logger.log("Failed to find menu " + pageIndex, LogTypes.SOFTERROR);
+        }else{
+            Page lastPanel = null;
+            if (currentPageIndex != -1){
+                lastPanel = Page.getPage(currentPageIndex);
+            }
+            Page nextPage = Page.getPage(pageIndex);
+            changePage(lastPanel, nextPage, pageIndex);
+        }
+    }
+
+    private void changePage(Page lastPage, Page nextPage, int nextIndex){
+        if (lastPage != null){
+            lastPage.removeFromDisplaye(this);
+        }
+        nextPage.addToDisplay(this);
         validate();
         repaint();
-        currentDisplayIndex = index;
-    }
-
-    public JPanel getPanel( int index ){
-        return menues[index];
-    }
-
-    public void setPanel( int menuIndex ){
-        if ( menuIndex == currentDisplayIndex ){
-            return;
-        }
-        if ( menuIndex < 0 && menuIndex >= menues.length){
-            Logger.log("Failed to find menu " + menuIndex, LogTypes.SOFTERROR);
-        }else{
-            Container contentPane = getContentPane();
-            contentPane.removeAll();
-
-            contentPane.add(menues[menuIndex]);
-            validate();
-            repaint();
-            currentDisplayIndex = menuIndex;
-        }
+        currentPageIndex = nextIndex;
     }
 
     public void displayOnPreview(Categories categories, String name){
-        PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+        PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
         previewPanel.setDisplayedMedia(categories);
-        setPanel(previewPanel);
+        setPage(previewPanel);
     }
 
-    public HeaderCard getHeaderPanel(){
-        return headerPanel;
-    }
-
-    private void initEksFuckingDee(){
-        setLayout(new BorderLayout());
-        LogInPanel panel = new LogInPanel();
-        add(panel, BorderLayout.CENTER);
+    public void displayMedia(Media media){
+        MediaPreviewPage mediaPreview = (MediaPreviewPage) Page.getPage(Page.MEDIAPREVIEWPAGE);
+        mediaPreview.setMedia(media);
+        setPage(Page.MEDIAPREVIEWPAGE);
     }
 }

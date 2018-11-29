@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class Media {
     protected String title;
@@ -126,5 +127,9 @@ public abstract class Media {
             }
         }
         return false;
+    }
+
+    public Categories[] getGenres(){
+        return genre;
     }
 }

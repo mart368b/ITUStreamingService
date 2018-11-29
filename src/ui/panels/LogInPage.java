@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LogInPanel extends JPanel {
+public class LogInPage extends Page {
 
     private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
 
@@ -22,7 +22,7 @@ public class LogInPanel extends JPanel {
     private JButton button;
     private Border blackline = BorderFactory.createLineBorder(Color.black);
 
-    public LogInPanel(){
+    public LogInPage(){
         super();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -99,7 +99,7 @@ public class LogInPanel extends JPanel {
                         Logger.log("User with name: " + usertext.getText() + " logged in!");
                         usertext.setText("");
                         passtext.setText("");
-                        Display.getDisplay().setPanel(Display.USERPANEL);
+                        Display.getInstance().setPage(Page.USERPAGE);
                         //TODO: GO TO USERPAGE
                     }
                 }
