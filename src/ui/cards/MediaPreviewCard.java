@@ -1,4 +1,4 @@
-package ui;
+package ui.cards;
 
 import medias.Media;
 import ui.components.ImageButton;

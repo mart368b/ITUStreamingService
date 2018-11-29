@@ -1,4 +1,4 @@
-package ui;
+package ui.cards;
 
 import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
 import javafx.scene.input.KeyCode;
@@ -6,6 +6,7 @@ import maincomponents.AvMinArm;
 import medias.Categories;
 import medias.MediaTypes;
 import medias.SortTypes;
+import ui.Display;
 import ui.components.ImageButton;
 import ui.panels.PreviewPanel;
 import user.Profile;
@@ -22,12 +23,12 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.zip.DeflaterInputStream;
 
-public class HeaderPanel extends JPanel {
+public class HeaderCard extends JPanel {
 
     private Display display;
     private ImageButton userButton;
 
-    public HeaderPanel(Display display){
+    public HeaderCard(Display display){
         super();
         Border border = BorderFactory.createMatteBorder(0,0,2,0, Color.LIGHT_GRAY);
         setBorder(border);

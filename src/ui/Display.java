@@ -4,6 +4,7 @@ package ui;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
+import ui.cards.HeaderCard;
 import ui.panels.LogInPanel;
 import ui.panels.PreviewPanel;
 import ui.panels.UserPanel;
@@ -15,7 +16,7 @@ public class Display extends JFrame  {
 
     private static Display instance = null;
 
-    public HeaderPanel headerPanel;
+    public HeaderCard headerPanel;
 
     public static Display getDisplay(){
         if ( instance == null ){
@@ -36,7 +37,7 @@ public class Display extends JFrame  {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        headerPanel = new HeaderPanel(this);
+        headerPanel = new HeaderCard(this);
 
         initializeDisplay();
 
@@ -113,7 +114,7 @@ public class Display extends JFrame  {
         setPanel(previewPanel);
     }
 
-    public HeaderPanel getHeaderPanel(){
+    public HeaderCard getHeaderPanel(){
         return headerPanel;
     }
 

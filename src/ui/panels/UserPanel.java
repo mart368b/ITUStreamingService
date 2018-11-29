@@ -2,8 +2,7 @@ package ui.panels;
 
 import maincomponents.AvMinArm;
 import ui.Display;
-import ui.HeaderPanel;
-import ui.ProfileCard;
+import ui.cards.ProfileCard;
 import user.Profile;
 import user.User;
 

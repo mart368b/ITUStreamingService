@@ -1,10 +1,9 @@
 package medias;
 
 
-import ui.MediaPreviewCard;
+import ui.cards.MediaPreviewCard;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;

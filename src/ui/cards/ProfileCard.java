@@ -1,4 +1,4 @@
-package ui;
+package ui.cards;
 
 import user.PictureHandler;
 import user.Profile;
