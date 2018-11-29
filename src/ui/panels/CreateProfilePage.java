@@ -123,7 +123,7 @@ public class CreateProfilePage extends Page {
         return panel;
     }
 
-    public JPanel getPics(){
+    private JPanel getPics(){
         int rowL = PictureHandler.types.length;
         int colL = PictureHandler.colors.length;
         JButton[][] buttons = new JButton[rowL][colL];
@@ -171,7 +171,7 @@ public class CreateProfilePage extends Page {
         return grid;
     }
 
-    private boolean isNumber(String s){
+    public static boolean isNumber(String s){
         try {
             Integer.parseInt(s);
             return true;
