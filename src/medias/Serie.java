@@ -12,9 +12,10 @@ public class Serie extends Media {
 
     Serie(String title, String year, String genre, String rating, String ageResriction, String seasons) {
         this.title = title;
+        this.genre = Categories.getCategoriesByNames(genre.split(","));
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
-        this.genre = Categories.getCategoriesByNames(genre.split(","));
+
 
         if (ageResriction.length() == 0){
             this.ageResctriction = "Unknown";
@@ -23,7 +24,7 @@ public class Serie extends Media {
         }
 
         this.episodes = new HashMap<>();
-        String[] seasonArr = seasons.split("_");
+        String[] seasonArr = seasons.split("_"); // 4-13
         for ( String season: seasonArr){
             addSeason(season);
         }

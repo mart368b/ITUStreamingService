@@ -12,14 +12,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LogInPanel extends JPanel {
+public class LogInPage extends Page {
 
     private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
 
     private JPanel panel;
     private JButton button;
 
-    public LogInPanel(){
+    public LogInPage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -34,7 +34,7 @@ public class LogInPanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Display.getDisplay().setPanel(Display.SIGNUPPANEL);
+               Display.getInstance().setPage(Display.SIGNUPPANEL);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -93,7 +93,7 @@ public class LogInPanel extends JPanel {
                         Logger.log("User with name: " + usertext.getText() + " logged in!");
                         usertext.setText("");
                         passfield.setText("");
-                        Display.getDisplay().setPanel(Display.USERPANEL);
+                        Display.getInstance().setPage(Page.USERPAGE);
                         //TODO: GO TO USERPAGE
                     }
                 }

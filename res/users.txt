@@ -1,1 +1,1 @@
-Kaare;1234;false;Børge,24,mummy-orange,;
+Kaare;1234;false;Mor,42,default-orange,The Godfather;

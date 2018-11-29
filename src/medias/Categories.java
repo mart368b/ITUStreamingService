@@ -3,6 +3,8 @@ package medias;
 import debugging.LogTypes;
 import debugging.Logger;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,9 +35,28 @@ public enum Categories {
     DOCUMENTARY("Documentary"),
     TALKSHOW("Talk-show");
 
+    public static Font genreFont;
+
     private final String name;
+    private JPanel card;
     private Categories(final String name){
         this.name = name;
+        card = getCard();
+    }
+
+    private JPanel getCard() {
+        JPanel panel = new JPanel();
+        Label label = new Label(name);
+        label.setFont(getFont());
+        panel.add(label);
+        return panel;
+    }
+
+    private Font getFont(){
+        if (genreFont == null){
+            genreFont = new Font("Arial", Font.PLAIN, 24);
+        }
+        return genreFont;
     }
 
     public String getName(){
@@ -76,4 +97,7 @@ public enum Categories {
         return categories;
     }
 
+    public JPanel getGenreCard() {
+        return card;
+    }
 }

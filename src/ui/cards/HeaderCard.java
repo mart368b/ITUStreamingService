@@ -1,34 +1,38 @@
 package ui.cards;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
-import javafx.scene.input.KeyCode;
 import maincomponents.AvMinArm;
 import medias.Categories;
 import medias.MediaTypes;
-import medias.SortTypes;
 import ui.Display;
 import ui.components.ImageButton;
-import ui.panels.PreviewPanel;
+import ui.panels.Page;
+import ui.panels.PreviewPage;
 import user.Profile;
-import user.User;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.zip.DeflaterInputStream;
 
 public class HeaderCard extends JPanel {
 
     private Display display;
     private ImageButton userButton;
 
-    public HeaderCard(Display display){
+    private static HeaderCard instance;
+    public static HeaderCard getInstance() {
+        if (instance == null){
+            throw new NullPointerException();
+        }
+        return instance;
+    }
+
+    public static void createHeader( Display display ){
+        instance = new HeaderCard(display);
+    }
+
+    private HeaderCard(Display display){
         super();
         Border border = BorderFactory.createMatteBorder(0,0,2,0, Color.LIGHT_GRAY);
         setBorder(border);
@@ -54,7 +58,7 @@ public class HeaderCard extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+                PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
                 previewPanel.setDisplayedMedia();
             }
         });
@@ -70,7 +74,7 @@ public class HeaderCard extends JPanel {
         addButton(panel, "Movies", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+                PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
                 previewPanel.setDisplayedMedia(MediaTypes.MOVIE);
             }
         });
@@ -78,7 +82,7 @@ public class HeaderCard extends JPanel {
         addButton(panel, "Series", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                PreviewPanel previewPanel = (PreviewPanel) Display.getDisplay().getPanel(Display.PREVIEWPANEL);
+                PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
                 previewPanel.setDisplayedMedia(MediaTypes.SERIES);
             }
         });
@@ -102,7 +106,7 @@ public class HeaderCard extends JPanel {
         userButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getDisplay().setPanel(Display.USERPANEL);
+                Display.getInstance().setPage(Page.USERPAGE);
             }
         });
         panel.add(userButton);
@@ -146,7 +150,7 @@ public class HeaderCard extends JPanel {
 
         String searchedName = textField.getText();
 
-        Display.getDisplay().displayOnPreview(category, searchedName);
+        Display.getInstance().displayOnPreview(category, searchedName);
         System.out.println( "Search for " + category.name() + " " + searchedName);
     }
 
