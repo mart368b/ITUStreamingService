@@ -1,1 +1,1 @@
-Kaare;1234;false;Mor,42,default-orange,The Godfather;
+Kaare;1234;false;Mor,42,default-orange,The Godfather%Far,52,pig-cyan,%Sønnike,13,space-grey,%Søs,65,default-cyan,%Bob,4523,default-red,;

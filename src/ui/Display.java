@@ -9,7 +9,6 @@ import ui.panels.MediaPreviewPage;
 import ui.panels.Page;
 import ui.panels.PreviewPage;
 import ui.panels.UserPage;
-
 import javax.swing.*;
 import java.awt.*;
 

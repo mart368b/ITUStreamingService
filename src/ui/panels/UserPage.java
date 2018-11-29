@@ -16,7 +16,9 @@ import java.util.ArrayList;
 public class UserPage extends Page {
 
     private JPanel panel;
-    private User user = AvMinArm.user;
+
+    private JPanel userprofiles = new JPanel();
+
     private final Font font = new Font("Arial", Font.PLAIN, 24);
     private final Font font2 = new Font("Arial", Font.PLAIN, 18);
 
@@ -41,31 +43,32 @@ public class UserPage extends Page {
 
         add(label);
         add(Box.createRigidArea(new Dimension(0, 80)));
-        add(getContent());
+        updateUsers();
+        add(userprofiles);
         add(Box.createRigidArea(new Dimension(0, 40)));
         add(button);
     }
 
-    private JPanel getContent(){
-        panel = new JPanel();
-        ArrayList<Profile> profiles = user.getProfiles();
+    public void updateUsers(){
+        userprofiles.removeAll();
+        ArrayList<Profile> profiles = AvMinArm.user.getProfiles();
 
-        panel.setLayout(new BoxLayout(panel,BoxLayout.LINE_AXIS));
+        userprofiles.setLayout(new BoxLayout(userprofiles,BoxLayout.LINE_AXIS));
 
-        for(Profile profile : user.getProfiles()){
+        for(Profile profile : AvMinArm.user.getProfiles()){
             JPanel comp = getProfile(profile);
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(comp);
-            panel.add(Box.createRigidArea(new Dimension(60, 0)));
+            userprofiles.add(comp);
+            userprofiles.add(Box.createRigidArea(new Dimension(60, 0)));
         }
         if(profiles.size() != 5){
             JPanel comp = getCreate();
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(comp);
+            userprofiles.add(comp);
         }
-        panel.add(Box.createRigidArea(new Dimension(0,80)));
-
-        return panel;
+        userprofiles.add(Box.createRigidArea(new Dimension(0,80)));
+        validate();
+        repaint();
     }
 
     private JPanel getProfile(Profile profile){
@@ -105,7 +108,7 @@ public class UserPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: GO CREATE PROFILEPAGE
+                Display.getInstance().setPage(Page.CREATEPROFILEPAGE);
             }
         });
 

@@ -1,10 +1,7 @@
 package ui.panels;
 
-
 import debugging.Logger;
-import maincomponents.AvMinArm;
 import ui.Display;
-import user.User;
 import user.UserHandler;
 
 import javax.swing.*;
@@ -12,29 +9,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LogInPage extends Page {
+public class SignUpPage extends Page {
 
     private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
 
     private JPanel panel;
     private JButton button;
 
-    protected LogInPage(){
+    public SignUpPage(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel logintext = new JLabel("Log in");
+        JLabel logintext = new JLabel("Sign up");
         logintext.setFont(HEADER);
         logintext.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel login = getLogIn();
+        JPanel login = getSignUp();
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        button = new JButton("No account? Sign up");
+        button = new JButton("Back to login");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Display.getInstance().setPage(Page.SIGNUPPAGE);
+                Display.getInstance().setPage(Page.LOGINPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -45,15 +42,17 @@ public class LogInPage extends Page {
         add(button);
     }
 
-    public JPanel getLogIn(){
+    public JPanel getSignUp(){
         panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel username = new JLabel("Username");
         JLabel password = new JLabel("Password");
+        JLabel conpassword = new JLabel("Confirm Password");
 
         JTextField usertext = new JTextField();
-        JPasswordField passfield = new JPasswordField();
+        JPasswordField passtext = new JPasswordField();
+        JPasswordField conpasstext = new JPasswordField();
 
         JPanel grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);
@@ -62,48 +61,54 @@ public class LogInPage extends Page {
         layout.setAutoCreateContainerGaps(true);
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
         hGroup.addGroup(layout.createParallelGroup().
-                addComponent(username).addComponent(password));
+                addComponent(username).addComponent(password).addComponent(conpassword));
         hGroup.addGroup(layout.createParallelGroup().
-                addComponent(usertext).addComponent(passfield));
+                addComponent(usertext).addComponent(passtext).addComponent(conpasstext));
         layout.setHorizontalGroup(hGroup);
 
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
                 addComponent(username).addComponent(usertext));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                addComponent(password).addComponent(passfield));
+                addComponent(password).addComponent(passtext));
+        vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                addComponent(conpassword).addComponent(conpasstext));
         layout.setVerticalGroup(vGroup);
         grid.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(grid);
 
-        button = new JButton("Log in");
+        button = new JButton("Sign up and Log in");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(usertext.getText().isEmpty() || passfield.getPassword().length == 0){
+                if(usertext.getText().isEmpty() || passtext.getPassword().length == 0 || conpasstext.getPassword().length == 0){
                     JOptionPane.showMessageDialog(new JFrame(),
                             "You have not filled in all the boxes! Try look!");
                 }else{
-                    User user = UserHandler.getInstance().getUser(usertext.getText(), String.copyValueOf(passfield.getPassword()));
-                    if(user == null){
+                    if(!String.copyValueOf(passtext.getPassword()).equals(String.copyValueOf(conpasstext.getPassword()))){
                         JOptionPane.showMessageDialog(new JFrame(),
-                                "Password or username is wrong!");
-                        passfield.setText("");
+                                "Your password and confirmed password are not the same!");
+                        passtext.setText("");
+                        conpasstext.setText("");
                     }else{
-                        AvMinArm.user = user;
-                        Logger.log("User with name: " + usertext.getText() + " logged in!");
-                        usertext.setText("");
-                        passfield.setText("");
-                        Display.getInstance().setPage(Page.USERPAGE);
-                        //TODO: GO TO USERPAGE
+                        if(UserHandler.getInstance().hasUser(usertext.getText())){
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "A user with that name is already created!");
+                            passtext.setText("");
+                            conpasstext.setText("");
+                        }else{
+                            UserHandler.getInstance().signUpUser(usertext.getText(), String.copyValueOf(passtext.getPassword()));
+                            Logger.log("New user created with name: " + usertext.getText());
+                            Display.getInstance().setPage(Page.USERPAGE);
+                        }
                     }
                 }
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        panel.add(grid);
         panel.add(button);
 
         return panel;
     }
+
 }

@@ -82,8 +82,8 @@ public class HeaderCard extends JPanel {
         addButton(panel, "Series", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-                previewPanel.setDisplayedMedia(MediaTypes.SERIES);
+                PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
+                previewPage.setDisplayedMedia(MediaTypes.SERIES);
             }
         });
 

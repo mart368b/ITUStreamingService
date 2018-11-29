@@ -6,6 +6,7 @@ import debugging.Logger;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PictureHandler {
@@ -15,8 +16,8 @@ public class PictureHandler {
     }
 
     private HashMap<String, BufferedImage> images;
-    private String[] types = new String[]{"default", "mummy", "pig", "space"};
-    private String[] names = new String[]{"cyan", "green", "grey", "orange", "red"};
+    public static String[] types = new String[]{"default", "mummy", "pig", "space"};
+    public static String[] colors = new String[]{"cyan", "green", "grey", "orange", "red"};
 
     private PictureHandler(){}
 
@@ -26,13 +27,13 @@ public class PictureHandler {
         try {
             // double for-loop to initialze every profilepicture
             for(String type : types){
-                for(String name : names){
+                for(String name : colors){
                     String result = type + "-" + name;
                     File f = new File("res/user-images/" + result + ".jpg");
                     images.put(result, ImageIO.read(f));
                 }
             }
-            File f = new File("res/user-images/create.jpg");
+            File f = new File("res/button-images/create.jpg");
             images.put("create", ImageIO.read(f));
         }catch(Exception e){
             Logger.log("No file was found! ", LogTypes.FATALERROR);
@@ -50,6 +51,15 @@ public class PictureHandler {
         }else{
             Logger.log("Could not find picture named: " + name, LogTypes.SOFTERROR);
             return null;
+        }
+    }
+
+    /**
+     * @param array The ArrayList which will be filled with all images
+     */
+    public void getPictures(ArrayList<BufferedImage> array){
+        for(BufferedImage image : images.values()){
+            array.add(image);
         }
     }
 }

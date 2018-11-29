@@ -26,7 +26,8 @@ public class AvMinArm {
         UserHandler.getInstance().init();
         user = UserHandler.getInstance().getUser("Kaare", "1234");
         AvMinArm.loadLogo();
-        Display.getInstance();
+        Display display = Display.getInstance();;
+        display.setPage(2);
     }
 
     public static void loadLogo(){

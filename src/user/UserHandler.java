@@ -58,6 +58,10 @@ public class UserHandler {
                     String name = info[0];
                     int age = Integer.parseInt(info[1]);
                     String profilepic = info[2];
+                    if(!(info.length > 3)){
+                        profiles.add(new Profile(name, age, profilepic, new String[]{}));
+                        continue;
+                    }
                     String[] favs = info[3].split("~");
                     profiles.add(new Profile(name, age, profilepic, favs));
                 }

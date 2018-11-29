@@ -109,4 +109,18 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    /**
+     * Checks if there are any profiles existant with this username
+     * @param username Username to be tested
+     * @return returns true if profile with username already exists, else false.
+     */
+    public boolean hasProfile(String username){
+        for(Profile profile : profiles){
+            if(profile.getName().toLowerCase().equals(username.toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
