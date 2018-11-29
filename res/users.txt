@@ -1,1 +1,3 @@
 Kaare;1234;false;Mor,42,default-orange,The Godfather;
+KasperWeber;minkode;false;;
+test;test;false;;
