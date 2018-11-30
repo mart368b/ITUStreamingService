@@ -1,8 +1,7 @@
 package ui.cards;
 
-import maincomponents.AvMinArm;
-import medias.Categories;
-import medias.MediaTypes;
+import medias.types.GenreTypes;
+import medias.types.MediaTypes;
 import ui.Display;
 import ui.components.ImageButton;
 import ui.panels.Page;
@@ -23,16 +22,12 @@ public class HeaderCard extends JPanel {
     private static HeaderCard instance;
     public static HeaderCard getInstance() {
         if (instance == null){
-            throw new NullPointerException();
+            instance = new HeaderCard();
         }
         return instance;
     }
 
-    public static void createHeader( Display display ){
-        instance = new HeaderCard(display);
-    }
-
-    private HeaderCard(Display display){
+    private HeaderCard(){
         super();
         Border border = BorderFactory.createMatteBorder(0,0,2,0, Color.LIGHT_GRAY);
         setBorder(border);
@@ -52,7 +47,7 @@ public class HeaderCard extends JPanel {
     private JPanel getLeftPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        ImageButton startButton = new ImageButton(AvMinArm.logoImage);
+        ImageButton startButton = new ImageButton("logo");
         startButton.setBorderPainted(false);
         startButton.setPrefferedHeight(30);
         startButton.addActionListener(new ActionListener() {
@@ -101,7 +96,7 @@ public class HeaderCard extends JPanel {
 
     private JPanel getRightPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        userButton = new ImageButton(null);
+        userButton = new ImageButton();
         userButton.setPreferredSize(new Dimension(40,40));
         userButton.addActionListener(new ActionListener() {
             @Override
@@ -125,9 +120,9 @@ public class HeaderCard extends JPanel {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        JLabel categoryText = new JLabel("categories:");
-        panel.add(categoryText);
-        JComboBox<String> categoriesBox = new JComboBox<String>(Categories.getCategorieNames());
+        JLabel genreText = new JLabel("categories:");
+        panel.add(genreText);
+        JComboBox<String> categoriesBox = new JComboBox<String>(GenreTypes.getGenreNames());
         panel.add(categoriesBox);
 
         JTextField textField = new JTextField();
@@ -145,13 +140,13 @@ public class HeaderCard extends JPanel {
     }
 
     private void peformeSearch(JTextField textField, JComboBox categoriesBox){
-        String categoryName = (String) categoriesBox.getSelectedItem();
-        Categories category = Categories.getCategoryByName(categoryName);
+        String genreName = (String) categoriesBox.getSelectedItem();
+        GenreTypes genre = GenreTypes.getGenreTypeByName(genreName);
 
         String searchedName = textField.getText();
 
-        Display.getInstance().displayOnPreview(category, searchedName);
-        System.out.println( "Search for " + category.name() + " " + searchedName);
+        Display.getInstance().displayOnPreview(genre, searchedName);
+        System.out.println( "Search for " + genre.name() + " " + searchedName);
     }
 
     public void setProfilePicture(Profile profile){

@@ -1,25 +1,18 @@
 package ui.panels;
 
-import debugging.LogTypes;
-import debugging.Logger;
-import medias.Categories;
+import medias.types.GenreTypes;
 import medias.Media;
 import ui.Display;
 import ui.components.ImageViewer;
 import ui.components.PartialImageView;
+import maincomponents.PictureHandler;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class MediaPreviewPage extends Page {
 
@@ -40,20 +33,7 @@ public class MediaPreviewPage extends Page {
         JPanel body = getBody();
         add(body, BorderLayout.CENTER);
 
-        File f = new File("res/button-images/Rating.png");
-        if (!f.exists()){
-            try {
-                throw new FileNotFoundException();
-            } catch (FileNotFoundException e) {
-                Logger.log("Failed to find star image", LogTypes.FATALERROR);
-                e.printStackTrace();
-            }
-        }
-        try {
-            starImg = ImageIO.read(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        starImg = PictureHandler.getInstance().getPicture("star");
     }
 
     private JPanel getBody(){
@@ -94,13 +74,13 @@ public class MediaPreviewPage extends Page {
 
         genreContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         genreText = new Label("Genre: ");
-        genreText.setFont(Categories.getFont());
+        genreText.setFont(GenreTypes.getFont());
         genreContainer.add(genreText);
         informationPanel.add(genreContainer);
 
         ratingContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         ratingText = new Label("Genre: ");
-        ratingText.setFont(Categories.getFont());
+        ratingText.setFont(GenreTypes.getFont());
         ratingContainer.add(ratingText);
         informationPanel.add(ratingContainer);
 
@@ -160,10 +140,10 @@ public class MediaPreviewPage extends Page {
         return titleWrapper;
     }
 
-    public void setGenre(Categories[] genres ){
+    public void setGenre(GenreTypes[] genres ){
         genreContainer.removeAll();
         genreContainer.add(genreText);
-        for (Categories genre: genres){
+        for (GenreTypes genre: genres){
             genreContainer.add(genre.getGenreCard());
         }
     }

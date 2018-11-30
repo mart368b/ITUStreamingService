@@ -1,6 +1,7 @@
 package medias;
 
-import java.awt.image.BufferedImage;
+import medias.types.GenreTypes;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class Serie extends Media {
 
     Serie(String title, String year, String genre, String rating, String ageResriction, String seasons) {
         this.title = title;
-        this.genre = Categories.getCategoriesByNames(genre.split(","));
+        this.genres = GenreTypes.getGenreTypeByNames(genre.split(","));
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
 

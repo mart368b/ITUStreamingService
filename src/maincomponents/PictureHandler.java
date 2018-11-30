@@ -1,4 +1,4 @@
-package user;
+package maincomponents;
 
 import debugging.LogTypes;
 import debugging.Logger;
@@ -35,6 +35,13 @@ public class PictureHandler {
             }
             File f = new File("res/button-images/create.jpg");
             images.put("create", ImageIO.read(f));
+
+            f = new File("res/button-images/star.png");
+            images.put("star", ImageIO.read(f));
+
+            f = new File("res/button-images/logo.png");
+            images.put("logo", ImageIO.read(f));
+
         }catch(Exception e){
             Logger.log("No file was found! ", LogTypes.FATALERROR);
             e.printStackTrace();

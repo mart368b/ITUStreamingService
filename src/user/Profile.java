@@ -1,6 +1,7 @@
 package user;
 
 import debugging.Logger;
+import maincomponents.PictureHandler;
 import medias.Media;
 import reader.MediaHandler;
 

@@ -1,11 +1,9 @@
 package ui.panels;
 
-import com.sun.deploy.util.StringUtils;
-import debugging.Logger;
 import maincomponents.AvMinArm;
 import ui.Display;
 import ui.cards.ProfileCard;
-import user.PictureHandler;
+import maincomponents.PictureHandler;
 import user.Profile;
 
 import javax.swing.*;
@@ -91,7 +89,7 @@ public class ProfilePage extends Page {
                     JOptionPane.showMessageDialog(new JFrame(),
                             "Please insert a new age!");
                 }else{
-                    if(isNumber(agechange.getText())){
+                    if(!isNumber(agechange.getText())){
                         JOptionPane.showMessageDialog(new JFrame(),
                                 "Age has to be a number!");
                     }else{

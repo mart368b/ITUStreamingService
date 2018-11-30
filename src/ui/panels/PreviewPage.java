@@ -1,9 +1,9 @@
 package ui.panels;
 
-import medias.Categories;
+import medias.types.GenreTypes;
 import medias.Media;
-import medias.MediaTypes;
-import medias.SortTypes;
+import medias.types.MediaTypes;
+import medias.types.SortTypes;
 import reader.MediaHandler;
 import ui.Display;
 import ui.cards.HeaderCard;
@@ -128,17 +128,17 @@ public class PreviewPage extends Page {
         updatePreview();
     }
 
-    public void setDisplayedMedia(Categories category){
+    public void setDisplayedMedia(GenreTypes genre){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
-        filterDisplayedMedia(category);
+        filterDisplayedMedia(genre);
     }
 
-    public void filterDisplayedMedia(Categories category){
-        if (category != Categories.ANY){
+    public void filterDisplayedMedia(GenreTypes genre){
+        if (genre != GenreTypes.ANY){
             for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
                 Media m = it.next();
-                if (!m.haveCategory(category)){
+                if (!m.hasGenre(genre)){
                     it.remove();
                 }
             }

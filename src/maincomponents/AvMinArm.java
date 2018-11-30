@@ -3,7 +3,6 @@ package maincomponents;
 import debugging.LogTypes;
 import debugging.Logger;
 import ui.Display;
-import user.PictureHandler;
 import user.Profile;
 import user.User;
 import user.UserHandler;
@@ -17,7 +16,6 @@ public class AvMinArm {
 
     public static User user;
     public static Profile profile;
-    public static BufferedImage logoImage;
 
     public AvMinArm(){}
 
@@ -25,18 +23,7 @@ public class AvMinArm {
         PictureHandler.getInstance().init();
         UserHandler.getInstance().init();
         user = UserHandler.getInstance().getUser("Kaare", "1234");
-        AvMinArm.loadLogo();
         Display display = Display.getInstance();;
         display.setPage(2);
-    }
-
-    public static void loadLogo(){
-        File f = new File("res/button-images/logo.png");
-        try {
-            logoImage = ImageIO.read(f);
-        } catch (IOException e) {
-            Logger.log("No file was found! ", LogTypes.FATALERROR);
-            e.printStackTrace();
-        }
     }
 }

@@ -79,7 +79,7 @@ public class CSVReader {
     /**
      * Returns a iterator, that iterates over all rows in the csv file
      */
-    Iterator<String[]> getIterator(){
+    public Iterator<String[]> getIterator(){
         return content.iterator();
     }
 

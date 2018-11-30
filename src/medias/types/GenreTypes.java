@@ -1,4 +1,4 @@
-package medias;
+package medias.types;
 
 import debugging.LogTypes;
 import debugging.Logger;
@@ -6,9 +6,8 @@ import debugging.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public enum Categories {
+public enum GenreTypes {
     ANY("Any"),
     CRIME("Crime"),
     DRAMA("Drama"),
@@ -39,7 +38,7 @@ public enum Categories {
 
     private final String name;
     private JPanel card;
-    private Categories(final String name){
+    private GenreTypes(final String name){
         this.name = name;
         card = getCard();
     }
@@ -63,36 +62,36 @@ public enum Categories {
         return name;
     }
 
-    public static Categories[] getCategoriesByNames( String[] names){
-        ArrayList<Categories> categories = new ArrayList<Categories>();
+    public static GenreTypes[] getGenreTypeByNames(String[] names){
+        ArrayList<GenreTypes> categories = new ArrayList<GenreTypes>();
         for (int i = 0; i < names.length; i++){
-            Categories foundCategory = getCategoryByName(names[i]);
-            if ( foundCategory != null ){
-                categories.add(foundCategory);
+            GenreTypes foundgenreType = getGenreTypeByName(names[i]);
+            if ( foundgenreType != null ){
+                categories.add(foundgenreType);
             }
         }
-        return categories.toArray(new Categories[categories.size()]);
+        return categories.toArray(new GenreTypes[categories.size()]);
     }
 
 
-    public static Categories getCategoryByName( String name ){
+    public static GenreTypes getGenreTypeByName(String name ){
         if(name.length() == 0){
             return null;
         }
-        for (Categories category: Categories.values()){
-            if ( name.trim().equals(category.getName()) ){
-                return category;
+        for (GenreTypes genreType: GenreTypes.values()){
+            if ( name.trim().equals(genreType.getName()) ){
+                return genreType;
             }
         }
-        Logger.log(name + " is not recognized as a category: consider adding " + name.toUpperCase() + "(\"" + name + "\")", LogTypes.SOFTERROR);
+        Logger.log(name + " is not recognized as a genreType: consider adding " + name.toUpperCase() + "(\"" + name + "\")", LogTypes.SOFTERROR);
         return null;
     }
 
-    public static String[] getCategorieNames(){
-        Categories[] categoryList = values();
-        String[] categories = new String[categoryList.length];
-        for (int i = 0; i < categoryList.length; i++){
-            categories[i] = categoryList[i].getName();
+    public static String[] getGenreNames(){
+        GenreTypes[] genreTypeList = values();
+        String[] categories = new String[genreTypeList.length];
+        for (int i = 0; i < genreTypeList.length; i++){
+            categories[i] = genreTypeList[i].getName();
         }
         return categories;
     }

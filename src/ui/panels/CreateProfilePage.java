@@ -1,11 +1,10 @@
 package ui.panels;
 
 import debugging.Logger;
-import javafx.print.PageLayout;
 import maincomponents.AvMinArm;
 import ui.Display;
 import ui.cards.ProfileCard;
-import user.PictureHandler;
+import maincomponents.PictureHandler;
 import user.Profile;
 
 import javax.swing.*;

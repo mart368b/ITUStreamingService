@@ -1,7 +1,6 @@
 package medias;
 
-import java.awt.image.BufferedImage;
-import java.time.Year;
+import medias.types.GenreTypes;
 
 public class Movie extends Media{
 
@@ -11,7 +10,7 @@ public class Movie extends Media{
         this.title = title;
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
-        this.genre = Categories.getCategoriesByNames(genre.split(","));
+        this.genres = GenreTypes.getGenreTypeByNames(genre.split(","));
         this.ageResctriction = ageResctriction;
         this.duration = getTimeInMinutes(duration);
 

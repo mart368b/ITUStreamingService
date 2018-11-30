@@ -1,6 +1,8 @@
 package medias;
 
 
+import medias.types.GenreTypes;
+import medias.types.MediaTypes;
 import ui.cards.MediaPreviewCard;
 
 import javax.imageio.ImageIO;
@@ -8,14 +10,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public abstract class Media {
     protected String title;
     protected String year;
     protected double rating;
     protected String ageResctriction;
-    protected Categories[] genre;
+    protected GenreTypes[] genres;
     protected BufferedImage img;
     protected MediaPreviewCard previewCard;
 
@@ -57,8 +58,8 @@ public abstract class Media {
     public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
         return year;
     }
-    public Categories getGenre(int i){
-        return genre[i];
+    public GenreTypes getGenre(int i){
+        return genres[i];
     }
 
     public StringBuilder getMediaInfo(){
@@ -70,11 +71,11 @@ public abstract class Media {
         builder.append(", Year = ");
         builder.append(year);
         builder.append("Genre(s) = ");
-        for (int i = 0; i < genre.length; i++){
+        for (int i = 0; i < genres.length; i++){
             if ( i != 0){
                 builder.append(" ,");
             }
-            builder.append(genre[i].getName());
+            builder.append(genres[i].getName());
         }
         return builder;
     }
@@ -120,16 +121,16 @@ public abstract class Media {
         }
     }
 
-    public boolean haveCategory(Categories category){
-        for(Categories genreCategory: genre){
-            if (genreCategory.equals(category)){
+    public boolean hasGenre(GenreTypes genreType){
+        for(GenreTypes genre: genres){
+            if (genre.equals(genreType)){
                 return true;
             }
         }
         return false;
     }
 
-    public Categories[] getGenres(){
-        return genre;
+    public GenreTypes[] getGenres(){
+        return genres;
     }
 }

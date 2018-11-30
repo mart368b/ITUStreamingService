@@ -3,7 +3,7 @@ package reader;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.Media;
-import medias.MediaTypes;
+import medias.types.MediaTypes;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

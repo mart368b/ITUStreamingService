@@ -4,7 +4,7 @@ package ui;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
-import ui.cards.HeaderCard;
+import medias.types.GenreTypes;
 import ui.panels.MediaPreviewPage;
 import ui.panels.Page;
 import ui.panels.PreviewPage;
@@ -27,7 +27,6 @@ public class Display extends JFrame  {
 
     private Display (){
         super("ITUStreaming");
-        HeaderCard.createHeader(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
@@ -96,9 +95,9 @@ public class Display extends JFrame  {
         currentPageIndex = nextIndex;
     }
 
-    public void displayOnPreview(Categories categories, String name){
+    public void displayOnPreview(GenreTypes genre, String name){
         PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-        previewPage.setDisplayedMedia(categories);
+        previewPage.setDisplayedMedia(genre);
         setPage(previewPage);
     }
 
