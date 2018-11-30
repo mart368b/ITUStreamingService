@@ -92,7 +92,7 @@ public class UserHandler {
                     profiledata.append(",");
                     profiledata.append(profile.getAge());
                     profiledata.append(",");
-                    profiledata.append(profile.getProfilePicture());
+                    profiledata.append(profile.getProfilePictureName());
                     profiledata.append(",");
                     Iterator<Media> favIter =  profile.getFavorites().iterator();
                     while(favIter.hasNext()){

@@ -1,5 +1,6 @@
 package medias;
 
+import medias.types.AgeTypes;
 import medias.types.GenreTypes;
 
 import java.util.HashMap;
@@ -16,13 +17,7 @@ public class Serie extends Media {
         this.genres = GenreTypes.getGenreTypeByNames(genre.split(","));
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
-
-
-        if (ageResriction.length() == 0){
-            this.ageResctriction = "Unknown";
-        }else{
-            this.ageResctriction = ageResriction;
-        }
+        this.ageResctriction = AgeTypes.getAgeTypeFromName(ageResriction);;
 
         this.episodes = new HashMap<>();
         String[] seasonArr = seasons.split("_"); // 4-13
@@ -71,6 +66,10 @@ public class Serie extends Media {
         StringBuilder builder = super.getMediaInfo();
         builder.insert(0, "Serie: ");
         return builder;
+    }
+
+    public HashMap<Integer, ArrayList<SeriesEpisode>> getEpisodes(){
+        return episodes;
     }
 
 }

@@ -1,6 +1,6 @@
 package ui.components;
 
-import maincomponents.PictureHandler;
+import maincomponents.ImageHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class ImageButton extends JButton {
     public ImageButton(){}
 
     public ImageButton(String imageName){
-        BufferedImage img = PictureHandler.getInstance().getPicture(imageName);
+        BufferedImage img = ImageHandler.getInstance().getImage(imageName);
         initalizeButton(img);
     }
 

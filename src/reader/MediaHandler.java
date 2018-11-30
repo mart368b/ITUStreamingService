@@ -1,5 +1,7 @@
 package reader;
 
+import debugging.Exceptions.MissingFileException;
+import debugging.Exceptions.ResourceLoadingException;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.Media;
@@ -48,14 +50,17 @@ public class MediaHandler {
         CSVReader reader = null;
         try {
             reader = new CSVReader(path, mediaType.getColumnCount());
-        } catch (FileNotFoundException e) {
-            Logger.log("Failed to file for " + mediaType.getName() + " at " + path, LogTypes.SOFTERROR);
+        } catch (MissingFileException e) {
+            e.logError(LogTypes.SOFTERROR);
+            return;
+        } catch (ResourceLoadingException e){
+            e.logError(LogTypes.SOFTERROR);
             return;
         }
 
         Iterator<String[]> ite = reader.getIterator();
         // Iterate over all rows in the csv file
-        ArrayList<ExceptionInInitializerError> errors = new ArrayList<>();
+        ArrayList<Exception> errors = new ArrayList<>();
         int mediaCount = 0;
         while (ite.hasNext()){
             // Create Media of MediaType using MediaFactory
@@ -64,21 +69,13 @@ public class MediaHandler {
                 media = Media.getMediaByMediaType(mediaType, ite.next());
                 mediaCount++;
             } catch (ExceptionInInitializerError e) {
-                errors.add(e);
+                errors.add((Exception) e.getException());
             }
             if ( media != null ){
                 medias.add(media);
             }
         }
-        if (errors.size() > 0){
-            StringBuilder builder = new StringBuilder();
-            builder.append("Errors during creation of " + mediaType.getName());
-            for (ExceptionInInitializerError e: errors){
-                builder.append("\n");
-                builder.append(e.getCause().getMessage().toString());
-            }
-            Logger.log(builder.toString(), LogTypes.SOFTERROR);
-        }
+        Logger.logErrors(errors, "Errors during creation of " + mediaType.getName(), LogTypes.SOFTERROR);
         Logger.log("Created " + mediaCount + " " + mediaType.getName());
 
     }

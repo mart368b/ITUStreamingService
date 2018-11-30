@@ -1,5 +1,6 @@
 package ui.cards;
 
+import maincomponents.AvMinArm;
 import medias.types.GenreTypes;
 import medias.types.MediaTypes;
 import ui.Display;
@@ -85,7 +86,9 @@ public class HeaderCard extends JPanel {
         addButton(panel, "My List", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                System.out.println("My List pressed");
+                Profile profile = AvMinArm.profile;
+                PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
+                previewPage.setDisplayedMedia(profile.getFavorites());
             }
         });
 

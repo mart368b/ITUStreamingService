@@ -1,10 +1,9 @@
 package ui.cards;
 
-import maincomponents.PictureHandler;
+import maincomponents.ImageHandler;
 import ui.components.ImageButton;
 import user.Profile;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -14,24 +13,24 @@ public class ProfileCard extends ImageButton {
 
     public ProfileCard(Profile profile){
         super();
-        BufferedImage image = PictureHandler.getInstance().getPicture(profile.getProfilePicture());
+        BufferedImage image = ImageHandler.getInstance().getImage(profile.getProfilePictureName());
         setPicture(image, SIZE);
     }
 
     public ProfileCard(){
         super();
-        BufferedImage image = PictureHandler.getInstance().getPicture("create");
+        BufferedImage image = ImageHandler.getInstance().getImage("create");
         setPicture(image, SIZE);
     }
 
     public ProfileCard(String ImageName, int size){
         super();
-        BufferedImage image = PictureHandler.getInstance().getPicture(ImageName);
+        BufferedImage image = ImageHandler.getInstance().getImage(ImageName);
         setPicture(ImageName, size);
     }
 
     public void setPicture(String imageName, int size){
-        setPicture(PictureHandler.getInstance().getPicture(imageName), size);
+        setPicture(ImageHandler.getInstance().getImage(imageName), size);
     }
 
     public void setPicture(BufferedImage image, int size){

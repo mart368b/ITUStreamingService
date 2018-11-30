@@ -1,6 +1,7 @@
 package medias;
 
 
+import medias.types.AgeTypes;
 import medias.types.GenreTypes;
 import medias.types.MediaTypes;
 import ui.cards.MediaPreviewCard;
@@ -15,7 +16,7 @@ public abstract class Media {
     protected String title;
     protected String year;
     protected double rating;
-    protected String ageResctriction;
+    protected AgeTypes ageResctriction;
     protected GenreTypes[] genres;
     protected BufferedImage img;
     protected MediaPreviewCard previewCard;
@@ -54,6 +55,8 @@ public abstract class Media {
     public double getRating() { //Returnerer mediets bedømmelse
         return rating;
     }
+
+    public AgeTypes getAgeRestriction(){return ageResctriction;}
 
     public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
         return year;

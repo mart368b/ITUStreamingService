@@ -9,20 +9,29 @@ public class ImageViewer extends JPanel {
     protected BufferedImage img;
     protected double widthAspect, heightAspect;
 
+    public ImageViewer(){
+        super();
+    }
+
+    public ImageViewer(LayoutManager layoutManager){
+        super(layoutManager);
+    }
+
     public ImageViewer(LayoutManager layoutManager, BufferedImage image){
         super(layoutManager);
         this.img = image;
-        if (img != null){
-            recalculateAspectRation();
-        }
+        recalculateAspectRation();
     }
 
     public ImageViewer(BufferedImage image){
         super();
         this.img = image;
-        if (img != null){
-            recalculateAspectRation();
-        }
+        recalculateAspectRation();
+    }
+
+    public void setImage(BufferedImage img){
+        this.img = img;
+        repaint();
     }
 
     private void recalculateAspectRation(){

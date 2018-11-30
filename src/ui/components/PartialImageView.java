@@ -17,6 +17,11 @@ public class PartialImageView extends ImageViewer {
         this.showed = showed;
     }
 
+    public void setShowed(double showed){
+        this.showed = showed;
+        repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.clearGraphics(g);

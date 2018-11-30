@@ -1,7 +1,7 @@
 package user;
 
 import debugging.Logger;
-import maincomponents.PictureHandler;
+import maincomponents.ImageHandler;
 import medias.Media;
 import reader.MediaHandler;
 
@@ -102,13 +102,13 @@ public class Profile {
      * @return returns a BufferedImage (The profile picture)
      */
     public BufferedImage getImage(){
-        return PictureHandler.getInstance().getPicture(picture);
+        return ImageHandler.getInstance().getImage(picture);
     }
 
     /**
      * @return return the profile picture name
      */
-    public String getProfilePicture(){
+    public String getProfilePictureName(){
         return picture;
     }
 

@@ -10,9 +10,9 @@ public class SeriesEpisode {
     private String title;
     private int duration;
 
-    public SeriesEpisode( int seasonNumber, int episodeNumber, String title, int duration){
+    public SeriesEpisode( int episodeNumber, int seasonNumber, String title, int duration){
         this.episodeNumber = seasonNumber;
-        this.seasonNumber = seasonNumber;
+        this.seasonNumber = episodeNumber;
         this.title = title;
         this.duration = duration;
     }

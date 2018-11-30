@@ -3,7 +3,7 @@ package ui.panels;
 import maincomponents.AvMinArm;
 import ui.Display;
 import ui.cards.ProfileCard;
-import maincomponents.PictureHandler;
+import maincomponents.ImageHandler;
 import user.Profile;
 
 import javax.swing.*;
@@ -35,12 +35,12 @@ public class ProfilePage extends Page {
     private String a = "";
 
     public void open(Profile profile){
-        selected = AvMinArm.profile.getProfilePicture();
-        String profilePicName = AvMinArm.profile.getProfilePicture();
+        selected = AvMinArm.profile.getProfilePictureName();
+        String profilePicName = AvMinArm.profile.getProfilePictureName();
         pic.setPicture(profilePicName, 256);
         nametext.setText(AvMinArm.profile.getName());
         agetext.setText(Integer.toString(AvMinArm.profile.getAge()));
-        picturetext.setText(AvMinArm.profile.getProfilePicture().toString());
+        picturetext.setText(AvMinArm.profile.getProfilePictureName().toString());
         validate();
     }
 
@@ -180,12 +180,12 @@ public class ProfilePage extends Page {
     }
 
     public JPanel getPics(){
-        int rowL = PictureHandler.types.length;
-        int colL = PictureHandler.colors.length;
+        int rowL = ImageHandler.types.length;
+        int colL = ImageHandler.colors.length;
         JButton[][] buttons = new JButton[rowL][colL];
         for(int row = 0; row < rowL; row++){
             for(int col = 0; col < colL; col++) {
-                String pictureName = PictureHandler.types[row] + "-" + PictureHandler.colors[col];
+                String pictureName = ImageHandler.types[row] + "-" + ImageHandler.colors[col];
                 button = new ProfileCard(pictureName, 34);
                 button.addActionListener(new ActionListener() {
                     @Override
