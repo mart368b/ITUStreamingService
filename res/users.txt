@@ -1,0 +1,2 @@
+Kaare;1234;false;Per,20,pig-red,%Mor,45,mummy-grey,%Far,45,pig-green,%test,13,pig-green,;
+Kasper;test;false;;
