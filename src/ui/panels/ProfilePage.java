@@ -4,12 +4,15 @@ import maincomponents.AvMinArm;
 import ui.Display;
 import ui.cards.ProfileCard;
 import maincomponents.ImageHandler;
+import ui.components.ImageButton;
 import user.Profile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
 public class ProfilePage extends Page {
@@ -108,7 +111,30 @@ public class ProfilePage extends Page {
         picturetext.setMinimumSize(d);
         picturetext.setPreferredSize(d);
 
-        JPanel picturechange = getPics();
+        //JPanel picturechange = getPics();
+
+        ImageButton picturechange = new ImageButton();
+        picturechange.setImage(ImageHandler.getInstance().getImage("canvas"));
+        picturechange.setMinimumSize(new Dimension(230, 190));
+        picturechange.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PointerInfo info = MouseInfo.getPointerInfo();
+                Point loc = info.getLocation();
+                Point picloc = picturechange.getLocationOnScreen();
+
+                double dx = picturechange.getWidth()/5;
+                double dy = picturechange.getHeight()/4;
+
+                int x = loc.x-picloc.x;
+                int y = loc.y-picloc.y;
+
+                int col = (int)(x/dx);
+                int type = (int)(y/dy);
+                selected =  ImageHandler.types[type] + "-" + ImageHandler.colors[col];
+            }
+        });
+
         JButton picturebutton = new JButton("Change");
         picturebutton.addActionListener(new ActionListener() {
             @Override
@@ -177,54 +203,6 @@ public class ProfilePage extends Page {
         panel.add(delete);
 
         return panel;
-    }
-
-    public JPanel getPics(){
-        int rowL = ImageHandler.types.length;
-        int colL = ImageHandler.colors.length;
-        JButton[][] buttons = new JButton[rowL][colL];
-        for(int row = 0; row < rowL; row++){
-            for(int col = 0; col < colL; col++) {
-                String pictureName = ImageHandler.types[row] + "-" + ImageHandler.colors[col];
-                button = new ProfileCard(pictureName, 34);
-                button.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        selected = pictureName;
-                    }
-                });
-                buttons[row][col] = button;
-            }
-        }
-
-        JPanel grid = new JPanel();
-        GroupLayout layout = new GroupLayout(grid);
-        grid.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-
-        for(int col = 0; col < colL; col++){
-            GroupLayout.ParallelGroup parGroup = layout.createParallelGroup();
-            for(int row = 0; row < rowL; row++) {
-                parGroup.addComponent(buttons[row][col]);
-            }
-            hGroup.addGroup(parGroup);
-        }
-        layout.setHorizontalGroup(hGroup);
-
-        GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        for(int row = 0; row < rowL; row++) {
-            GroupLayout.ParallelGroup parGroup = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
-            for(int col = 0; col < colL; col++){
-                parGroup.addComponent(buttons[row][col]);
-            }
-            vGroup.addGroup(parGroup);
-        }
-        layout.setVerticalGroup(vGroup);
-        grid.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        return grid;
     }
 
     public static boolean isNumber(String s){

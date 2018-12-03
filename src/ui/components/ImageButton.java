@@ -58,7 +58,7 @@ public class ImageButton extends JButton {
         setPreferredSize(d);
     }
 
-    public void setImgage( BufferedImage img ){
+    public void setImage( BufferedImage img ){
         this.img = img;
         recalculateAspectRation();
     }
