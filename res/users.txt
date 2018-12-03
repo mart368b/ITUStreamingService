@@ -1,1 +1,1 @@
-Kaare;1234;false;Per,20,default-grey,;
+Kaare;1234;false;Mor,48,space-green,;
