@@ -55,10 +55,11 @@ public class CSVReader {
         // Iterate over all lines in the file
         while ((line = reader.readLine()) != null) {
             if (line.length() == 0){
+
                 continue;
             }
             // Split line into its different columns, using the specified separator
-            String[] lineContent = line.trim().split(SEPARATOR);
+            String[] lineContent = line.split(SEPARATOR);
             for ( int i = 0; i < lineContent.length; i++ ){
                 lineContent[i] = lineContent[i].trim();
             }

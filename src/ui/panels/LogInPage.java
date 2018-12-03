@@ -93,7 +93,9 @@ public class LogInPage extends Page {
                         Logger.log("User with name: " + usertext.getText() + " logged in!");
                         usertext.setText("");
                         passfield.setText("");
-                        Display.getInstance().setPage(Page.USERPAGE);
+                        UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
+                        userpage.updateUsers();
+                        Display.getInstance().setPage(userpage);
                         //TODO: GO TO USERPAGE
                     }
                 }

@@ -15,7 +15,6 @@ public class AvMinArm {
     public static void main( String[] args){
         ImageHandler.getInstance().init();
         UserHandler.getInstance().init();
-        user = UserHandler.getInstance().getUser("Kaare", "1234");
         Display display = Display.getInstance();;
         display.setPage(2);
     }
