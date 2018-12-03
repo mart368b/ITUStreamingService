@@ -1,11 +1,10 @@
 package ui.panels;
 
 import debugging.Logger;
-import javafx.print.PageLayout;
 import maincomponents.AvMinArm;
 import ui.Display;
 import ui.cards.ProfileCard;
-import user.PictureHandler;
+import maincomponents.ImageHandler;
 import user.Profile;
 
 import javax.swing.*;
@@ -124,12 +123,12 @@ public class CreateProfilePage extends Page {
     }
 
     private JPanel getPics(){
-        int rowL = PictureHandler.types.length;
-        int colL = PictureHandler.colors.length;
+        int rowL = ImageHandler.types.length;
+        int colL = ImageHandler.colors.length;
         JButton[][] buttons = new JButton[rowL][colL];
         for(int row = 0; row < rowL; row++){
             for(int col = 0; col < colL; col++) {
-                String pictureName = PictureHandler.types[row] + "-" + PictureHandler.colors[col];
+                String pictureName = ImageHandler.types[row] + "-" + ImageHandler.colors[col];
                 button = new ProfileCard(pictureName, 34);
                 button.addActionListener(new ActionListener() {
                     @Override

@@ -1,9 +1,9 @@
 package ui.panels;
 
-import medias.Categories;
+import medias.types.GenreTypes;
 import medias.Media;
-import medias.MediaTypes;
-import medias.SortTypes;
+import medias.types.MediaTypes;
+import medias.types.SortTypes;
 import reader.MediaHandler;
 import ui.Display;
 import ui.cards.HeaderCard;
@@ -14,16 +14,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
+import java.util.List;
 
 public class PreviewPage extends Page {
 
     private ArrayList<Media> displayedMedia = new ArrayList<Media>();
     private JPanel previewMenu;
-
     private JPanel noResult;
+    private SortTypes lastSort;
+    private boolean reversedSorting = false;
 
     protected PreviewPage(Display display){
         super();
@@ -58,12 +58,11 @@ public class PreviewPage extends Page {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setViewportView(previewMenu);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        MediaHandler.getInstance().getAllMedia(displayedMedia);
-
         cardPreviewPanel.add(scrollPane, BorderLayout.CENTER);
-        sortPreview(SortTypes.ALPHABETICLY);
-
         add(cardPreviewPanel, BorderLayout.CENTER);
+
+        setDisplayedMedia();
+        sortPreview(SortTypes.ALPHABETICLY, reversedSorting);
 
     }
 
@@ -80,10 +79,20 @@ public class PreviewPage extends Page {
             public void actionPerformed(ActionEvent e) {
                 String item = (String) sortTypeBox.getSelectedItem();
                 SortTypes sortTypes = SortTypes.valueOf(item.toUpperCase());
-                sortPreview(sortTypes);
+                sortPreview(sortTypes, reversedSorting);
             }
         });
         panel.add(sortTypeBox);
+
+        JRadioButton radioButton = new JRadioButton();
+        radioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reversedSorting = !reversedSorting;
+                sortPreview(lastSort, reversedSorting);
+            }
+        });
+        panel.add(radioButton);
 
         return panel;
     }
@@ -119,26 +128,36 @@ public class PreviewPage extends Page {
     public void setDisplayedMedia(){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
+        sortPreview(lastSort, reversedSorting);
         updatePreview();
     }
 
     public void setDisplayedMedia(MediaTypes mediaTypes){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia, mediaTypes);
+        sortPreview(lastSort, reversedSorting);
         updatePreview();
     }
 
-    public void setDisplayedMedia(Categories category){
+    public void setDisplayedMedia(GenreTypes genre){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
-        filterDisplayedMedia(category);
+        filterDisplayedMedia(genre);
+        sortPreview(lastSort, reversedSorting);
     }
 
-    public void filterDisplayedMedia(Categories category){
-        if (category != Categories.ANY){
+    public void setDisplayedMedia(List<Media> medias){
+        displayedMedia.clear();
+        MediaHandler.getInstance().getAllMedia(displayedMedia);
+        filterDisplayedMedia(medias);
+        sortPreview(lastSort, reversedSorting);
+    }
+
+    public void filterDisplayedMedia(GenreTypes genre){
+        if (genre != GenreTypes.ANY){
             for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
                 Media m = it.next();
-                if (!m.haveCategory(category)){
+                if (!m.hasGenre(genre)){
                     it.remove();
                 }
             }
@@ -146,8 +165,26 @@ public class PreviewPage extends Page {
         updatePreview();
     }
 
-    public void sortPreview(SortTypes sortType){
-        Collections.sort(displayedMedia, sortType.getComparator());
+    public void filterDisplayedMedia(List<Media> medias){
+        for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
+            Media m = it.next();
+            if (!medias.contains(m)){
+                it.remove();
+            }
+        }
+        updatePreview();
+    }
+
+    public void sortPreview(SortTypes sortType, boolean reverse){
+        if (sortType == null){
+            return;
+        }
+        Comparator<Media> comp = sortType.getComparator();
+        if (reverse){
+            comp = Collections.reverseOrder(comp);
+        }
+        Collections.sort(displayedMedia, comp);
+        lastSort = sortType;
         updatePreview();
     }
 }

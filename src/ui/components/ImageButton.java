@@ -1,5 +1,7 @@
 package ui.components;
 
+import maincomponents.ImageHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,6 +10,13 @@ public class ImageButton extends JButton {
 
     protected BufferedImage img;
     protected double widthAspect, heightAspect;
+
+    public ImageButton(){}
+
+    public ImageButton(String imageName){
+        BufferedImage img = ImageHandler.getInstance().getImage(imageName);
+        initalizeButton(img);
+    }
 
     public ImageButton (BufferedImage img, LayoutManager layoutManager){
         setLayout(layoutManager);
@@ -18,9 +27,8 @@ public class ImageButton extends JButton {
         initalizeButton(img);
     }
 
-    private void initalizeButton(BufferedImage img){
+    protected void initalizeButton(BufferedImage img){
         this.img = img;
-
         setOpaque(false);
         setContentAreaFilled(false);
         if(img != null) {

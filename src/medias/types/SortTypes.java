@@ -1,4 +1,6 @@
-package medias;
+package medias.types;
+
+import medias.Media;
 
 import java.util.Comparator;
 

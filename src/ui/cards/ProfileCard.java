@@ -1,52 +1,43 @@
 package ui.cards;
 
+import maincomponents.ImageHandler;
 import ui.components.ImageButton;
-import user.PictureHandler;
 import user.Profile;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ProfileCard extends JButton {
+public class ProfileCard extends ImageButton {
 
     private int SIZE = 128;
-    private BufferedImage image;
 
     public ProfileCard(Profile profile){
         super();
-        setPicture(PictureHandler.getInstance().getPicture(profile.getProfilePicture()), SIZE);
+        BufferedImage image = ImageHandler.getInstance().getImage(profile.getProfilePictureName());
+        setPicture(image, SIZE);
     }
 
     public ProfileCard(){
         super();
-        setPicture(PictureHandler.getInstance().getPicture("create"), SIZE);
+        BufferedImage image = ImageHandler.getInstance().getImage("create");
+        setPicture(image, SIZE);
     }
 
     public ProfileCard(String ImageName, int size){
         super();
-        image = PictureHandler.getInstance().getPicture(ImageName);
+        BufferedImage image = ImageHandler.getInstance().getImage(ImageName);
         setPicture(ImageName, size);
     }
 
     public void setPicture(String imageName, int size){
-        setPicture(PictureHandler.getInstance().getPicture(imageName), size);
+        setPicture(ImageHandler.getInstance().getImage(imageName), size);
     }
 
     public void setPicture(BufferedImage image, int size){
-        this.image = image;
         SIZE = size;
         setMaximumSize(new Dimension(SIZE, SIZE));
+        initalizeButton(image);
         repaint();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (image == null){
-            return;
-        }
-        Image img = image.getScaledInstance(SIZE, SIZE, BufferedImage.SCALE_SMOOTH);
-        g.drawImage(img, 0, 0, SIZE, SIZE, this); // see javadoc for more info on the parameters
-    }
 }

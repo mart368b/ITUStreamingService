@@ -73,8 +73,18 @@ public class Logger {
         }
         String filePath = SAVEPATH + "/" + new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(getTimestamp()) + ".log";
         saveLog( new File(filePath));
+    }
 
-
+    public static void logErrors(ArrayList<Exception> errors, String msg, LogTypes logType){
+        if (errors.size() > 0){
+            StringBuilder builder = new StringBuilder();
+            builder.append(msg);
+            for (Exception e: errors){
+                builder.append("\n");
+                builder.append(e.getCause().getMessage().toString());
+            }
+            Logger.log(builder.toString(), logType);
+        }
     }
 
     private static void saveLog( File f){

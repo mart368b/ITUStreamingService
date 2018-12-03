@@ -1,4 +1,8 @@
-package medias;
+package medias.types;
+
+import medias.Media;
+import medias.Movie;
+import medias.Serie;
 
 public enum MediaTypes{
     MOVIE(Movie.class, 6, "movies"),

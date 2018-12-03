@@ -3,6 +3,7 @@ package user;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.Media;
+import reader.CSVReader;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,27 +31,21 @@ public class UserHandler {
         // Creates new user list
         users = new ArrayList<User>();
         try {
-            // finds file
-            File f = new File(PATH);
-            // creates a reader to read file
-            BufferedReader reader = new BufferedReader(new FileReader(f));
-            // gets the first line
-            String line = reader.readLine();
-            // while loop, which will read lines of file until there are no more lines
-            while(line != null){
+            CSVReader reader = new CSVReader(PATH, 4);
+            Iterator<String[]> ite = reader.getIterator();
+            while(ite.hasNext()){
                 // gets the arguments of the line! Example of line [Bob;1234;true;Mor,48,default,Bob The Builder~Game Of Thrones%Far,52,default,;]
-                String[] args = line.split(";");
-                String username = args[0];
-                String password = args[1];
-                boolean admin = args[2].equals("true");
+                String[] row = ite.next();
+                String username = row[0];
+                String password = row[1];
+                boolean admin = row[2].equals("true");
 
-                if(!(args.length > 3)){
+                if(!(row.length > 3)){
                     users.add(new User(username, password, admin));
-                    line = reader.readLine();
                     continue;
                 }
 
-                String[] profilesdata = args[3].split("%");
+                String[] profilesdata = row[3].split("%");
                 ArrayList<Profile> profiles = new ArrayList<Profile>();
                 // goes through the data of each profile! Example of data [Mor,48,default,Bob The Builder~Game Of Thrones%Far,52,default,;]
                 for(String p : profilesdata){
@@ -67,7 +62,6 @@ public class UserHandler {
                 }
 
                 users.add(new User(username, password, admin, profiles));
-                line = reader.readLine();
             }
         }catch (Exception e){
             Logger.log("Could not find the users.txt file!", LogTypes.FATALERROR);
@@ -98,7 +92,7 @@ public class UserHandler {
                     profiledata.append(",");
                     profiledata.append(profile.getAge());
                     profiledata.append(",");
-                    profiledata.append(profile.getProfilePicture());
+                    profiledata.append(profile.getProfilePictureName());
                     profiledata.append(",");
                     Iterator<Media> favIter =  profile.getFavorites().iterator();
                     while(favIter.hasNext()){
