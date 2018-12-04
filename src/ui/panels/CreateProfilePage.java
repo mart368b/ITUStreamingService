@@ -3,8 +3,8 @@ package ui.panels;
 import debugging.Logger;
 import maincomponents.AvMinArm;
 import ui.Display;
-import ui.cards.ProfileCard;
-import maincomponents.ImageHandler;
+import ui.StyleArchive;
+import ui.cards.CanvasCard;
 import user.Profile;
 
 import javax.swing.*;
@@ -14,52 +14,75 @@ import java.awt.event.ActionListener;
 
 public class CreateProfilePage extends Page {
 
-    private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
-    private static final Font HUGE = new Font("Arial", Font.PLAIN, 28);
-
-    private String selected = "default-orange";
-    private JPanel panel;
+    private JPanel panel, canvas, grid, create, pictureinfo;
     private JButton button;
+    private JLabel profiletext, profilename, profileage, profilepicture;
+    private JTextField nametext, agetext;
+    private CanvasCard picture;
 
     public CreateProfilePage(){
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel profiletext = new JLabel("New Profile");
-        profiletext.setFont(HEADER);
+        canvas = new JPanel();
+        canvas.setLayout(new BoxLayout(canvas, BoxLayout.Y_AXIS));
+
+        profiletext = new JLabel("New Profile");
+        profiletext.setFont(StyleArchive.HEADER);
         profiletext.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(profiletext);
+        canvas.add(profiletext);
 
-        JPanel create = getCreate();
+        create = getCreate();
         create.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(create);
+        canvas.add(create);
 
 
         button = new JButton("Back to profiles");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                resetFields();
                 Display.getInstance().setPage(Page.USERPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(Box.createRigidArea(new Dimension(0,10)));
-        add(button);
+        canvas.add(Box.createRigidArea(new Dimension(0,10)));
+        canvas.add(button);
+        canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
+
+        setBackground(StyleArchive.COLOR_BACKGROUND);
+        setLayout(new GridBagLayout());
+        add(canvas);
+    }
+
+    public void resetFields(){
+        picture.reset();
+        nametext.setText("");
+        agetext.setText("");
     }
 
     public JPanel getCreate(){
         panel = new JPanel();
+        panel.setPreferredSize(new Dimension(300,340));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
-        JLabel profilename = new JLabel("Profile name");
-        JLabel profileage = new JLabel("Age");
-        JLabel profilepicture = new JLabel("Picture");
+        profilename = new JLabel("Profile name:");
+        profilename.setFont(StyleArchive.NORMAL);
+        profileage = new JLabel("Age:");
+        profileage.setFont(StyleArchive.NORMAL);
 
-        JTextField nametext = new JTextField();
-        JTextField agetext = new JTextField();
-        JPanel pictures = getPics();
+        profilepicture = new JLabel("Picture:");
+        profilepicture.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profilepicture.setFont(StyleArchive.NORMAL);
 
-        JPanel grid = new JPanel();
+        nametext = new JTextField();
+        agetext = new JTextField();
+
+        picture = new CanvasCard();
+        System.out.println(picture.getSize());
+
+        grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);
         grid.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -78,14 +101,19 @@ public class CreateProfilePage extends Page {
                 addComponent(profileage).addComponent(agetext));
         layout.setVerticalGroup(vGroup);
         grid.setAlignmentX(Component.CENTER_ALIGNMENT);
+        grid.setBackground(StyleArchive.COLOR_BACKGROUND);
         panel.add(grid);
 
-        JLabel label = new JLabel("Choose profile picture");
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(label);
-        panel.add(getPics());
+        pictureinfo = new JPanel();
+        pictureinfo.setLayout(new BoxLayout(pictureinfo, BoxLayout.Y_AXIS));
+        pictureinfo.add(profilepicture);
+        pictureinfo.add(Box.createRigidArea(new Dimension(0,10)));
+        pictureinfo.add(picture);
+        pictureinfo.setBackground(StyleArchive.COLOR_BACKGROUND);
+        panel.add(pictureinfo);
 
         button = new JButton("Create");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,73 +129,31 @@ public class CreateProfilePage extends Page {
                             JOptionPane.showMessageDialog(new JFrame(),
                                     "Age has to be a number!");
                         }else {
-                            Logger.log("New profile " + nametext.getText() + " for user: " + AvMinArm.user.getUsername());
-                            Profile profile = new Profile(nametext.getText(), Integer.parseInt(agetext.getText()), selected, new String[]{});
+                            if(picture.getSelected() == null){
+                                JOptionPane.showMessageDialog(new JFrame(),
+                                        "No picture chosen!");
+                            }else{
+                                Logger.log("New profile " + nametext.getText() + " for user: " + AvMinArm.user.getUsername());
+                                Profile profile = new Profile(nametext.getText(), Integer.parseInt(agetext.getText()), picture.getSelected(), new String[]{});
 
-                            AvMinArm.user.signUpProfile(profile);
+                                AvMinArm.user.signUpProfile(profile);
 
-                            UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
-                            userpage.updateUsers();
-                            Display.getInstance().setPage(userpage);
+                                UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
+                                userpage.updateUsers();
+                                resetFields();
+                                Display.getInstance().setPage(userpage);
+                            }
                         }
                     }
                 }
             }
         });
-        button.setFont(HUGE);
+        button.setFont(StyleArchive.NORMAL);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(Box.createRigidArea(new Dimension(0,10)));
         panel.add(button);
 
         return panel;
-    }
-
-    private JPanel getPics(){
-        int rowL = ImageHandler.types.length;
-        int colL = ImageHandler.colors.length;
-        JButton[][] buttons = new JButton[rowL][colL];
-        for(int row = 0; row < rowL; row++){
-            for(int col = 0; col < colL; col++) {
-                String pictureName = ImageHandler.types[row] + "-" + ImageHandler.colors[col];
-                button = new ProfileCard(pictureName, 34);
-                button.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        selected = pictureName;
-                    }
-                });
-                buttons[row][col] = button;
-            }
-        }
-
-        JPanel grid = new JPanel();
-        GroupLayout layout = new GroupLayout(grid);
-        grid.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-
-        for(int col = 0; col < colL; col++){
-            GroupLayout.ParallelGroup parGroup = layout.createParallelGroup();
-            for(int row = 0; row < rowL; row++) {
-                parGroup.addComponent(buttons[row][col]);
-            }
-            hGroup.addGroup(parGroup);
-        }
-        layout.setHorizontalGroup(hGroup);
-
-        GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        for(int row = 0; row < rowL; row++) {
-            GroupLayout.ParallelGroup parGroup = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
-            for(int col = 0; col < colL; col++){
-                parGroup.addComponent(buttons[row][col]);
-            }
-            vGroup.addGroup(parGroup);
-        }
-        layout.setVerticalGroup(vGroup);
-        grid.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        return grid;
     }
 
     public static boolean isNumber(String s){

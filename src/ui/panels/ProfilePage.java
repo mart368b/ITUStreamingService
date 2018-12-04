@@ -2,6 +2,8 @@ package ui.panels;
 
 import maincomponents.AvMinArm;
 import ui.Display;
+import ui.StyleArchive;
+import ui.cards.CanvasCard;
 import ui.cards.ProfileCard;
 import maincomponents.ImageHandler;
 import ui.components.ImageButton;
@@ -17,135 +19,65 @@ import java.util.Random;
 
 public class ProfilePage extends Page {
 
-    private static final Font font = new Font("Arial", Font.PLAIN, 24);
-
-    private String selected = "";
-    private JButton button;
+    private JPanel canvas, panel, grid, buttons, wrap;
     private ProfileCard pic;
-    private JLabel nametext, agetext, picturetext;
-    private Random rand = new Random();
+    private JButton commit, back, delete;
+    private JLabel nametext, agetext, picturetext, label, name, age, picture;
+    private JTextField namechange, agechange;
+    public CanvasCard selected;
 
     public ProfilePage(){
         super();
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        pic = new ProfileCard("create", 256);
+        setLayout(new GridBagLayout());
+
+        wrap = new JPanel();
+        wrap.setLayout(new BoxLayout(wrap, BoxLayout.Y_AXIS));
+
+        label = new JLabel("Information");
+        label.setFont(StyleArchive.HEADER);
+        wrap.add(label);
+
+        canvas = new JPanel();
+        canvas.setLayout(new BoxLayout(canvas, BoxLayout.X_AXIS));
+        pic = new ProfileCard();
+        pic.setPreferredSize(new Dimension(256,256));
         pic.setBorderPainted(false);
         pic.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(pic);
-        add(getInformation());
-        setSize(new Dimension(400,400));
-    }
-    private String a = "";
+        canvas.add(pic);
+        canvas.add(getInformation());
+        canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
+        wrap.add(canvas);
+        wrap.setBackground(StyleArchive.COLOR_BACKGROUND);
 
-    public void open(Profile profile){
-        selected = AvMinArm.profile.getProfilePictureName();
-        String profilePicName = AvMinArm.profile.getProfilePictureName();
-        pic.setPicture(profilePicName, 256);
-        nametext.setText(AvMinArm.profile.getName());
-        agetext.setText(Integer.toString(AvMinArm.profile.getAge()));
-        picturetext.setText(AvMinArm.profile.getProfilePictureName().toString());
-        validate();
+        setBackground(StyleArchive.COLOR_BACKGROUND);
+        add(wrap);
     }
 
     public JPanel getInformation(){
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
-        JLabel label = new JLabel("Information:");
-        label.setFont(font);
-        panel.add(label);
+        name = new JLabel("Profile name:");
+        name.setFont(StyleArchive.NORMAL);
+        nametext = new JLabel();
+        nametext.setFont(StyleArchive.NORMAL);
+        namechange = new JTextField();
 
-        JLabel name = new JLabel("Profile name:");
-        nametext = new JLabel("");
-        JTextField namechange = new JTextField(20);
-        namechange.setMaximumSize(new Dimension(230,0));
-        JButton namebutton = new JButton("Change");
-        namebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(namechange.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "Please insert a new name!");
-                }else{
-                    if(AvMinArm.user.hasProfile(namechange.getText())){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Name already taken by anotehr profile!");
-                    }else{
-                        AvMinArm.profile.setName(namechange.getText());
+        age = new JLabel("Profile age:");
+        age.setFont(StyleArchive.NORMAL);
+        agetext = new JLabel();
+        agetext.setFont(StyleArchive.NORMAL);
+        agechange = new JTextField();
 
-                        ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
-                        profilePage.open(AvMinArm.profile);
-                    }
-                }
-            }
-        });
+        picture = new JLabel("Profile picture:");
+        picture.setFont(StyleArchive.NORMAL);
+        picturetext = new JLabel();
 
-        JLabel age = new JLabel("Profile age:");
-        agetext = new JLabel("");
-        JTextField agechange = new JTextField();
-        agechange.setMaximumSize(new Dimension(230,0));
-        JButton agebutton = new JButton("Change");
-        agebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(agechange.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "Please insert a new age!");
-                }else{
-                    if(!isNumber(agechange.getText())){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Age has to be a number!");
-                    }else{
-                        AvMinArm.profile.setAge(Integer.parseInt(agechange.getText()));
+        selected = new CanvasCard();
+        System.out.println("pp: " + selected.getSize());
 
-                        ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
-                        profilePage.open(AvMinArm.profile);
-                    }
-                }
-            }
-        });
-
-        JLabel picture = new JLabel("Profile picture:");
-        picturetext = new JLabel("");
-        Dimension d = new Dimension(100,20);
-        picturetext.setMinimumSize(d);
-        picturetext.setPreferredSize(d);
-
-        //JPanel picturechange = getPics();
-
-        ImageButton picturechange = new ImageButton();
-        picturechange.setImage(ImageHandler.getInstance().getImage("canvas"));
-        picturechange.setMinimumSize(new Dimension(230, 190));
-        picturechange.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PointerInfo info = MouseInfo.getPointerInfo();
-                Point loc = info.getLocation();
-                Point picloc = picturechange.getLocationOnScreen();
-
-                double dx = picturechange.getWidth()/5;
-                double dy = picturechange.getHeight()/4;
-
-                int x = loc.x-picloc.x;
-                int y = loc.y-picloc.y;
-
-                int col = (int)(x/dx);
-                int type = (int)(y/dy);
-                selected =  ImageHandler.types[type] + "-" + ImageHandler.colors[col];
-            }
-        });
-
-        JButton picturebutton = new JButton("Change");
-        picturebutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AvMinArm.profile.setPicture(selected);
-                ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
-                profilePage.open(AvMinArm.profile);
-            }
-        });
-
-        JPanel grid = new JPanel();
+        grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);
         grid.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -157,23 +89,58 @@ public class ProfilePage extends Page {
         hGroup.addGroup(layout.createParallelGroup()
                 .addComponent(nametext).addComponent(agetext).addComponent(picturetext));
         hGroup.addGroup(layout.createParallelGroup()
-                .addComponent(namechange).addComponent(agechange).addComponent(picturechange));
-        hGroup.addGroup(layout.createParallelGroup()
-                .addComponent(namebutton).addComponent(agebutton).addComponent(picturebutton));
+                .addComponent(namechange).addComponent(agechange).addComponent(selected));
         layout.setHorizontalGroup(hGroup);
 
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(name).addComponent(nametext).addComponent(namechange).addComponent(namebutton));
+                .addComponent(name).addComponent(nametext).addComponent(namechange));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(age).addComponent(agetext).addComponent(agechange).addComponent(agebutton));
+                .addComponent(age).addComponent(agetext).addComponent(agechange));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(picture).addComponent(picturetext).addComponent(picturechange).addComponent(picturebutton));
+                .addComponent(picture).addComponent(picturetext).addComponent(selected));
         layout.setVerticalGroup(vGroup);
         grid.setAlignmentX(Component.CENTER_ALIGNMENT);
+        grid.setBackground(StyleArchive.COLOR_BACKGROUND);
         panel.add(grid);
 
-        JButton back = new JButton("Back");
+        buttons = new JPanel();
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+        commit = new JButton("Commit changes");
+        commit.setFont(StyleArchive.SMALL_BUTTON);
+        commit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!namechange.getText().isEmpty()) {
+                    if (AvMinArm.user.hasProfile(namechange.getText())) {
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "Name already taken by another profile!");
+                    } else {
+                        AvMinArm.profile.setName(namechange.getText());
+                    }
+                }
+                if(!agechange.getText().isEmpty()){
+                    if(!isNumber(agechange.getText())){
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "Age has to be a number!");
+                    }else{
+                        AvMinArm.profile.setAge(Integer.parseInt(agechange.getText()));
+                    }
+                }
+                if (selected.getSelected() != null){
+                    AvMinArm.profile.setPicture(selected.getSelected());
+                }
+
+                namechange.setText("");
+                agechange.setText("");
+                ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
+                profilePage.open();
+            }
+        });
+
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+        back = new JButton("Back");
+        back.setFont(StyleArchive.SMALL_BUTTON);
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -183,7 +150,8 @@ public class ProfilePage extends Page {
             }
         });
 
-        JButton delete = new JButton("Delete this profile");
+        delete = new JButton("Delete this profile");
+        delete.setFont(StyleArchive.SMALL_BUTTON);
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -200,9 +168,25 @@ public class ProfilePage extends Page {
                 }
             }
         });
-        panel.add(delete);
+        buttons.add(commit);
+        buttons.add(Box.createRigidArea(new Dimension(20,0)));
+        buttons.add(delete);
+        buttons.add(Box.createRigidArea(new Dimension(20,0)));
+        buttons.add(back);
+        buttons.setBackground(StyleArchive.COLOR_BACKGROUND);
+        panel.add(buttons);
 
         return panel;
+    }
+
+    public void open(){
+        String profilePicName = AvMinArm.profile.getProfilePictureName();
+        pic.setPicture(profilePicName, 256);
+        nametext.setText(AvMinArm.profile.getName());
+        agetext.setText(Integer.toString(AvMinArm.profile.getAge()));
+        picturetext.setText("");
+        validate();
+        repaint();
     }
 
     public static boolean isNumber(String s){
