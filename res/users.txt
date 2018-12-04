@@ -1,1 +1,3 @@
 Kaare;1234;false;mor,1,default-cyan,;
+Kasper;1234;false;Mor,45,default-red,%Far,45,pig-green,%Nicolai,16,space-green,%Mathias,11,mummy-cyan,%Kasper,19,default-grey,;
+Mathias;1234;false;Mig,11,default-green,;
