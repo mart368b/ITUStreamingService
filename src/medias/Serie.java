@@ -8,18 +8,19 @@ import java.util.ArrayList;
 
 public class Serie extends Media {
 
-    //private HashMap<Integer, ArrayList<Integer>> episodes; //Første input i hashmappet er sæsoner, andet er en array af episoder
+    //private HashMap<Integer, ArrayList<Integer>> seasons; //Første input i hashmappet er sæsoner, andet er en array af episoder
     
-    private HashMap<Integer, ArrayList<SeriesEpisode>> episodes;
+    private HashMap<Integer, ArrayList<SeriesEpisode>> seasons;
 
-    Serie(String title, String year, String genre, String rating, String ageResriction, String seasons) {
+    Serie(String id,String title, String year, String genre, String rating, String ageResriction, String seasons) {
+        this.id = Integer.parseInt(id);
         this.title = title;
         this.genres = GenreTypes.getGenreTypeByNames(genre.split(","));
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
         this.ageResctriction = AgeTypes.getAgeTypeFromName(ageResriction);;
 
-        this.episodes = new HashMap<>();
+        this.seasons = new HashMap<>();
         String[] seasonArr = seasons.split("_"); // 4-13
         for ( String season: seasonArr){
             addSeason(season);
@@ -33,11 +34,11 @@ public class Serie extends Media {
         // season = "seasonID-(Episode)(Episode)"
         int splitter = season.indexOf("-");
         int seasonNumber = Integer.parseInt(season.substring(0, splitter));
-        if ( !this.episodes.containsKey(seasonNumber) ){
-            this.episodes.put(seasonNumber, new ArrayList<SeriesEpisode>());
+        if ( !this.seasons.containsKey(seasonNumber) ){
+            this.seasons.put(seasonNumber, new ArrayList<SeriesEpisode>());
         }
         String episodesInfo = season.substring(splitter, season.length() - 1);
-        ArrayList<SeriesEpisode> episodeContainer = this.episodes.get(seasonNumber);
+        ArrayList<SeriesEpisode> episodeContainer = this.seasons.get(seasonNumber);
         if ( episodesInfo.length() <= 2){
             return;
         }
@@ -58,7 +59,7 @@ public class Serie extends Media {
 
         int duration = getTimeInMinutes(episodeInfo[1]); // episode duration in seconds
         SeriesEpisode episodeClass = new SeriesEpisode(seasonNumber, episodeNumber, episodeInfo[0], duration);
-        this.episodes.get(seasonNumber).add(episodeClass);
+        this.seasons.get(seasonNumber).add(episodeClass);
     }
 
     @Override
@@ -68,8 +69,8 @@ public class Serie extends Media {
         return builder;
     }
 
-    public HashMap<Integer, ArrayList<SeriesEpisode>> getEpisodes(){
-        return episodes;
+    public HashMap<Integer, ArrayList<SeriesEpisode>> getSeasons(){
+        return seasons;
     }
 
 }

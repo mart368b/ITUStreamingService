@@ -3,7 +3,6 @@ package ui.panels;
 import medias.Movie;
 import medias.Serie;
 import medias.SeriesEpisode;
-import medias.types.AgeTypes;
 import medias.types.GenreTypes;
 import medias.Media;
 import ui.Display;
@@ -240,7 +239,7 @@ public class MediaPreviewPage extends Page {
 
     private void addSeriesPlayButton(Serie serie) {
         playContainer.removeAll();
-        HashMap<Integer, ArrayList<SeriesEpisode>> seasons = serie.getEpisodes();
+        HashMap<Integer, ArrayList<SeriesEpisode>> seasons = serie.getSeasons();
         for (int season: seasons.keySet()){
             ArrayList<SeriesEpisode> episodes = seasons.get(season);
             JButton episodeButton = new JButton(season + " - " + episodes.size());

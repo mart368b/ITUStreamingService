@@ -32,4 +32,12 @@ public class SeriesEpisode {
     public String toString(){
         return Integer.toString(seasonNumber) + "-" + Integer.toString(episodeNumber) + ":'" + title + "'-" + getFormattedTime();
     }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 }

@@ -7,7 +7,8 @@ public class Movie extends Media{
 
     private int duration;
 
-    Movie(String title, String year, String genre, String rating, String ageResriction, String duration){
+    Movie(String id, String title, String year, String genre, String rating, String ageResriction, String duration){
+        this.id = Integer.parseInt(id);
         this.title = title;
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
@@ -26,4 +27,7 @@ public class Movie extends Media{
         return builder;
     }
 
+    public int getDuration() {
+        return duration;
+    }
 }

@@ -3,11 +3,11 @@ package user;
 import debugging.Logger;
 import maincomponents.ImageHandler;
 import medias.Media;
+import medias.types.MediaTypes;
 import reader.MediaHandler;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Profile {
 
@@ -15,6 +15,8 @@ public class Profile {
     private String picture;
     private int age;
     private List<Media> favorites;
+    private Map<Integer, Integer> watchedMovies;
+    private Map<Integer, Map<Integer, Map<Integer, Integer>>> watchedSeries;
 
     /**
      * Create profile with known age

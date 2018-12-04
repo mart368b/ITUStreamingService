@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public abstract class Media {
+    protected int id;
     protected String title;
     protected String year;
     protected double rating;
@@ -116,9 +117,9 @@ public abstract class Media {
     public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws ExceptionInInitializerError {
         switch (mediaType) {
             case MOVIE:
-                return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
+                return new Movie(information[0], information[1], information[2], information[3], information[4], information[5], information[6] );
             case SERIES:
-                return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
+                return new Serie(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
             default:
                 return null;
         }
