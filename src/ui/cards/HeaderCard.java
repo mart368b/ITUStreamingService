@@ -153,7 +153,7 @@ public class HeaderCard extends JPanel {
     }
 
     public void setProfilePicture(Profile profile){
-        userButton.setImgage(profile.getImage());
+        userButton.setImage(profile.getImage());
         userButton.repaint();
     }
 

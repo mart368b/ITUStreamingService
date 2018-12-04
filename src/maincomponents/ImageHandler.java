@@ -8,6 +8,7 @@ import debugging.Logger;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,8 +20,8 @@ public class ImageHandler {
     }
 
     private HashMap<String, BufferedImage> images;
-    public static String[] types = new String[]{"default", "mummy", "pig", "space"};
-    public static String[] colors = new String[]{"cyan", "green", "grey", "orange", "red"};
+    public static String[] types = new String[]{"default", "pig", "space", "mummy"};
+    public static String[] colors = new String[]{"green", "orange", "cyan", "red", "grey"};
     public static String[] agetypes = new String[]{"13", "15", "16", "18", "G", "M", "R", "PG", "NONE"};
 
     private ImageHandler(){}
@@ -42,6 +43,7 @@ public class ImageHandler {
         loadResource("button-images", "create", "jpg");
         loadResource("button-images", "star", "png");
         loadResource("button-images","logo", "png");
+        loadResource("user-images","canvas", "png");
     }
 
     private void loadStockPhoto() {

@@ -1,6 +1,7 @@
 package ui.panels;
 
 import debugging.Logger;
+import maincomponents.AvMinArm;
 import ui.Display;
 import user.UserHandler;
 
@@ -98,8 +99,11 @@ public class SignUpPage extends Page {
                             conpasstext.setText("");
                         }else{
                             UserHandler.getInstance().signUpUser(usertext.getText(), String.copyValueOf(passtext.getPassword()));
+                            AvMinArm.user = UserHandler.getInstance().getUser(usertext.getText(), String.copyValueOf(passtext.getPassword()));
                             Logger.log("New user created with name: " + usertext.getText());
-                            Display.getInstance().setPage(Page.USERPAGE);
+                            UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
+                            userpage.updateUsers();
+                            Display.getInstance().setPage(userpage);
                         }
                     }
                 }

@@ -51,6 +51,7 @@ public class UserPage extends Page {
 
     public void updateUsers(){
         userprofiles.removeAll();
+        if(AvMinArm.user == null) return;
         ArrayList<Profile> profiles = AvMinArm.user.getProfiles();
 
         userprofiles.setLayout(new BoxLayout(userprofiles,BoxLayout.LINE_AXIS));
