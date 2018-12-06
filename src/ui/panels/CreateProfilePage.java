@@ -80,7 +80,6 @@ public class CreateProfilePage extends Page {
         agetext = new JTextField();
 
         picture = new CanvasCard();
-        System.out.println(picture.getSize());
 
         grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);
@@ -134,7 +133,7 @@ public class CreateProfilePage extends Page {
                                         "No picture chosen!");
                             }else{
                                 Logger.log("New profile " + nametext.getText() + " for user: " + AvMinArm.user.getUsername());
-                                Profile profile = new Profile(nametext.getText(), Integer.parseInt(agetext.getText()), picture.getSelected(), new String[]{});
+                                Profile profile = new Profile(nametext.getText(), Integer.parseInt(agetext.getText()), picture.getSelected());
 
                                 AvMinArm.user.signUpProfile(profile);
 

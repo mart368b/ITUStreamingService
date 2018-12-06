@@ -2,6 +2,7 @@ package medias.types;
 
 import debugging.LogTypes;
 import debugging.Logger;
+import ui.StyleArchive;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,16 +47,9 @@ public enum GenreTypes {
     private JPanel getCard() {
         JPanel panel = new JPanel();
         Label label = new Label(name);
-        label.setFont(getFont());
+        label.setFont(StyleArchive.HEADER);
         panel.add(label);
         return panel;
-    }
-
-    public static Font getFont(){
-        if (genreFont == null){
-            genreFont = new Font("Arial", Font.PLAIN, 24);
-        }
-        return genreFont;
     }
 
     public String getName(){

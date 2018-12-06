@@ -84,6 +84,9 @@ public class PreviewPage extends Page {
         });
         panel.add(sortTypeBox);
 
+        JLabel reverseText = new JLabel("Reverse:");
+        panel.add(reverseText);
+
         JRadioButton radioButton = new JRadioButton();
         radioButton.addActionListener(new ActionListener() {
             @Override

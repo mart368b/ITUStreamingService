@@ -40,4 +40,12 @@ public class SeriesEpisode {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    public int getEpisodeNumber(){
+        return episodeNumber;
+    }
+
+    public int getSeasonNumber(){
+        return seasonNumber;
+    }
 }

@@ -75,7 +75,6 @@ public class ProfilePage extends Page {
         picturetext = new JLabel();
 
         selected = new CanvasCard();
-        System.out.println("pp: " + selected.getSize());
 
         grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);

@@ -1,11 +1,13 @@
 package ui.panels;
 
+import maincomponents.AvMinArm;
 import medias.Movie;
 import medias.Serie;
 import medias.SeriesEpisode;
 import medias.types.GenreTypes;
 import medias.Media;
 import ui.Display;
+import ui.StyleArchive;
 import ui.components.ImageViewer;
 import ui.components.PartialImageView;
 import maincomponents.ImageHandler;
@@ -27,7 +29,7 @@ public class MediaPreviewPage extends Page {
     private JPanel genreContainer, ratingContainer, playContainer, playWrapper;
     private ImageViewer restrictionImg;
     private JLabel genreText, ratingText, yearText;
-    private JButton backButton, backToSelectionButton;
+    private JButton backButton, backToSelectionButton, playButton;
     private PartialImageView partialStar;
     private ArrayList<ImageViewer> stars;
     private Media currentMedia;
@@ -99,19 +101,19 @@ public class MediaPreviewPage extends Page {
 
         genreContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         genreText = new JLabel("Genre: ");
-        genreText.setFont(GenreTypes.getFont());
+        genreText.setFont(StyleArchive.HEADER);
         genreContainer.add(genreText);
         informationPanel.add(genreContainer);
 
         ratingContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         ratingText = new JLabel("Rating: ");
-        ratingText.setFont(GenreTypes.getFont());
+        ratingText.setFont(StyleArchive.HEADER);
         ratingContainer.add(ratingText);
         informationPanel.add(ratingContainer);
 
         JPanel restrictionContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel restrictionText = new JLabel("Restriction: ");
-        restrictionText.setFont(GenreTypes.getFont());
+        restrictionText.setFont(StyleArchive.HEADER);
         restrictionContainer.add(restrictionText);
         restrictionImg = new ImageViewer();
         restrictionImg.setPreferredSize(new Dimension(40,40));
@@ -121,7 +123,7 @@ public class MediaPreviewPage extends Page {
 
         JPanel yearContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
         yearText = new JLabel("Release date: ");
-        yearText.setFont(GenreTypes.getFont());
+        yearText.setFont(StyleArchive.HEADER);
         yearContainer.add(yearText);
         informationPanel.add(yearContainer);
 
@@ -146,11 +148,13 @@ public class MediaPreviewPage extends Page {
         });
         playWrapper.add(backButton);
 
-        JButton playButton = new JButton("Play");
+        playButton = new JButton("Play");
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Play + " + currentMedia.toString());
+                MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
+                playerPage.displayMovie((Movie) currentMedia, MediaPreviewPage.this);
+                Display.getInstance().setPage(playerPage);
             }
         });
         playWrapper.add(playButton);
@@ -179,7 +183,7 @@ public class MediaPreviewPage extends Page {
         Border underlineBorder = BorderFactory.createMatteBorder(0,0,4,0, Color.LIGHT_GRAY);
         titleWrapper.setBorder(underlineBorder);
 
-        title = new JLabel("The God Father");
+        title = new JLabel();
         title.setForeground(Color.BLACK);
         title.setFont(titleFont);
         titleWrapper.add(title);
@@ -231,14 +235,15 @@ public class MediaPreviewPage extends Page {
     }
 
     private void addDefaultPlayButton() {
-        playContainer.removeAll();
-        playContainer.add(playWrapper);
+        playWrapper.removeAll();
+        playWrapper.add(playButton);
+        playWrapper.add(backButton);
         validate();
         repaint();
     }
 
     private void addSeriesPlayButton(Serie serie) {
-        playContainer.removeAll();
+        playWrapper.removeAll();
         HashMap<Integer, ArrayList<SeriesEpisode>> seasons = serie.getSeasons();
         for (int season: seasons.keySet()){
             ArrayList<SeriesEpisode> episodes = seasons.get(season);
@@ -246,30 +251,31 @@ public class MediaPreviewPage extends Page {
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setEpisodePlayButton(episodes);
+                    setEpisodePlayButton(episodes, serie);
                 }
             });
-            playContainer.add(episodeButton);
+            playWrapper.add(episodeButton);
         }
-        playContainer.add(backButton);
+        playWrapper.add(backButton);
         validate();
         repaint();
     }
 
-    private void setEpisodePlayButton(ArrayList<SeriesEpisode> episodes){
-        playContainer.removeAll();
+    private void setEpisodePlayButton(ArrayList<SeriesEpisode> episodes, Serie serie){
+        playWrapper.removeAll();
         for (SeriesEpisode episode: episodes){
             JButton episodeButton = new JButton(episode.toString());
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setEpisodePlayButton(episodes);
+                    MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
+                    playerPage.displaySeries(episode, serie, (Page) MediaPreviewPage.this);
+                    Display.getInstance().setPage(playerPage);
                 }
             });
-            playContainer.add(episodeButton);
+            playWrapper.add(episodeButton);
         }
-        playContainer.add(backToSelectionButton);
-        System.out.println("E");
+        playWrapper.add(backToSelectionButton);
         validate();
         repaint();
     }

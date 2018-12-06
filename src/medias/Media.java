@@ -57,6 +57,10 @@ public abstract class Media {
         return rating;
     }
 
+    public int getId(){
+        return id;
+    }
+
     public AgeTypes getAgeRestriction(){return ageResctriction;}
 
     public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
