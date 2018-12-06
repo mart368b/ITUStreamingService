@@ -35,9 +35,11 @@ public class CSVReader {
         File f = new File(url);
         // maincomponents.AvMinArm if file exists
         if ( !f.exists() ){
-            throw new MissingFileException(f, "csv");
+            int seperatorIndex = f.getName().lastIndexOf(".");
+            String extension = f.getName().substring(seperatorIndex+1);
+            throw new MissingFileException(f, extension);
         }
-        Logger.log("Reading csv file: " + f.getAbsoluteFile());
+        Logger.log("Reading file: " + f.getAbsoluteFile());
         try {
             readFile(f);
         } catch (IOException e){

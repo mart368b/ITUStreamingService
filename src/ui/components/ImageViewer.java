@@ -1,5 +1,7 @@
 package ui.components;
 
+import ui.StyleArchive;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;

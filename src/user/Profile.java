@@ -3,11 +3,11 @@ package user;
 import debugging.Logger;
 import maincomponents.ImageHandler;
 import medias.Media;
+import medias.types.MediaTypes;
 import reader.MediaHandler;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Profile {
 
@@ -15,6 +15,8 @@ public class Profile {
     private String picture;
     private int age;
     private List<Media> favorites;
+    private Map<Integer, Integer> watchedMovies;
+    private Map<Integer, Map<Integer, Map<Integer, Integer>>> watchedSeries;
 
     /**
      * Create profile with known age
@@ -26,6 +28,17 @@ public class Profile {
         this.age = age;
         this.picture = "default-orange";
         this.favorites = new ArrayList<Media>();
+        this.watchedSeries = new HashMap<>();
+        this.watchedMovies = new HashMap<>();
+    }
+
+    public Profile(String name, int age, String picture){
+        this.name = name;
+        this.age = age;
+        this.picture = picture;
+        this.favorites = new ArrayList<Media>();
+        watchedMovies = new HashMap<>();
+        watchedSeries = new HashMap<>();
     }
 
     /**
@@ -35,16 +48,23 @@ public class Profile {
      * @param picture The name of the profilepicture
      * @param favorites The stringarray which contains all the names of the favorite media
      */
-    public Profile(String name, int age, String picture, String[] favorites){
+    public Profile(String name, int age, String picture, String[] favorites, Map<Integer, Map<Integer, Map<Integer, Integer>>> watchedSeries, Map<Integer, Integer> watchedMovies){
         this.name = name;
         this.age = age;
         this.picture = picture;
         this.favorites = new ArrayList<Media>();
+        MediaHandler handler = MediaHandler.getInstance();
         for(String s : favorites){
-            Media media = MediaHandler.getInstance().getMedia(s);
+            if (s.length() == 0){
+                continue;
+            }
+            int mediaID = Integer.parseInt(s);
+            Media media = handler.getMediaByID(mediaID);
             if(media != null) this.favorites.add(media);
             else Logger.log("Found title in favoriteslist of username: " + name + ", that does not exist in Media!");
         }
+        this.watchedSeries = watchedSeries;
+        this.watchedMovies = watchedMovies;
     }
 
     /**
@@ -66,6 +86,72 @@ public class Profile {
      */
     public void setPicture(String image){
         picture = image;
+    }
+
+    public Map<Integer, Map<Integer, Map<Integer, Integer>>> getWatchedSeries(){
+        return watchedSeries;
+    }
+
+    public Map<Integer, Integer> getWatchedMovies(){
+        return watchedMovies;
+    }
+
+    public void addWatchedMovie(int movieID, int duration){
+        if (duration == 0){
+            return;
+        }
+        watchedMovies.put(movieID, duration);
+    }
+
+    public int getMovieTimeStamp(int movieID){
+        int timeStamp = 0;
+        if(watchedMovies.containsKey(movieID)){
+            timeStamp = watchedMovies.get(movieID);
+        }
+        return timeStamp;
+    }
+
+    public void addWatchedSeriesEpisode(int seriesID, int seasonID, int episodeID, int duration){
+        Map<Integer, Map<Integer, Integer>> series= null;
+        if (!watchedSeries.containsKey(seriesID)){
+            if (duration == 0){
+                return;
+            }
+            series = new HashMap<>();
+            watchedSeries.put(seriesID, series);
+        }else {
+            series = watchedSeries.get(seriesID);
+        }
+        Map<Integer, Integer> season = null;
+        if (!series.containsKey(seasonID)){
+            if (duration == 0){
+                return;
+            }
+            season = new HashMap<>();
+            series.put(seasonID, season);
+        }else{
+            season = series.get(seasonID);
+        }
+        season.put(episodeID, duration);
+    }
+
+    public int getSeriesTimeStamp(int seriesID, int seasonID, int episodeID){
+        Map<Integer, Map<Integer, Integer>> series= null;
+        if (!watchedSeries.containsKey(seriesID)){
+            return 0;
+        }else {
+            series = watchedSeries.get(seriesID);
+        }
+        Map<Integer, Integer> season = null;
+        if (!series.containsKey(seasonID)){
+            return 0;
+        }else{
+            season = series.get(seasonID);
+        }
+        if (!season.containsKey(episodeID)){
+            return 0;
+        }
+        return season.get(episodeID);
     }
 
     /**
@@ -124,5 +210,9 @@ public class Profile {
      */
     public void setAge(int age){
         this.age = age;
+    }
+
+    public void removeFavorite(Media media) {
+        favorites.remove(media);
     }
 }

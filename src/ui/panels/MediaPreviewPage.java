@@ -3,10 +3,10 @@ package ui.panels;
 import medias.Movie;
 import medias.Serie;
 import medias.SeriesEpisode;
-import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.Media;
 import ui.Display;
+import ui.StyleArchive;
 import ui.components.ImageViewer;
 import ui.components.PartialImageView;
 import maincomponents.ImageHandler;
@@ -25,10 +25,10 @@ public class MediaPreviewPage extends Page {
     public static Font titleFont = new Font("Arial", Font.PLAIN, 40);
     private ImageViewer imagePanel;
     private JLabel title;
-    private JPanel genreContainer, ratingContainer, playContainer, playWrapper;
+    private JPanel genreContainer, ratingContainer, actionContainer, actionWrapper;
     private ImageViewer restrictionImg;
     private JLabel genreText, ratingText, yearText;
-    private JButton backButton, backToSelectionButton;
+    private JButton backButton, backToSelectionButton, playButton;
     private PartialImageView partialStar;
     private ArrayList<ImageViewer> stars;
     private Media currentMedia;
@@ -38,6 +38,7 @@ public class MediaPreviewPage extends Page {
         initializeStars();
 
         JPanel titlePanel = getTitlePanel();
+        titlePanel.setBackground(StyleArchive.COLOR_BACKGROUND);
         add(titlePanel, BorderLayout.PAGE_START);
 
         JPanel body = getBody();
@@ -58,6 +59,7 @@ public class MediaPreviewPage extends Page {
         for (int i = 0; i < 5; i++){
             ImageViewer star = new ImageViewer(starImg);
             star.setPrefferedWidth(40);
+            star.setBackground(StyleArchive.COLOR_BACKGROUND);
             stars.add(star);
         }
     }
@@ -66,7 +68,7 @@ public class MediaPreviewPage extends Page {
         JPanel body = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JPanel bioContianer = getBioContainer();
+        JPanel bioContianer = getBioBody();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 0;
@@ -83,14 +85,6 @@ public class MediaPreviewPage extends Page {
         return body;
     }
 
-    private JPanel getBioContainer(){
-        JPanel panel = new JPanel( new BorderLayout());
-
-        panel.add(getBioBody(), BorderLayout.CENTER);
-
-        return panel;
-    }
-
     private JPanel getBioBody() {
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -99,21 +93,25 @@ public class MediaPreviewPage extends Page {
         informationPanel.setLayout(layout);
 
         genreContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        genreContainer.setBackground(StyleArchive.COLOR_BACKGROUND);
         genreText = new JLabel("Genre: ");
-        genreText.setFont(GenreTypes.getFont());
+        genreText.setFont(StyleArchive.HEADER);
         genreContainer.add(genreText);
         informationPanel.add(genreContainer);
 
         ratingContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ratingContainer.setBackground(StyleArchive.COLOR_BACKGROUND);
         ratingText = new JLabel("Rating: ");
-        ratingText.setFont(GenreTypes.getFont());
+        ratingText.setFont(StyleArchive.HEADER);
         ratingContainer.add(ratingText);
         informationPanel.add(ratingContainer);
 
         JPanel restrictionContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        restrictionContainer.setBackground(StyleArchive.COLOR_BACKGROUND);
         JLabel restrictionText = new JLabel("Restriction: ");
-        restrictionText.setFont(GenreTypes.getFont());
+        restrictionText.setFont(StyleArchive.HEADER);
         restrictionContainer.add(restrictionText);
+
         restrictionImg = new ImageViewer();
         restrictionImg.setPreferredSize(new Dimension(40,40));
         restrictionImg.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -121,8 +119,9 @@ public class MediaPreviewPage extends Page {
         informationPanel.add(restrictionContainer);
 
         JPanel yearContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        yearContainer.setBackground(StyleArchive.COLOR_BACKGROUND);
         yearText = new JLabel("Release date: ");
-        yearText.setFont(GenreTypes.getFont());
+        yearText.setFont(StyleArchive.HEADER);
         yearContainer.add(yearText);
         informationPanel.add(yearContainer);
 
@@ -132,11 +131,13 @@ public class MediaPreviewPage extends Page {
     }
 
     private Component getActionPanel() {
-        playContainer = new JPanel(new GridBagLayout());
+        actionContainer = new JPanel(new GridBagLayout());
+        actionContainer.setBackground(StyleArchive.COLOR_BACKGROUND);
 
-        playWrapper = new JPanel();
-        BoxLayout layout = new BoxLayout(playWrapper, BoxLayout.Y_AXIS);
-        playWrapper.setLayout(layout);
+        actionWrapper = new JPanel();
+        actionWrapper.setBackground(StyleArchive.COLOR_BACKGROUND);
+        BoxLayout layout = new BoxLayout(actionWrapper, BoxLayout.Y_AXIS);
+        actionWrapper.setLayout(layout);
 
         backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -145,28 +146,31 @@ public class MediaPreviewPage extends Page {
                 Display.getInstance().setPage(Page.PREVIEWPAGE);
             }
         });
-        playWrapper.add(backButton);
+        actionWrapper.add(backButton);
 
-        JButton playButton = new JButton("Play");
+        playButton = new JButton("Play");
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Play + " + currentMedia.toString());
+                MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
+                playerPage.displayMovie((Movie) currentMedia, MediaPreviewPage.this);
+                Display.getInstance().setPage(playerPage);
             }
         });
-        playWrapper.add(playButton);
+        actionWrapper.add(playButton);
 
-        playContainer.add(playWrapper);
+        actionContainer.add(actionWrapper);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.add(playContainer);
-        scrollPane.setViewportView(playContainer);
+        scrollPane.add(actionContainer);
+        scrollPane.setViewportView(actionContainer);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         return scrollPane;
     }
 
     private JPanel getImageContainer(){
         JPanel panel = new JPanel();
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
         imagePanel = new ImageViewer();
         Dimension d = new Dimension(280, 418);
         imagePanel.setPreferredSize(d);
@@ -180,17 +184,17 @@ public class MediaPreviewPage extends Page {
         Border underlineBorder = BorderFactory.createMatteBorder(0,0,4,0, Color.LIGHT_GRAY);
         titleWrapper.setBorder(underlineBorder);
 
-        title = new JLabel("The God Father");
+        title = new JLabel();
         title.setForeground(Color.BLACK);
         title.setFont(titleFont);
         titleWrapper.add(title);
         return titleWrapper;
     }
 
-    public void setGenre(GenreTypes[] genres ){
+    public void setGenre(Genre[] genres ){
         genreContainer.removeAll();
         genreContainer.add(genreText);
-        for (GenreTypes genre: genres){
+        for (Genre genre: genres){
             genreContainer.add(genre.getGenreCard());
         }
     }
@@ -207,10 +211,10 @@ public class MediaPreviewPage extends Page {
             if (partialStar == null){
                 BufferedImage img = ImageHandler.getInstance().getImage("star");
                 partialStar = new PartialImageView(img, remaining);
+                partialStar.setBackground(StyleArchive.COLOR_BACKGROUND);
             }else{
                 partialStar.setShowed(remaining);
             }
-
             partialStar.setPrefferedWidth(40);
             ratingContainer.add(partialStar);
         }
@@ -232,45 +236,47 @@ public class MediaPreviewPage extends Page {
     }
 
     private void addDefaultPlayButton() {
-        playContainer.removeAll();
-        playContainer.add(playWrapper);
+        actionWrapper.removeAll();
+        actionWrapper.add(playButton);
+        actionWrapper.add(backButton);
         validate();
         repaint();
     }
 
     private void addSeriesPlayButton(Serie serie) {
-        playContainer.removeAll();
-        HashMap<Integer, ArrayList<SeriesEpisode>> seasons = serie.getEpisodes();
+        actionWrapper.removeAll();
+        HashMap<Integer, ArrayList<SeriesEpisode>> seasons = serie.getSeasons();
         for (int season: seasons.keySet()){
             ArrayList<SeriesEpisode> episodes = seasons.get(season);
             JButton episodeButton = new JButton(season + " - " + episodes.size());
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setEpisodePlayButton(episodes);
+                    setEpisodePlayButton(episodes, serie);
                 }
             });
-            playContainer.add(episodeButton);
+            actionWrapper.add(episodeButton);
         }
-        playContainer.add(backButton);
+        actionWrapper.add(backButton);
         validate();
         repaint();
     }
 
-    private void setEpisodePlayButton(ArrayList<SeriesEpisode> episodes){
-        playContainer.removeAll();
+    private void setEpisodePlayButton(ArrayList<SeriesEpisode> episodes, Serie serie){
+        actionWrapper.removeAll();
         for (SeriesEpisode episode: episodes){
             JButton episodeButton = new JButton(episode.toString());
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setEpisodePlayButton(episodes);
+                    MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
+                    playerPage.displaySeries(episode, serie, (Page) MediaPreviewPage.this);
+                    Display.getInstance().setPage(playerPage);
                 }
             });
-            playContainer.add(episodeButton);
+            actionWrapper.add(episodeButton);
         }
-        playContainer.add(backToSelectionButton);
-        System.out.println("E");
+        actionWrapper.add(backToSelectionButton);
         validate();
         repaint();
     }

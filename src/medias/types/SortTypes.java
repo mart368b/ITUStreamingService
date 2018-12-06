@@ -2,6 +2,7 @@ package medias.types;
 
 import medias.Media;
 
+import javax.swing.*;
 import java.util.Comparator;
 
 public enum SortTypes {
@@ -15,7 +16,7 @@ public enum SortTypes {
     RATING(new Comparator<Media>() {
         @Override
         public int compare(Media o1, Media o2) {
-            return Double.compare(o1.getRating(),  o2.getRating());
+            return Double.compare(o2.getRating(), o1.getRating());
         }
     }),
     DATE(new Comparator<Media>() {
@@ -25,11 +26,12 @@ public enum SortTypes {
             int newd1 = Integer.parseInt(d1[d1.length - 1]);
             String[] d2 = o2.getYear().split("-");
             int newd2 = Integer.parseInt(d2[d2.length - 1]);
-            return Integer.compare(newd1, newd2);
+            return Integer.compare(newd2, newd1);
         }
     });
 
     private Comparator<Media> comparator;
+    private JPanel settings;
 
     SortTypes( Comparator<Media> comparator){
         this.comparator = comparator;

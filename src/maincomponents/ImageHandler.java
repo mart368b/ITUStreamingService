@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ImageHandler {
     private static ImageHandler instance = new ImageHandler();
@@ -23,6 +24,7 @@ public class ImageHandler {
     public static String[] types = new String[]{"default", "pig", "space", "mummy"};
     public static String[] colors = new String[]{"green", "orange", "cyan", "red", "grey"};
     public static String[] agetypes = new String[]{"13", "15", "16", "18", "G", "M", "R", "PG", "NONE"};
+    public static String[] buttons = new String[]{"create", "star", "logo", "add", "remove", "up", "down"};
 
     private ImageHandler(){}
 
@@ -40,9 +42,9 @@ public class ImageHandler {
         for (String ageTypeName: agetypes){
             loadResource("rating-images", ageTypeName, "png");
         }
-        loadResource("button-images", "create", "jpg");
-        loadResource("button-images", "star", "png");
-        loadResource("button-images","logo", "png");
+        for (String buttonNames: buttons){
+            loadResource("button-images", buttonNames, "png");
+        }
         loadResource("user-images","canvas", "png");
     }
 
@@ -65,10 +67,13 @@ public class ImageHandler {
         } catch (ResourceLoadingException e) {
             e.logError(LogTypes.SOFTERROR);
             images.put(imageName, getImage("stock"));
+        } catch (Exception e){
+            Logger.log(e.getMessage(), LogTypes.SOFTERROR);
+            images.put(imageName, getImage("stock"));
         }
     }
 
-    private void loadImage(String folderName, String imageName, String extention) throws MissingImageException, ResourceLoadingException {
+    public void loadImage(String folderName, String imageName, String extention) throws MissingImageException, ResourceLoadingException {
         File f = new File("res/" + folderName + "/" + imageName + "." + extention);
         if (!f.exists()){
             throw new MissingImageException(f);

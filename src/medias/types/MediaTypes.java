@@ -5,8 +5,8 @@ import medias.Movie;
 import medias.Serie;
 
 public enum MediaTypes{
-    MOVIE(Movie.class, 6, "movies"),
-    SERIES(Serie.class, 6, "series"),
+    MOVIE(Movie.class, 7, "movies"),
+    SERIES(Serie.class, 7, "series"),
     NONE();
 
     private int columnCount; // Number of required columns in csv file

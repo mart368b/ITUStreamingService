@@ -1,13 +1,16 @@
 package ui.panels;
 
 import maincomponents.AvMinArm;
+import reader.MediaHandler;
 import ui.Display;
+import ui.StyleArchive;
 import ui.cards.HeaderCard;
 import ui.cards.ProfileCard;
 import user.Profile;
 import user.User;
 
 import javax.swing.*;
+import javax.swing.text.Style;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,38 +18,51 @@ import java.util.ArrayList;
 
 public class UserPage extends Page {
 
-    private JPanel panel;
-
+    private JPanel panel, canvas, comp, p;
     private JPanel userprofiles = new JPanel();
-
-    private final Font font = new Font("Arial", Font.PLAIN, 24);
-    private final Font font2 = new Font("Arial", Font.PLAIN, 18);
+    private JLabel label, profiletext;
+    private JButton button, admin, profilebutton;
 
     protected UserPage(){
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("Choose profile");
+        canvas = new JPanel();
+        canvas.setLayout(new BoxLayout(canvas, BoxLayout.Y_AXIS));
+
+        label = new JLabel("Choose profile");
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setFont(font);
+        label.setFont(StyleArchive.HEADER);
 
-        JButton button = new JButton("Sign out");
+
+        canvas.add(label);
+        canvas.add(Box.createRigidArea(new Dimension(0, 20)));
+        updateUsers();
+        canvas.add(userprofiles);
+        canvas.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        button = new JButton("Sign out");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
                 Display.getInstance().setPage(Page.LOGINPAGE);
-                //TODO: GO TO LOGIN/SIGNUP PAGE
             }
         });
 
-        add(label);
-        add(Box.createRigidArea(new Dimension(0, 80)));
-        updateUsers();
-        add(userprofiles);
-        add(Box.createRigidArea(new Dimension(0, 40)));
-        add(button);
+        canvas.add(button);
+
+        admin = new JButton("Admin");
+        admin.setFont(StyleArchive.SMALL_BUTTON);
+        admin.setAlignmentX(Component.CENTER_ALIGNMENT);
+        canvas.add(Box.createRigidArea(new Dimension(0, 5)));
+        canvas.add(admin);
+        canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
+
+        setLayout(new GridBagLayout());
+        setBackground(StyleArchive.COLOR_BACKGROUND);
+        add(canvas);
     }
 
     public void updateUsers(){
@@ -54,17 +70,30 @@ public class UserPage extends Page {
         if(AvMinArm.user == null) return;
         ArrayList<Profile> profiles = AvMinArm.user.getProfiles();
 
+        if(AvMinArm.user.isAdmin()){
+            admin.setVisible(true);
+            admin.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Display.getInstance().setPage(Page.ADMINPAGE);
+                }
+            });
+        }else{
+            admin.setVisible(false);
+        }
+
         userprofiles.setLayout(new BoxLayout(userprofiles,BoxLayout.LINE_AXIS));
+        userprofiles.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         userprofiles.add(Box.createRigidArea(new Dimension(60, 0)));
         for(Profile profile : AvMinArm.user.getProfiles()){
-            JPanel comp = getProfile(profile);
+            comp = getProfile(profile);
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
             userprofiles.add(comp);
             userprofiles.add(Box.createRigidArea(new Dimension(60, 0)));
         }
         if(profiles.size() != 5){
-            JPanel comp = getCreate();
+            comp = getCreate();
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);
             userprofiles.add(comp);
             userprofiles.add(Box.createRigidArea(new Dimension(60, 0)));
@@ -75,63 +104,70 @@ public class UserPage extends Page {
     }
 
     private JPanel getProfile(Profile profile){
-        JPanel p = new JPanel();
+        p = new JPanel();
+        p.setBackground(StyleArchive.COLOR_BACKGROUND);
         p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
 
-        JLabel label = new JLabel(profile.getName());
-        label.setFont(font2);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton button = new ProfileCard(profile);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profiletext = new JLabel(profile.getName());
+        profiletext.setFont(StyleArchive.NORMAL);
+        profiletext.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profilebutton = new ProfileCard(profile);
+        profilebutton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profilebutton.setPreferredSize(new Dimension(128,128));
 
-        button.addActionListener(new ActionListener() {
+        profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
                 HeaderCard.getInstance().setProfilePicture(profile);
+                MediaHandler.getInstance().updateMediaCards(profile.getFavorites());
                 Display.getInstance().setPage(Page.PREVIEWPAGE);
             }
         });
-        p.add(button);
+        p.add(profilebutton);
 
         p.add(Box.createRigidArea(new Dimension(0,10)));
 
-        button = new JButton("Profile");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profilebutton = new JButton("Profile");
+        profilebutton.setFont(StyleArchive.SMALL_BUTTON);
+        profilebutton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        button.addActionListener(new ActionListener() {
+        profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
                 ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
-                profilePage.open(profile);
+                profilePage.open();
                 Display.getInstance().setPage(profilePage);
             }
         });
-        p.add(button);
+        p.add(profilebutton);
         p.add(Box.createRigidArea(new Dimension(0,10)));
-        p.add(label);
+        p.add(profiletext);
         return p;
     }
 
     private JPanel getCreate(){
-        JPanel p = new JPanel();
+        p = new JPanel();
+        p.setBackground(StyleArchive.COLOR_BACKGROUND);
         p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
 
-        JLabel label = new JLabel("New Profile");
-        label.setFont(font2);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton button = new ProfileCard();
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener(new ActionListener() {
+        profiletext = new JLabel("New Profile");
+        profiletext.setFont(StyleArchive.NORMAL);
+        profiletext.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profilebutton = new ProfileCard();
+        profilebutton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profilebutton.setPreferredSize(new Dimension(128,128));
+        profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Display.getInstance().setPage(Page.CREATEPROFILEPAGE);
             }
         });
 
-        p.add(button);
-        p.add(label);
+        p.add(profilebutton);
+        p.add(profiletext);
+        p.add(Box.createRigidArea(new Dimension(0,50)));
         return p;
     }
 }

@@ -3,6 +3,7 @@ package ui.panels;
 import debugging.Logger;
 import maincomponents.AvMinArm;
 import ui.Display;
+import ui.StyleArchive;
 import user.UserHandler;
 
 import javax.swing.*;
@@ -12,23 +13,27 @@ import java.awt.event.ActionListener;
 
 public class SignUpPage extends Page {
 
-    private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
-
-    private JPanel panel;
+    private JPanel panel, canvas, login, grid;
     private JButton button;
+    private JLabel logintext, username, password, conpassword;
+    private JTextField usertext;
+    private JPasswordField passtext, conpasstext;
 
     public SignUpPage(){
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel logintext = new JLabel("Sign up");
-        logintext.setFont(HEADER);
+        canvas = new JPanel();
+        canvas.setLayout(new BoxLayout(canvas, BoxLayout.Y_AXIS));
+
+        logintext = new JLabel("Sign up");
+        logintext.setFont(StyleArchive.HEADER);
         logintext.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel login = getSignUp();
+        login = getSignUp();
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         button = new JButton("Back to login");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,25 +42,34 @@ public class SignUpPage extends Page {
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        add(logintext);
-        add(login);
-        add(Box.createRigidArea(new Dimension(0,10)));
-        add(button);
+        canvas.add(logintext);
+        canvas.add(login);
+        canvas.add(Box.createRigidArea(new Dimension(0,10)));
+        canvas.add(button);
+        canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
+
+        setBackground(StyleArchive.COLOR_BACKGROUND);
+        setLayout(new GridBagLayout());
+        add(canvas);
     }
 
     public JPanel getSignUp(){
         panel = new JPanel();
+        panel.setPreferredSize(new Dimension(300,200));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JLabel username = new JLabel("Username");
-        JLabel password = new JLabel("Password");
-        JLabel conpassword = new JLabel("Confirm Password");
+        username = new JLabel("Username:");
+        username.setFont(StyleArchive.NORMAL);
+        password = new JLabel("Password:");
+        password.setFont(StyleArchive.NORMAL);
+        conpassword = new JLabel("Confirm Password:");
+        conpassword.setFont(StyleArchive.NORMAL);
 
-        JTextField usertext = new JTextField();
-        JPasswordField passtext = new JPasswordField();
-        JPasswordField conpasstext = new JPasswordField();
+        usertext = new JTextField();
+        passtext = new JPasswordField();
+        conpasstext = new JPasswordField();
 
-        JPanel grid = new JPanel();
+        grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);
         grid.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -76,9 +90,12 @@ public class SignUpPage extends Page {
                 addComponent(conpassword).addComponent(conpasstext));
         layout.setVerticalGroup(vGroup);
         grid.setAlignmentX(Component.CENTER_ALIGNMENT);
+        grid.setBackground(StyleArchive.COLOR_BACKGROUND);
         panel.add(grid);
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         button = new JButton("Sign up and Log in");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

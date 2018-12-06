@@ -4,6 +4,7 @@ package ui.panels;
 import debugging.Logger;
 import maincomponents.AvMinArm;
 import ui.Display;
+import ui.StyleArchive;
 import user.User;
 import user.UserHandler;
 
@@ -14,23 +15,28 @@ import java.awt.event.ActionListener;
 
 public class LogInPage extends Page {
 
-    private static final Font HEADER = new Font("Arial", Font.PLAIN, 24);
-
-    private JPanel panel;
+    private JPanel panel, canvas, login, grid;
     private JButton button;
+    private JLabel logintext, username, password;
+    private JTextField usertext;
+    private JPasswordField passfield;
 
     protected LogInPage(){
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(StyleArchive.COLOR_BACKGROUND);
 
-        JLabel logintext = new JLabel("Log in");
-        logintext.setFont(HEADER);
+        canvas = new JPanel();
+        canvas.setLayout(new BoxLayout(canvas, BoxLayout.Y_AXIS));
+
+        logintext = new JLabel("Log in");
+        logintext.setFont(StyleArchive.HEADER);
         logintext.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel login = getLogIn();
+        login = getLogIn();
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         button = new JButton("No account? Sign up");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,23 +45,30 @@ public class LogInPage extends Page {
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        add(logintext);
-        add(login);
-        add(Box.createRigidArea(new Dimension(0,10)));
-        add(button);
+        canvas.add(logintext);
+        canvas.add(login);
+        canvas.add(Box.createRigidArea(new Dimension(0,10)));
+        canvas.add(button);
+        canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
+
+        setLayout(new GridBagLayout());
+        add(canvas);
     }
 
     public JPanel getLogIn(){
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setPreferredSize(new Dimension(300,200));
 
-        JLabel username = new JLabel("Username");
-        JLabel password = new JLabel("Password");
+        username = new JLabel("Username:");
+        username.setFont(StyleArchive.NORMAL);
+        password = new JLabel("Password:");
+        password.setFont(StyleArchive.NORMAL);
 
-        JTextField usertext = new JTextField();
-        JPasswordField passfield = new JPasswordField();
+        usertext = new JTextField(300);
+        passfield = new JPasswordField(300);
 
-        JPanel grid = new JPanel();
+        grid = new JPanel();
         GroupLayout layout = new GroupLayout(grid);
         grid.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -76,6 +89,7 @@ public class LogInPage extends Page {
         grid.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         button = new JButton("Log in");
+        button.setFont(StyleArchive.SMALL_BUTTON);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,20 +110,22 @@ public class LogInPage extends Page {
                         UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
                         userpage.updateUsers();
                         Display.getInstance().setPage(userpage);
-                        //TODO: GO TO USERPAGE
                     }
                 }
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        grid.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         panel.add(grid);
         panel.add(button);
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
+
+        //TODO
         // YOU SHOULD NEVER DO THIS IN A REAL PROJECT!!!!
-        usertext.setText("Kaare");
-        passfield.setText("1234");
-
+        usertext.setText("root");
+        passfield.setText("admin");
 
         return panel;
     }

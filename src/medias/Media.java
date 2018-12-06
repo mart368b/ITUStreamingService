@@ -1,8 +1,9 @@
 package medias;
 
 
+import maincomponents.ImageHandler;
 import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.types.MediaTypes;
 import ui.cards.MediaPreviewCard;
 
@@ -13,27 +14,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public abstract class Media {
+    protected int id;
     protected String title;
     protected String year;
     protected double rating;
     protected AgeTypes ageResctriction;
-    protected GenreTypes[] genres;
+    protected Genre[] genres;
     protected BufferedImage img;
     protected MediaPreviewCard previewCard;
 
     protected void loadImage() throws ExceptionInInitializerError{
-        String path = "res/" + MediaTypes.getMediaType(this).getName() + "-images/" + title + ".jpg";
-        File f = new File(path);
-        if (!f.exists()){
-            throw new ExceptionInInitializerError(new FileNotFoundException("Failed to find file " + path));
-        }
-        try {
-            img = ImageIO.read(f);
-        }catch (FileNotFoundException e){
-            throw new ExceptionInInitializerError(e);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+        ImageHandler handler = ImageHandler.getInstance();
+        handler.loadResource(MediaTypes.getMediaType(this).getName() + "-images", title, "jpg");
+        img = handler.getImage(title);
     }
 
     protected void createPreviewCard(){
@@ -56,12 +49,16 @@ public abstract class Media {
         return rating;
     }
 
+    public int getId(){
+        return id;
+    }
+
     public AgeTypes getAgeRestriction(){return ageResctriction;}
 
     public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
         return year;
     }
-    public GenreTypes getGenre(int i){
+    public Genre getGenre(int i){
         return genres[i];
     }
 
@@ -116,24 +113,24 @@ public abstract class Media {
     public static Media getMediaByMediaType( MediaTypes mediaType, String[] information ) throws ExceptionInInitializerError {
         switch (mediaType) {
             case MOVIE:
-                return new Movie(information[0], information[1], information[2], information[3], information[4], information[5]);
+                return new Movie(information[0], information[1], information[2], information[3], information[4], information[5], information[6] );
             case SERIES:
-                return new Serie(information[0], information[1], information[2], information[3], information[4], information[5]);
+                return new Serie(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
             default:
                 return null;
         }
     }
 
-    public boolean hasGenre(GenreTypes genreType){
-        for(GenreTypes genre: genres){
-            if (genre.equals(genreType)){
+    public boolean hasGenre(Genre keyGenre){
+        for(Genre genre: genres){
+            if (genre.equals(keyGenre)){
                 return true;
             }
         }
         return false;
     }
 
-    public GenreTypes[] getGenres(){
+    public Genre[] getGenres(){
         return genres;
     }
 }

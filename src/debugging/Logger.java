@@ -19,6 +19,7 @@ public class Logger {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (Logger.hasLog()){
+                Logger.log("End of session");
                 Logger.save();
             }
         }));
