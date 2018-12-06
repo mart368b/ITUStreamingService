@@ -1,7 +1,7 @@
 package medias;
 
 import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class Serie extends Media {
     Serie(String id,String title, String year, String genre, String rating, String ageResriction, String seasons) {
         this.id = Integer.parseInt(id);
         this.title = title;
-        this.genres = GenreTypes.getGenreTypeByNames(genre.split(","));
+        this.genres = Genre.getGenresByNames(genre.split(","));
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
         this.ageResctriction = AgeTypes.getAgeTypeFromName(ageResriction);;

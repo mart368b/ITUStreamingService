@@ -1,12 +1,15 @@
 package ui.panels;
 
-import medias.types.GenreTypes;
+import maincomponents.SearchComparator;
+import medias.types.Genre;
 import medias.Media;
 import medias.types.MediaTypes;
 import medias.types.SortTypes;
 import reader.MediaHandler;
 import ui.Display;
+import ui.StyleArchive;
 import ui.cards.HeaderCard;
+import ui.components.ToggleImageButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +56,7 @@ public class PreviewPage extends Page {
         previewMenu.setBorder(BorderFactory.createEmptyBorder());
         previewMenu.setAutoscrolls(true);
         previewMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        previewMenu.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         JScrollPane scrollPane = new JScrollPane(previewMenu, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -68,6 +72,7 @@ public class PreviewPage extends Page {
 
     private JPanel getOptionMenu(){
         JPanel panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         panel.setBorder(BorderFactory.createEmptyBorder());
 
@@ -84,7 +89,12 @@ public class PreviewPage extends Page {
         });
         panel.add(sortTypeBox);
 
-        JRadioButton radioButton = new JRadioButton();
+        JLabel reverseText = new JLabel("Reverse:");
+        panel.add(reverseText);
+
+        ToggleImageButton radioButton = new ToggleImageButton("up", "down");
+        radioButton.setBackground(StyleArchive.COLOR_BACKGROUND);
+        radioButton.setPrefferedWidth(30);
         radioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -120,7 +130,7 @@ public class PreviewPage extends Page {
 
     public void setViewPortWidth(int width) {
         int rowSize = Math.floorDiv(width, 150);
-        int columnCount = displayedMedia.size()/rowSize;
+        int columnCount = -Math.floorDiv(-displayedMedia.size(), rowSize);
         Dimension d = new Dimension(width, columnCount*219 + 10);
         previewMenu.setPreferredSize(d);
     }
@@ -139,11 +149,13 @@ public class PreviewPage extends Page {
         updatePreview();
     }
 
-    public void setDisplayedMedia(GenreTypes genre){
+    public void setDisplayedMedia(Genre genre, String title){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
         filterDisplayedMedia(genre);
-        sortPreview(lastSort, reversedSorting);
+        SearchComparator c = SearchComparator.getSearchComparator(title);
+        displayedMedia.sort(c);
+        updatePreview();
     }
 
     public void setDisplayedMedia(List<Media> medias){
@@ -153,8 +165,8 @@ public class PreviewPage extends Page {
         sortPreview(lastSort, reversedSorting);
     }
 
-    public void filterDisplayedMedia(GenreTypes genre){
-        if (genre != GenreTypes.ANY){
+    public void filterDisplayedMedia(Genre genre){
+        if (genre.getName() != "Any"){
             for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
                 Media m = it.next();
                 if (!m.hasGenre(genre)){

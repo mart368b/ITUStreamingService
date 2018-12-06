@@ -7,6 +7,7 @@ import debugging.Logger;
 import medias.Media;
 import medias.Movie;
 import medias.types.MediaTypes;
+import ui.cards.MediaPreviewCard;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,6 +43,13 @@ public class MediaHandler {
             Logger.log("Initializing " + media);
             String mediaPath = "res/" + media + ".csv";
             loadMedia( mediaPath, MediaTypes.getTypeFromString(media) );
+        }
+    }
+
+    public void updateMediaCards(List<Media> favorites) {
+        for (Media media: medias){
+            MediaPreviewCard card = media.getPreviewCard();
+            card.setActive(favorites.contains(media));
         }
     }
 
@@ -115,20 +123,20 @@ public class MediaHandler {
         }
     }
 
-    public void addMovie(String title, String year, double rating, String age, String time, Object[] categories, BufferedImage image){
+    public void addMovie(String title, String year, double rating, String age, String time, Object[] categories, BufferedImage image) {
         int id = 0;
-        for(Media med : medias){
-            if(med instanceof  Movie){
+        for (Media med : medias) {
+            if (med instanceof Movie) {
                 id++;
             }
         }
         StringBuilder builder = new StringBuilder();
         String[] cats = new String[categories.length];
         int index = 0;
-        for(Object o : categories){
+        for (Object o : categories) {
             cats[index] = o.toString();
             builder.append(o.toString());
-            if(categories.length != index-1) builder.append(",");
+            if (categories.length != index - 1) builder.append(",");
             index++;
         }
         Movie movie = new Movie(id, title, year, cats, rating, age, time, image);
@@ -142,8 +150,17 @@ public class MediaHandler {
                     + builder.toString() + ";" + rating + ";"
                     + age + ";" + time + "min;");
             out.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Media getMediaByID(int id){
+        for (Media media: medias){
+            if (media.getId() == id){
+                return media;
+            }
+        }
+        return null;
     }
 }

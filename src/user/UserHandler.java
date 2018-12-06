@@ -1,14 +1,15 @@
 package user;
 
+import debugging.Exceptions.MissingFileException;
+import debugging.Exceptions.ResourceLoadingException;
 import debugging.LogTypes;
 import debugging.Logger;
+import maincomponents.AvMinArm;
 import medias.Media;
 import reader.CSVReader;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class UserHandler {
     private final String PATH = "res/users.txt";
@@ -22,6 +23,7 @@ public class UserHandler {
     private UserHandler() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (instance != null){
+                Logger.log("Saving user data");
                 this.save();
             }
         }));
@@ -54,18 +56,38 @@ public class UserHandler {
                     int age = Integer.parseInt(info[1]);
                     String profilepic = info[2];
                     if(!(info.length > 3)){
-                        profiles.add(new Profile(name, age, profilepic, new String[]{}));
+                        profiles.add(new Profile(name, age, profilepic));
                         continue;
                     }
                     String[] favs = info[3].split("~");
-                    profiles.add(new Profile(name, age, profilepic, favs));
+                    Map<Integer, Map<Integer, Map<Integer, Integer>>> watchedSeries;
+                    if (info.length < 5 || info[4].length() == 0){
+                        watchedSeries = new HashMap<>();
+                    }else {
+                        watchedSeries = loadWatchedSeries(info[4]);
+                    }
+                    Map<Integer, Integer> watchedMovies;
+                    if (info.length < 6 || info[5].length() == 0){
+                        watchedMovies = new HashMap<>();
+                    }else {
+                        watchedMovies = loadWatchedMovies(info[5]);
+                    }
+                    profiles.add(new Profile(name, age, profilepic, favs, watchedSeries, watchedMovies));
                 }
 
                 users.add(new User(username, password, admin, profiles));
             }
-        }catch (Exception e){
-            Logger.log("Could not find the users.txt file!", LogTypes.FATALERROR);
-            e.printStackTrace();
+        }catch (MissingFileException e){
+            e.logError(LogTypes.SOFTERROR);
+            File f = new File(PATH);
+            try {
+                f.createNewFile();
+            } catch (IOException e1) {
+                Logger.log("Failed to create file", LogTypes.FATALERROR);
+                e1.printStackTrace();
+            }
+        } catch (ResourceLoadingException e){
+            e.logError(LogTypes.FATALERROR);
         }
     }
 
@@ -73,6 +95,9 @@ public class UserHandler {
         // save file in correct format
         try{
             File f = new File(PATH);
+            if (!f.exists()){
+                f.createNewFile();
+            }
             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
             Iterator<User> userIter = users.iterator();
             while(userIter.hasNext()){
@@ -98,11 +123,15 @@ public class UserHandler {
                     while(favIter.hasNext()){
                         Media fav = favIter.next();
                         StringBuilder favoritesdata = new StringBuilder();
-                        favoritesdata.append(fav.getTitle());
+                        favoritesdata.append(fav.getId());
                         // makes sure no ~ at the end
                         if(favIter.hasNext()) favoritesdata.append("~");
                         profiledata.append(favoritesdata);
                     }
+                    profiledata.append(",");
+                    saveWatchedSeries(profiledata, profile);
+                    profiledata.append(",");
+                    saveWatchedMovies(profiledata, profile);
                     sb.append(profiledata);
                     // makes sure no % at the end
                     if(profileIter.hasNext()) sb.append("%");
@@ -112,9 +141,89 @@ public class UserHandler {
             }
             writer.close();
         }catch (Exception e){
-            Logger.log("Could not find the users.txt file!", LogTypes.FATALERROR);
+            Logger.log("Could not save users", LogTypes.FATALERROR);
             e.printStackTrace();
         }
+    }
+
+    private void saveWatchedMovies(StringBuilder profiledata, Profile profile) {
+        Map<Integer, Integer> watchedMovies = profile.getWatchedMovies();
+        Iterator<Integer> ite = watchedMovies.keySet().iterator();
+        while (ite.hasNext()){
+            int movieID = ite.next();
+            profiledata.append(movieID);
+            profiledata.append(":");
+            profiledata.append(watchedMovies.get(movieID));
+            if (ite.hasNext()){
+                profiledata.append("&");
+            }
+        }
+    }
+
+    private void saveWatchedSeries(StringBuilder profileData, Profile profile){
+        //Series
+        Map<Integer, Map<Integer, Map<Integer, Integer>>> wathedSeries = profile.getWatchedSeries();
+        for (int i0: wathedSeries.keySet()) {
+            Map<Integer, Map<Integer, Integer>> wathedSeasons = wathedSeries.get(i0);
+            profileData.append(i0);
+            profileData.append("&");
+            // Seasons
+            for (int i1: wathedSeasons.keySet()) {
+                Map<Integer, Integer> watchedEpisodes = wathedSeasons.get(i1);
+                profileData.append(i1);
+                // Episodes
+                for (int i2: watchedEpisodes.keySet()){
+                    profileData.append("_");
+                    int duration = watchedEpisodes.get(i2);
+                    profileData.append(i2);
+                    profileData.append(":");
+                    // Duration
+                    profileData.append(duration);
+                }
+            }
+        }
+    }
+
+    private Map<Integer, Map<Integer, Map<Integer, Integer>>> loadWatchedSeries(String content){
+        Map<Integer, Map<Integer, Map<Integer, Integer>>> wathedSeries = new HashMap<>();
+        String[] m0 = content.split("$");
+        for (int i0 = 0; i0 < m0.length; i0++) {
+            String s0 = m0[i0];
+            String[] m1 = s0.split("&");
+            int id0 = Integer.parseInt(m1[0]);
+            Map<Integer, Map<Integer, Integer>> hm1 = new HashMap<>();
+            // Seasons
+            for (int i1 = 1; i1 < m1.length; i1++) {
+                String s1 = m1[i1];
+                String[] m2 = s1.split("_");
+                int id1 = Integer.parseInt(m2[0]);
+                Map<Integer, Integer> hm2 = new HashMap<>();
+                // Episodes
+                for (int i2 = 1; i2 < m2.length; i2++) {
+                    String s2 = m2[i2];
+                    String[] m3 = s2.split(":");
+                    int id3 = Integer.parseInt(m3[0]);
+                    // Duration
+                    int duration = Integer.parseInt(m3[1]);
+                    hm2.put(id3, duration);
+                }
+                hm1.put(id1, hm2);
+            }
+            wathedSeries.put(id0, hm1);
+        }
+        return wathedSeries;
+    }
+
+    private HashMap<Integer, Integer> loadWatchedMovies(String content){
+        HashMap<Integer, Integer> watchedMovies = new HashMap<>();
+        String[] m0 = content.split("&");
+        for(String s: m0){
+            String[] m1 = s.split(":");
+            int movieID = Integer.parseInt(m1[0]);
+            int timeStamp = Integer.parseInt(m1[1]);
+            watchedMovies.put(movieID, timeStamp);
+        }
+        return watchedMovies;
     }
 
     /**
