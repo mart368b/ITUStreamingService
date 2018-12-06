@@ -73,7 +73,7 @@ public class ImageHandler {
         }
     }
 
-    private void loadImage(String folderName, String imageName, String extention) throws MissingImageException, ResourceLoadingException {
+    public void loadImage(String folderName, String imageName, String extention) throws MissingImageException, ResourceLoadingException {
         File f = new File("res/" + folderName + "/" + imageName + "." + extention);
         if (!f.exists()){
             throw new MissingImageException(f);

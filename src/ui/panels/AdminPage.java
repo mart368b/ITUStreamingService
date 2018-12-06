@@ -5,7 +5,7 @@ import maincomponents.ImageHandler;
 import medias.Media;
 import medias.Movie;
 import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.types.MediaTypes;
 import medias.types.SortTypes;
 import reader.MediaHandler;
@@ -46,7 +46,7 @@ public class AdminPage extends Page {
     public AdminPage(){
         super();
 
-        for(String type : GenreTypes.getGenreNames()){
+        for(String type : Genre.getGenreNames()){
             offcategories.addElement(type);
         }
 
@@ -208,7 +208,7 @@ public class AdminPage extends Page {
         mediatype = MediaTypes.MOVIE;
         oncategories = new DefaultListModel();
         offcategories = new DefaultListModel();
-        for(String type : GenreTypes.getGenreNames()){
+        for(String type : Genre.getGenreNames()){
             offcategories.addElement(type);
         }
         picture.setText("*NONE*");
