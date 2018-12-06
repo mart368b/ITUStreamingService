@@ -156,15 +156,53 @@ public class AdminPage extends Page {
                                 "All fields has to be filled!");
                         return;
                     }
+                    MediaHandler.getInstance().addMovie(titletext.getText(),
+                            yeartext.getText(),
+                            Double.parseDouble(ratetext.getText()),
+                            agebox.getSelectedItem().toString(),
+                            timetext.getText() + "min",
+                            oncategories.toArray(),
+                            uploadimage);
+                }else if(combobox.getSelectedItem().toString().toLowerCase().equals("series")){
+                    if(year2text.getText().isEmpty()){
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "All fields has to be filled!");
+                        return;
+                    }
+                    if(CreateProfilePage.isNumber(yeartext.getText())){
+                        if(Calendar.getInstance().get(Calendar.YEAR) < Integer.parseInt(yeartext.getText())){
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "Year can not be later than your current year!"
+                                            +"\n" + Calendar.getInstance().get(Calendar.YEAR));
+                            return;
+                        }
+                        if(Integer.parseInt(yeartext.getText()) < 0){
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "Year has to be after jesus was born!");
+                            return;
+                        }
+                    }
+                    if(seasons.size() == 0){
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "No seasons are made!");
+                        return;
+                    }
+                    for(int season : seasons.keySet()){
+                        if(seasons.get(season).size() == 0){
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "All seasons needs at least one episode!");
+                            return;
+                        }
+                    }
+                    MediaHandler.getInstance().addSeries(titletext.getText(),
+                            Double.parseDouble(ratetext.getText()),
+                            agebox.getSelectedItem().toString(),
+                            oncategories.toArray(),
+                            uploadimage,
+                            yeartext.getText(),
+                            year2text.getText(),
+                            seasons);
                 }
-
-                MediaHandler.getInstance().addMovie(titletext.getText(),
-                        yeartext.getText(),
-                        Double.parseDouble(ratetext.getText()),
-                        agebox.getSelectedItem().toString(),
-                        timetext.getText(),
-                        oncategories.toArray(),
-                        uploadimage);
                 reset();
                 Display.getInstance().setPage(Page.USERPAGE);
             }
@@ -487,7 +525,7 @@ public class AdminPage extends Page {
                             "Both fields must be filled!");
                     return;
                 }
-                String[] info = new String[]{titletext.getText(), timetext.getText()};
+                String[] info = new String[]{titletext.getText(), timetext.getText() + "min"};
                 seasons.get(index+1).add(info);
 
                 seasonsmodel.setElementAt((index+1) + "-" + seasons.get(index+1).size(), index);
