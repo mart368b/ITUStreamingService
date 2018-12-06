@@ -1,13 +1,9 @@
 package ui.panels;
 
-import jdk.nashorn.internal.scripts.JO;
 import maincomponents.ImageHandler;
-import medias.Media;
-import medias.Movie;
 import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.types.MediaTypes;
-import medias.types.SortTypes;
 import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
@@ -46,8 +42,8 @@ public class AdminPage extends Page {
     public AdminPage(){
         super();
 
-        for(String type : GenreTypes.getGenreNames()){
-            offcategories.addElement(type);
+        for(String genre : Genre.getGenreNames()){
+            offcategories.addElement(genre);
         }
 
         panel = new JPanel();
@@ -95,72 +91,82 @@ public class AdminPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (combobox.getSelectedItem().toString().toLowerCase().equals("movies")) {
-                    if (titletext.getText().isEmpty() || yeartext.getText().isEmpty()
-                            || ratetext.getText().isEmpty()
-                            || timetext.getText().isEmpty()) {
 
+                if(titletext.getText().isEmpty() || ratetext.getText().isEmpty()
+                    || yeartext.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "All fields has to be filled!");
+                    return;
+                }
+
+                if(CreateProfilePage.isNumber(yeartext.getText())){
+                    if(Calendar.getInstance().get(Calendar.YEAR) < Integer.parseInt(yeartext.getText())){
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "Year can not be later than your current year!"
+                                        +"\n" + Calendar.getInstance().get(Calendar.YEAR));
+                        return;
+                    }
+                    if(Integer.parseInt(yeartext.getText()) < 0){
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "Year has to be after jesus was born!");
+                        return;
+                    }
+                }
+
+                if (!CreateProfilePage.isDouble(ratetext.getText())) {
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "Rating has to be a decimal number!");
+                    return;
+                }
+
+                if(Double.parseDouble(ratetext.getText()) < 0 || Double.parseDouble(ratetext.getText()) > 10){
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "Rating must be between 0.0 - 10.0!");
+                    return;
+                }
+                if (oncategories.size() == 0) {
+                    int answer = JOptionPane.showConfirmDialog(new JFrame(),
+                            "You have not chosen any category!\n"
+                                    + "You need at least one!\n"
+                                    + "Do you want to add category 'any'?",
+                            "Click a button",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                    if (answer != 0) {
+                        return;
+                    }
+                }
+
+                if (uploadimage == null) {
+                    int answer = JOptionPane.showConfirmDialog(new JFrame(),
+                            "You have not chosen a picture!\n"
+                                    + "Do you want to continue?\n",
+                            "Click a button",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                    if (answer != 0) {
+                        return;
+                    }
+                    uploadimage = ImageHandler.getInstance().getImage("stock");
+                }
+
+                if (combobox.getSelectedItem().toString().toLowerCase().equals("movies")) {
+                    if (timetext.getText().isEmpty()) {
                         JOptionPane.showMessageDialog(new JFrame(),
                                 "All fields has to be filled!");
                         return;
                     }
-                    if(CreateProfilePage.isNumber(yeartext.getText())){
-                        if(Calendar.getInstance().get(Calendar.YEAR) < Integer.parseInt(yeartext.getText())){
-                            JOptionPane.showMessageDialog(new JFrame(),
-                                    "Year can not be later than your current year!"
-                                    +"\n" + Calendar.getInstance().get(Calendar.YEAR));
-                            return;
-                        }
-                        if(Integer.parseInt(yeartext.getText()) < 0){
-                            JOptionPane.showMessageDialog(new JFrame(),
-                                    "Year has to be after jesus was born!");
-                            return;
-                        }
-                    }
-                    if (!CreateProfilePage.isDouble(ratetext.getText())) {
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Rating has to be a decimal number!");
-                        return;
-                    }
-                    if(Double.parseDouble(ratetext.getText()) < 0 || Double.parseDouble(ratetext.getText()) > 10){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Rating must be between 0.0 - 10.0!");
-                        return;
-                    }
-                    if (oncategories.size() == 0) {
-                        int answer = JOptionPane.showConfirmDialog(new JFrame(),
-                                "You have not chosen any category!\n"
-                                        + "You need at least one!\n"
-                                        + "Do you want to add category 'any'?",
-                                "Click a button",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
-                        if (answer != 0) {
-                            return;
-                        }
-                    }
-                    if (uploadimage == null) {
-                        int answer = JOptionPane.showConfirmDialog(new JFrame(),
-                                "You have not chosen a picture!\n"
-                                        + "Do you want to continue?\n",
-                                "Click a button",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
-                        if (answer != 0) {
-                            return;
-                        }
-                        uploadimage = ImageHandler.getInstance().getImage("stock");
-                    }
-                    MediaHandler.getInstance().addMovie(titletext.getText(),
-                            yeartext.getText(),
-                            Double.parseDouble(ratetext.getText()),
-                            agebox.getSelectedItem().toString(),
-                            timetext.getText(),
-                            oncategories.toArray(),
-                            uploadimage);
-                    reset();
-                    Display.getInstance().setPage(Page.USERPAGE);
                 }
+
+                MediaHandler.getInstance().addMovie(titletext.getText(),
+                        yeartext.getText(),
+                        Double.parseDouble(ratetext.getText()),
+                        agebox.getSelectedItem().toString(),
+                        timetext.getText(),
+                        oncategories.toArray(),
+                        uploadimage);
+                reset();
+                Display.getInstance().setPage(Page.USERPAGE);
             }
         });
         buttons.add(button);
@@ -208,8 +214,8 @@ public class AdminPage extends Page {
         mediatype = MediaTypes.MOVIE;
         oncategories = new DefaultListModel();
         offcategories = new DefaultListModel();
-        for(String type : GenreTypes.getGenreNames()){
-            offcategories.addElement(type);
+        for(String genre : Genre.getGenreNames()){
+            offcategories.addElement(genre);
         }
         picture.setText("*NONE*");
     }
@@ -639,7 +645,7 @@ public class AdminPage extends Page {
                         JOptionPane.showMessageDialog(new JFrame(),
                                 "Category already exists!");
                     }else{
-                        //TODO ADD NEW GENRE-TYPES CATEGORY
+                        Genre.getGenreByName(addtext.getText());
                         oncategories.addElement(addtext.getText());
                         addtext.setText("");
                         updateList();

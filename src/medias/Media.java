@@ -1,6 +1,7 @@
 package medias;
 
 
+import maincomponents.ImageHandler;
 import medias.types.AgeTypes;
 import medias.types.Genre;
 import medias.types.MediaTypes;

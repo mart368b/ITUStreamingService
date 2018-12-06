@@ -27,7 +27,7 @@ public class Movie extends Media{
         this.title = title;
         this.year = year;
         this.rating = rating;
-        this.genres = GenreTypes.getGenreTypeByNames(genres);
+        this.genres = Genre.getGenresByNames(genres);
         this.ageResctriction = AgeTypes.getAgeTypeFromName(age);
         this.duration = getTimeInMinutes(time);
         this.img = image;

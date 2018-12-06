@@ -147,7 +147,7 @@ public class MediaHandler {
             FileWriter writer = new FileWriter(file, true);
             PrintWriter out = new PrintWriter(writer);
             out.write("\n" + id + ";" + title + ";" + year + ";"
-                    + builder.toString() + ";" + rating + ";"
+                    + builder.toString() + ";" + String.valueOf(rating).replace(".",",") + ";"
                     + age + ";" + time + "min;");
             out.close();
         } catch (Exception e) {
