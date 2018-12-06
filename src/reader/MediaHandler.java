@@ -5,9 +5,14 @@ import debugging.Exceptions.ResourceLoadingException;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.Media;
+import medias.Movie;
 import medias.types.MediaTypes;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -107,6 +112,38 @@ public class MediaHandler {
             if (mediaTypes.equals(media)){
                 mediaList.add(media);
             }
+        }
+    }
+
+    public void addMovie(String title, String year, double rating, String age, String time, Object[] categories, BufferedImage image){
+        int id = 0;
+        for(Media med : medias){
+            if(med instanceof  Movie){
+                id++;
+            }
+        }
+        StringBuilder builder = new StringBuilder();
+        String[] cats = new String[categories.length];
+        int index = 0;
+        for(Object o : categories){
+            cats[index] = o.toString();
+            builder.append(o.toString());
+            if(categories.length != index-1) builder.append(",");
+            index++;
+        }
+        Movie movie = new Movie(id, title, year, cats, rating, age, time, image);
+        medias.add(movie);
+
+        try {
+            File file = new File("res/movies.csv");
+            FileWriter writer = new FileWriter(file, true);
+            PrintWriter out = new PrintWriter(writer);
+            out.write("\n" + id + ";" + title + ";" + year + ";"
+                    + builder.toString() + ";" + rating + ";"
+                    + age + ";" + time + "min;");
+            out.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

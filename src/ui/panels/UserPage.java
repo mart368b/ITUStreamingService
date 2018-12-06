@@ -20,7 +20,7 @@ public class UserPage extends Page {
     private JPanel panel, canvas, comp, p;
     private JPanel userprofiles = new JPanel();
     private JLabel label, profiletext;
-    private JButton button, profilebutton;
+    private JButton button, admin, profilebutton;
 
     protected UserPage(){
         super();
@@ -31,6 +31,13 @@ public class UserPage extends Page {
         label = new JLabel("Choose profile");
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(StyleArchive.HEADER);
+
+
+        canvas.add(label);
+        canvas.add(Box.createRigidArea(new Dimension(0, 20)));
+        updateUsers();
+        canvas.add(userprofiles);
+        canvas.add(Box.createRigidArea(new Dimension(0, 20)));
 
         button = new JButton("Sign out");
         button.setFont(StyleArchive.SMALL_BUTTON);
@@ -43,12 +50,13 @@ public class UserPage extends Page {
             }
         });
 
-        canvas.add(label);
-        canvas.add(Box.createRigidArea(new Dimension(0, 20)));
-        updateUsers();
-        canvas.add(userprofiles);
-        canvas.add(Box.createRigidArea(new Dimension(0, 20)));
         canvas.add(button);
+
+        admin = new JButton("Admin");
+        admin.setFont(StyleArchive.SMALL_BUTTON);
+        admin.setAlignmentX(Component.CENTER_ALIGNMENT);
+        canvas.add(Box.createRigidArea(new Dimension(0, 5)));
+        canvas.add(admin);
         canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         setLayout(new GridBagLayout());
@@ -60,6 +68,18 @@ public class UserPage extends Page {
         userprofiles.removeAll();
         if(AvMinArm.user == null) return;
         ArrayList<Profile> profiles = AvMinArm.user.getProfiles();
+
+        if(AvMinArm.user.isAdmin()){
+            admin.setVisible(true);
+            admin.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Display.getInstance().setPage(Page.ADMINPAGE);
+                }
+            });
+        }else{
+            admin.setVisible(false);
+        }
 
         userprofiles.setLayout(new BoxLayout(userprofiles,BoxLayout.LINE_AXIS));
         userprofiles.setBackground(StyleArchive.COLOR_BACKGROUND);

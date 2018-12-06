@@ -35,4 +35,14 @@ public enum AgeTypes {
     public BufferedImage getImage(){
         return img;
     }
+
+    public static String[] getAgeTypes(){
+        String[] array = new String[AgeTypes.values().length];
+        int index = 0;
+        for(AgeTypes type : AgeTypes.values()){
+            array[index] = type.toString();
+            index++;
+        }
+        return array;
+    }
 }

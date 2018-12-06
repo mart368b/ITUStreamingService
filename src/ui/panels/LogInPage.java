@@ -124,8 +124,8 @@ public class LogInPage extends Page {
 
         //TODO
         // YOU SHOULD NEVER DO THIS IN A REAL PROJECT!!!!
-        usertext.setText("Kaare");
-        passfield.setText("1234");
+        usertext.setText("root");
+        passfield.setText("admin");
 
         return panel;
     }

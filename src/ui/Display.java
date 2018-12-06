@@ -43,9 +43,9 @@ public class Display extends JFrame  {
         UserPage userPage = (UserPage) Page.getPage(Page.USERPAGE);
         Dimension d = userPage.getPreferredSize();
 
-        d.width = (140 + 10)*6 + 100;
+        d.width = (140 + 10)*7 + 100;
         setMinimumSize(d);
-        d.height += 500;
+        d.height += 700;
         setPreferredSize(d);
 
         setPage(userPage);
