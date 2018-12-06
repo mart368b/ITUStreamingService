@@ -9,6 +9,7 @@ import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.HeaderCard;
+import ui.components.ToggleImageButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,8 +92,9 @@ public class PreviewPage extends Page {
         JLabel reverseText = new JLabel("Reverse:");
         panel.add(reverseText);
 
-        JRadioButton radioButton = new JRadioButton();
+        ToggleImageButton radioButton = new ToggleImageButton("up", "down");
         radioButton.setBackground(StyleArchive.COLOR_BACKGROUND);
+        radioButton.setPrefferedWidth(30);
         radioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

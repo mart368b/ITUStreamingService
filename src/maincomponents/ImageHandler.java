@@ -24,7 +24,7 @@ public class ImageHandler {
     public static String[] types = new String[]{"default", "pig", "space", "mummy"};
     public static String[] colors = new String[]{"green", "orange", "cyan", "red", "grey"};
     public static String[] agetypes = new String[]{"13", "15", "16", "18", "G", "M", "R", "PG", "NONE"};
-    public static String[] buttons = new String[]{"create", "star", "logo", "add", "remove"};
+    public static String[] buttons = new String[]{"create", "star", "logo", "add", "remove", "up", "down"};
 
     private ImageHandler(){}
 
