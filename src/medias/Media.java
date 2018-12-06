@@ -83,7 +83,7 @@ public abstract class Media {
         return builder;
     }
 
-    public static int getTimeInMinutes(String time){
+    public static int getTimeInMinutes(String time){ //113h 12m    11m
         String timeString = time.replace("h", "h-").replace("min","m");
         String[] timeArr = timeString.split("-");
         int duration = 0;
