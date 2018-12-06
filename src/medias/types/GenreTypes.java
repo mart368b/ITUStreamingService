@@ -48,6 +48,7 @@ public enum GenreTypes {
         JPanel panel = new JPanel();
         Label label = new Label(name);
         label.setFont(StyleArchive.HEADER);
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
         panel.add(label);
         return panel;
     }

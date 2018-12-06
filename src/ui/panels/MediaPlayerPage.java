@@ -10,6 +10,7 @@ import medias.Serie;
 import medias.SeriesEpisode;
 import medias.types.MediaTypes;
 import ui.Display;
+import ui.StyleArchive;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -37,6 +38,7 @@ public class MediaPlayerPage extends Page implements Tickable {
 
     public MediaPlayerPage(){
         super(new BorderLayout());
+        setBackground(StyleArchive.COLOR_BACKGROUND);
         playerView = getPlayerView();
         add(playerView, BorderLayout.CENTER);
 
@@ -60,10 +62,11 @@ public class MediaPlayerPage extends Page implements Tickable {
 
     private JPanel getController() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.GREEN);
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel buttonWrapper = getButtons();
+        buttonWrapper.setBackground(StyleArchive.COLOR_BACKGROUND);
         buttonWrapper.setMaximumSize(buttonWrapper.getPreferredSize());
         c.gridx = 0;
         c.gridy = 0;

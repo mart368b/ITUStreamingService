@@ -6,6 +6,7 @@ import medias.types.MediaTypes;
 import medias.types.SortTypes;
 import reader.MediaHandler;
 import ui.Display;
+import ui.StyleArchive;
 import ui.cards.HeaderCard;
 
 import javax.swing.*;
@@ -53,6 +54,7 @@ public class PreviewPage extends Page {
         previewMenu.setBorder(BorderFactory.createEmptyBorder());
         previewMenu.setAutoscrolls(true);
         previewMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        previewMenu.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         JScrollPane scrollPane = new JScrollPane(previewMenu, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -68,6 +70,7 @@ public class PreviewPage extends Page {
 
     private JPanel getOptionMenu(){
         JPanel panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         panel.setBorder(BorderFactory.createEmptyBorder());
 
@@ -88,6 +91,7 @@ public class PreviewPage extends Page {
         panel.add(reverseText);
 
         JRadioButton radioButton = new JRadioButton();
+        radioButton.setBackground(StyleArchive.COLOR_BACKGROUND);
         radioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

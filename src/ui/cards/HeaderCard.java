@@ -4,6 +4,7 @@ import maincomponents.AvMinArm;
 import medias.types.GenreTypes;
 import medias.types.MediaTypes;
 import ui.Display;
+import ui.StyleArchive;
 import ui.components.ImageButton;
 import ui.panels.Page;
 import ui.panels.PreviewPage;
@@ -43,10 +44,12 @@ public class HeaderCard extends JPanel {
         add(centerPanel);
         add(rightPanel);
 
+
     }
 
     private JPanel getLeftPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         ImageButton startButton = new ImageButton("logo");
         startButton.setBorderPainted(false);
@@ -65,7 +68,7 @@ public class HeaderCard extends JPanel {
 
     private  JPanel getCenterPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         addButton(panel, "Movies", new ActionListener() {
             @Override
@@ -99,6 +102,7 @@ public class HeaderCard extends JPanel {
 
     private JPanel getRightPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
         userButton = new ImageButton();
         userButton.setPreferredSize(new Dimension(40,40));
         userButton.addActionListener(new ActionListener() {
