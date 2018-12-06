@@ -27,6 +27,7 @@ public class PreviewPage extends Page {
     private JPanel noResult;
     private SortTypes lastSort;
     private boolean reversedSorting = false;
+    private JTextField minRating, maxRating, minYear, maxYear;
 
     protected PreviewPage(Display display){
         super();
@@ -104,6 +105,36 @@ public class PreviewPage extends Page {
         });
         panel.add(radioButton);
 
+        Dimension deafaultSize = new Dimension(60, 20);
+
+        JLabel yearText = new JLabel(" Release  min:");
+        panel.add(yearText);
+
+        minYear = new JTextField("");
+        minYear.setPreferredSize(deafaultSize);
+        panel.add(minYear);
+
+        JLabel m = new JLabel("max:");
+        panel.add(m);
+
+        maxYear = new JTextField();
+        maxYear.setPreferredSize(deafaultSize);
+        panel.add(maxYear);
+
+        JLabel ratingText = new JLabel(" Rating  min:");
+        panel.add(ratingText);
+
+        minRating = new JTextField();
+        minRating.setPreferredSize(deafaultSize);
+        panel.add(minRating);
+
+        JLabel m1 = new JLabel("max:");
+        panel.add(m1);
+
+        maxRating = new JTextField();
+        maxRating.setPreferredSize(deafaultSize);
+        panel.add(maxRating);
+
         return panel;
     }
 
@@ -124,7 +155,7 @@ public class PreviewPage extends Page {
 
     private void initializeNoResultMessage() {
         noResult = new JPanel();
-        JLabel title = new JLabel("No results could be found");
+        JLabel title = new JLabel("Nothing is here yet");
         noResult.add(title);
     }
 
@@ -138,6 +169,11 @@ public class PreviewPage extends Page {
     public void setDisplayedMedia(){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
+
+        if (minRating.getText().length() == 0){
+            double[] ratings = displayedMedia.stream().mapToDouble( Media::getRating).sorted().toArray();
+        }
+
         sortPreview(lastSort, reversedSorting);
         updatePreview();
     }

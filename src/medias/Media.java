@@ -24,18 +24,9 @@ public abstract class Media {
     protected MediaPreviewCard previewCard;
 
     protected void loadImage() throws ExceptionInInitializerError{
-        String path = "res/" + MediaTypes.getMediaType(this).getName() + "-images/" + title + ".jpg";
-        File f = new File(path);
-        if (!f.exists()){
-            throw new ExceptionInInitializerError(new FileNotFoundException("Failed to find file " + path));
-        }
-        try {
-            img = ImageIO.read(f);
-        }catch (FileNotFoundException e){
-            throw new ExceptionInInitializerError(e);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+        ImageHandler handler = ImageHandler.getInstance();
+        handler.loadResource(MediaTypes.getMediaType(this).getName() + "-images", title, "jpg");
+        img = handler.getImage(title);
     }
 
     protected void createPreviewCard(){

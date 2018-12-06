@@ -42,8 +42,8 @@ public class AdminPage extends Page {
     public AdminPage(){
         super();
 
-        for(String genre : Genre.getGenreNames()){
-            offcategories.addElement(genre);
+        for(String type : Genre.getGenreNames()){
+            offcategories.addElement(type);
         }
 
         panel = new JPanel();
@@ -214,8 +214,8 @@ public class AdminPage extends Page {
         mediatype = MediaTypes.MOVIE;
         oncategories = new DefaultListModel();
         offcategories = new DefaultListModel();
-        for(String genre : Genre.getGenreNames()){
-            offcategories.addElement(genre);
+        for(String type : Genre.getGenreNames()){
+            offcategories.addElement(type);
         }
         picture.setText("*NONE*");
     }

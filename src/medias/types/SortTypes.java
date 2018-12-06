@@ -2,6 +2,7 @@ package medias.types;
 
 import medias.Media;
 
+import javax.swing.*;
 import java.util.Comparator;
 
 public enum SortTypes {
@@ -30,6 +31,7 @@ public enum SortTypes {
     });
 
     private Comparator<Media> comparator;
+    private JPanel settings;
 
     SortTypes( Comparator<Media> comparator){
         this.comparator = comparator;
