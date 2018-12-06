@@ -1,10 +1,14 @@
 package debugging;
 
+import sun.rmi.runtime.Log;
+
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Logger {
@@ -61,15 +65,32 @@ public class Logger {
         }
         ArrayList<File> logs = new ArrayList<>(Arrays.asList(logDir.listFiles()));
         if ( logs.size() >= LOGLIMIT){
-            logs.sort(Comparator.comparing(File::getName));
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
+            logs.sort(new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    int res = 100000;
+                    try {
+                        Date d1 = formatter.parse(f1.getName());
+                        Date d2 = formatter.parse(f2.getName());
+                        res = d1.compareTo(d2);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return res;
+                }
+            });
+            try {
+                Date dt = formatter.parse(logs.get(0).getName());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             Iterator<File> ite = logs.iterator();
             int logCount = logs.size();
-            while (ite.hasNext() && logCount > LOGLIMIT - 1){
+            while (ite.hasNext() && logs.size() > LOGLIMIT - 1){
                 File f = ite.next();
                 boolean succes = f.delete();
-                if ( succes ){
-                    logCount--;
-                }
+                ite.remove();
             }
         }
         String filePath = SAVEPATH + "/" + new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(getTimestamp()) + ".log";
@@ -108,8 +129,10 @@ public class Logger {
 
     private static String getCallerClassName() {
         StackTraceElement[] stackTraces = Thread.currentThread().getStackTrace();
-        for ( int i = stackTraces.length - 1; i > 0; i--){
+        String s = "";
+        for ( int i = 1; i < stackTraces.length; i++){
             StackTraceElement e = stackTraces[i];
+            s += i + "\n";
             if ( e.getClassName() != Logger.class.getName()){
                 return e.getClassName();
             }

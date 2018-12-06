@@ -46,6 +46,7 @@ public class ImageHandler {
             loadResource("button-images", buttonNames, "png");
         }
         loadResource("user-images","canvas", "png");
+        Logger.log("Done loading images");
     }
 
     private void loadStockPhoto() {

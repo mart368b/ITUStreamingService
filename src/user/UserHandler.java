@@ -43,6 +43,7 @@ public class UserHandler {
                 boolean admin = row[2].equals("true");
 
                 if(!(row.length > 3)){
+                    Logger.log("Found user " + username);
                     users.add(new User(username, password, admin));
                     continue;
                 }
@@ -56,6 +57,7 @@ public class UserHandler {
                     int age = Integer.parseInt(info[1]);
                     String profilepic = info[2];
                     if(!(info.length > 3)){
+                        Logger.log("    Found profile " + name);
                         profiles.add(new Profile(name, age, profilepic));
                         continue;
                     }
