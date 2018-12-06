@@ -1,6 +1,6 @@
 package ui.panels;
 
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.Media;
 import medias.types.MediaTypes;
 import medias.types.SortTypes;
@@ -127,7 +127,7 @@ public class PreviewPage extends Page {
 
     public void setViewPortWidth(int width) {
         int rowSize = Math.floorDiv(width, 150);
-        int columnCount = displayedMedia.size()/rowSize;
+        int columnCount = -Math.floorDiv(-displayedMedia.size(), rowSize);
         Dimension d = new Dimension(width, columnCount*219 + 10);
         previewMenu.setPreferredSize(d);
     }
@@ -146,7 +146,7 @@ public class PreviewPage extends Page {
         updatePreview();
     }
 
-    public void setDisplayedMedia(GenreTypes genre){
+    public void setDisplayedMedia(Genre genre){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
         filterDisplayedMedia(genre);
@@ -160,8 +160,8 @@ public class PreviewPage extends Page {
         sortPreview(lastSort, reversedSorting);
     }
 
-    public void filterDisplayedMedia(GenreTypes genre){
-        if (genre != GenreTypes.ANY){
+    public void filterDisplayedMedia(Genre genre){
+        if (genre.getName() != "Any"){
             for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
                 Media m = it.next();
                 if (!m.hasGenre(genre)){

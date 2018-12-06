@@ -4,7 +4,7 @@ package ui;
 import debugging.LogTypes;
 import debugging.Logger;
 import medias.*;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import ui.panels.MediaPreviewPage;
 import ui.panels.Page;
 import ui.panels.PreviewPage;
@@ -93,12 +93,6 @@ public class Display extends JFrame  {
         validate();
         repaint();
         currentPageIndex = nextIndex;
-    }
-
-    public void displayOnPreview(GenreTypes genre, String name){
-        PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-        previewPage.setDisplayedMedia(genre);
-        setPage(previewPage);
     }
 
     public void displayMedia(Media media){

@@ -1,10 +1,9 @@
 package ui.panels;
 
-import maincomponents.AvMinArm;
 import medias.Movie;
 import medias.Serie;
 import medias.SeriesEpisode;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.Media;
 import ui.Display;
 import ui.StyleArchive;
@@ -192,10 +191,10 @@ public class MediaPreviewPage extends Page {
         return titleWrapper;
     }
 
-    public void setGenre(GenreTypes[] genres ){
+    public void setGenre(Genre[] genres ){
         genreContainer.removeAll();
         genreContainer.add(genreText);
-        for (GenreTypes genre: genres){
+        for (Genre genre: genres){
             genreContainer.add(genre.getGenreCard());
         }
     }

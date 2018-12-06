@@ -1,7 +1,7 @@
 package medias;
 
 import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 
 public class Movie extends Media{
 
@@ -12,7 +12,7 @@ public class Movie extends Media{
         this.title = title;
         this.rating = Double.parseDouble(rating.replace(",", "."));
         this.year = year;
-        this.genres = GenreTypes.getGenreTypeByNames(genre.split(","));
+        this.genres = Genre.getGenresByNames(genre.split(","));
         this.ageResctriction = AgeTypes.getAgeTypeFromName(ageResriction);
         this.duration = getTimeInMinutes(duration);
 

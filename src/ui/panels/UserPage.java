@@ -1,6 +1,7 @@
 package ui.panels;
 
 import maincomponents.AvMinArm;
+import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.HeaderCard;
@@ -99,6 +100,7 @@ public class UserPage extends Page {
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
                 HeaderCard.getInstance().setProfilePicture(profile);
+                MediaHandler.getInstance().updateMediaCards(profile.getFavorites());
                 Display.getInstance().setPage(Page.PREVIEWPAGE);
             }
         });

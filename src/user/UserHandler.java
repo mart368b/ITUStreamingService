@@ -61,13 +61,13 @@ public class UserHandler {
                     }
                     String[] favs = info[3].split("~");
                     Map<Integer, Map<Integer, Map<Integer, Integer>>> watchedSeries;
-                    if (info[4].length() == 0){
+                    if (info.length < 5 || info[4].length() == 0){
                         watchedSeries = new HashMap<>();
                     }else {
                         watchedSeries = loadWatchedSeries(info[4]);
                     }
                     Map<Integer, Integer> watchedMovies;
-                    if (info[5].length() == 0){
+                    if (info.length < 6 || info[5].length() == 0){
                         watchedMovies = new HashMap<>();
                     }else {
                         watchedMovies = loadWatchedMovies(info[5]);
@@ -123,7 +123,7 @@ public class UserHandler {
                     while(favIter.hasNext()){
                         Media fav = favIter.next();
                         StringBuilder favoritesdata = new StringBuilder();
-                        favoritesdata.append(fav.getTitle());
+                        favoritesdata.append(fav.getId());
                         // makes sure no ~ at the end
                         if(favIter.hasNext()) favoritesdata.append("~");
                         profiledata.append(favoritesdata);

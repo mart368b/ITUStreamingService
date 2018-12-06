@@ -6,6 +6,7 @@ import debugging.LogTypes;
 import debugging.Logger;
 import medias.Media;
 import medias.types.MediaTypes;
+import ui.cards.MediaPreviewCard;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -37,6 +38,13 @@ public class MediaHandler {
             Logger.log("Initializing " + media);
             String mediaPath = "res/" + media + ".csv";
             loadMedia( mediaPath, MediaTypes.getTypeFromString(media) );
+        }
+    }
+
+    public void updateMediaCards(List<Media> favorites) {
+        for (Media media: medias){
+            MediaPreviewCard card = media.getPreviewCard();
+            card.setActive(favorites.contains(media));
         }
     }
 
@@ -108,5 +116,14 @@ public class MediaHandler {
                 mediaList.add(media);
             }
         }
+    }
+
+    public Media getMediaByID(int id){
+        for (Media media: medias){
+            if (media.getId() == id){
+                return media;
+            }
+        }
+        return null;
     }
 }

@@ -1,1 +1,1 @@
-Kaare;1234;false;Mor,46,default-green,,,%Far,42,pig-cyan,,34&1_3:82_2:0_3:6_6:277,17:1326&20:2401;
+Kaare;1234;false;Mor,7,default-green,34~64,34&1_0:255_1:0,;

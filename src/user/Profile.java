@@ -53,8 +53,13 @@ public class Profile {
         this.age = age;
         this.picture = picture;
         this.favorites = new ArrayList<Media>();
+        MediaHandler handler = MediaHandler.getInstance();
         for(String s : favorites){
-            Media media = MediaHandler.getInstance().getMedia(s);
+            if (s.length() == 0){
+                continue;
+            }
+            int mediaID = Integer.parseInt(s);
+            Media media = handler.getMediaByID(mediaID);
             if(media != null) this.favorites.add(media);
             else Logger.log("Found title in favoriteslist of username: " + name + ", that does not exist in Media!");
         }
@@ -92,6 +97,9 @@ public class Profile {
     }
 
     public void addWatchedMovie(int movieID, int duration){
+        if (duration == 0){
+            return;
+        }
         watchedMovies.put(movieID, duration);
     }
 
@@ -106,6 +114,9 @@ public class Profile {
     public void addWatchedSeriesEpisode(int seriesID, int seasonID, int episodeID, int duration){
         Map<Integer, Map<Integer, Integer>> series= null;
         if (!watchedSeries.containsKey(seriesID)){
+            if (duration == 0){
+                return;
+            }
             series = new HashMap<>();
             watchedSeries.put(seriesID, series);
         }else {
@@ -113,6 +124,9 @@ public class Profile {
         }
         Map<Integer, Integer> season = null;
         if (!series.containsKey(seasonID)){
+            if (duration == 0){
+                return;
+            }
             season = new HashMap<>();
             series.put(seasonID, season);
         }else{
@@ -196,5 +210,9 @@ public class Profile {
      */
     public void setAge(int age){
         this.age = age;
+    }
+
+    public void removeFavorite(Media media) {
+        favorites.remove(media);
     }
 }

@@ -1,7 +1,7 @@
 package ui.cards;
 
 import maincomponents.AvMinArm;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.types.MediaTypes;
 import ui.Display;
 import ui.StyleArchive;
@@ -129,7 +129,7 @@ public class HeaderCard extends JPanel {
 
         JLabel genreText = new JLabel("categories:");
         panel.add(genreText);
-        JComboBox<String> categoriesBox = new JComboBox<String>(GenreTypes.getGenreNames());
+        JComboBox<String> categoriesBox = new JComboBox<String>(Genre.getGenreNames());
         panel.add(categoriesBox);
 
         JTextField textField = new JTextField();
@@ -148,12 +148,14 @@ public class HeaderCard extends JPanel {
 
     private void peformeSearch(JTextField textField, JComboBox categoriesBox){
         String genreName = (String) categoriesBox.getSelectedItem();
-        GenreTypes genre = GenreTypes.getGenreTypeByName(genreName);
+        Genre genre = Genre.getGenreByName(genreName);
 
         String searchedName = textField.getText();
 
-        Display.getInstance().displayOnPreview(genre, searchedName);
-        System.out.println( "Search for " + genre.name() + " " + searchedName);
+        PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
+        previewPage.setDisplayedMedia(genre);
+        Display.getInstance().setPage(previewPage);
+        System.out.println( "Search for " + genre.getName() + " " + searchedName);
     }
 
     public void setProfilePicture(Profile profile){

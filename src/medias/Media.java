@@ -2,7 +2,7 @@ package medias;
 
 
 import medias.types.AgeTypes;
-import medias.types.GenreTypes;
+import medias.types.Genre;
 import medias.types.MediaTypes;
 import ui.cards.MediaPreviewCard;
 
@@ -18,7 +18,7 @@ public abstract class Media {
     protected String year;
     protected double rating;
     protected AgeTypes ageResctriction;
-    protected GenreTypes[] genres;
+    protected Genre[] genres;
     protected BufferedImage img;
     protected MediaPreviewCard previewCard;
 
@@ -66,7 +66,7 @@ public abstract class Media {
     public String getYear() { //Returnerer årstallet, som mediet blev udgivet. (Har vi selv tilføjet til den vedhæftede data)
         return year;
     }
-    public GenreTypes getGenre(int i){
+    public Genre getGenre(int i){
         return genres[i];
     }
 
@@ -129,16 +129,16 @@ public abstract class Media {
         }
     }
 
-    public boolean hasGenre(GenreTypes genreType){
-        for(GenreTypes genre: genres){
-            if (genre.equals(genreType)){
+    public boolean hasGenre(Genre keyGenre){
+        for(Genre genre: genres){
+            if (genre.equals(keyGenre)){
                 return true;
             }
         }
         return false;
     }
 
-    public GenreTypes[] getGenres(){
+    public Genre[] getGenres(){
         return genres;
     }
 }
