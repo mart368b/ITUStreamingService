@@ -1,5 +1,6 @@
 package ui.panels;
 
+import maincomponents.SearchComparator;
 import medias.types.Genre;
 import medias.Media;
 import medias.types.MediaTypes;
@@ -146,11 +147,13 @@ public class PreviewPage extends Page {
         updatePreview();
     }
 
-    public void setDisplayedMedia(Genre genre){
+    public void setDisplayedMedia(Genre genre, String title){
         displayedMedia.clear();
         MediaHandler.getInstance().getAllMedia(displayedMedia);
         filterDisplayedMedia(genre);
-        sortPreview(lastSort, reversedSorting);
+        SearchComparator c = SearchComparator.getSearchComparator(title);
+        displayedMedia.sort(c);
+        updatePreview();
     }
 
     public void setDisplayedMedia(List<Media> medias){

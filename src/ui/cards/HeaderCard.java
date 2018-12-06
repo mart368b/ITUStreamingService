@@ -153,7 +153,7 @@ public class HeaderCard extends JPanel {
         String searchedName = textField.getText();
 
         PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-        previewPage.setDisplayedMedia(genre);
+        previewPage.setDisplayedMedia(genre, searchedName);
         Display.getInstance().setPage(previewPage);
         System.out.println( "Search for " + genre.getName() + " " + searchedName);
     }
