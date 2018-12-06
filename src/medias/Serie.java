@@ -3,6 +3,7 @@ package medias;
 import medias.types.AgeTypes;
 import medias.types.Genre;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class Serie extends Media {
     
     private HashMap<Integer, ArrayList<SeriesEpisode>> seasons;
 
-    Serie(String id,String title, String year, String genre, String rating, String ageResriction, String seasons) {
+    public Serie(String id,String title, String year, String genre, String rating, String ageResriction, String seasons) {
         this.id = Integer.parseInt(id);
         this.title = title;
         this.genres = Genre.getGenresByNames(genre.split(","));
@@ -27,6 +28,25 @@ public class Serie extends Media {
         }
 
         loadImage();
+        createPreviewCard();
+    }
+
+    public Serie(int id, String title, double rating, String age, String[] genres, BufferedImage image,
+                 String year, String seasons){
+        this.id = id;
+        this.title = title;
+        this.rating = rating;
+        this.genres = Genre.getGenresByNames(genres);
+        this.img = image;
+        this.year = year;
+        this.ageResctriction = AgeTypes.getAgeTypeFromName(age);
+
+        this.seasons = new HashMap<>();
+        String[] seasonArr = seasons.split("_"); // 4-13
+        for ( String season: seasonArr){
+            addSeason(season);
+        }
+
         createPreviewCard();
     }
 

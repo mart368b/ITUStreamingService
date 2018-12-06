@@ -32,6 +32,10 @@ public enum AgeTypes {
         return NONE;
     }
 
+    public String getName(){
+        return name;
+    }
+
     public BufferedImage getImage(){
         return img;
     }
@@ -40,7 +44,7 @@ public enum AgeTypes {
         String[] array = new String[AgeTypes.values().length];
         int index = 0;
         for(AgeTypes type : AgeTypes.values()){
-            array[index] = type.toString();
+            array[index] = type.getName();
             index++;
         }
         return array;
