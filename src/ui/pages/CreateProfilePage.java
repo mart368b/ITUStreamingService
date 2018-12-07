@@ -1,7 +1,10 @@
-package ui.panels;
+package ui.pages;
 
+import debugging.Exceptions.InvalidInputException;
 import debugging.Logger;
 import maincomponents.AvMinArm;
+import maincomponents.controllers.PreviewController;
+import maincomponents.controllers.ProfileController;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.CanvasCard;
@@ -41,8 +44,7 @@ public class CreateProfilePage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                resetFields();
-                Display.setPage(Page.USERPAGE);
+                Display.setPage(PageHandler.USERPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,12 +55,6 @@ public class CreateProfilePage extends Page {
         setBackground(StyleArchive.COLOR_BACKGROUND);
         setLayout(new GridBagLayout());
         add(canvas);
-    }
-
-    public void resetFields(){
-        picture.reset();
-        nametext.setText("");
-        agetext.setText("");
     }
 
     public JPanel getCreate(){
@@ -116,34 +112,14 @@ public class CreateProfilePage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(nametext.getText().isEmpty() || agetext.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "You have not filled in all the boxes! Try look!");
-                }else{
-                    if(AvMinArm.user.hasProfile(nametext.getText())){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "You already have a profile with that name!");
-                    }else{
-                        if(!isNumber(agetext.getText())){
-                            JOptionPane.showMessageDialog(new JFrame(),
-                                    "Age has to be a number!");
-                        }else {
-                            if(picture.getSelected() == null){
-                                JOptionPane.showMessageDialog(new JFrame(),
-                                        "No picture chosen!");
-                            }else{
-                                Logger.log("New profile " + nametext.getText() + " for user: " + AvMinArm.user.getUsername());
-                                Profile profile = new Profile(nametext.getText(), Integer.parseInt(agetext.getText()), picture.getSelected());
-
-                                AvMinArm.user.signUpProfile(profile);
-
-                                UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
-                                userpage.updateUsers();
-                                resetFields();
-                                Display.setPage(userpage);
-                            }
-                        }
-                    }
+                String name = nametext.getText();
+                String age = agetext.getText();
+                String imgName = picture.getSelected();
+                try {
+                    ProfileController.createProfile(name, age, imgName);
+                }catch (InvalidInputException exc){
+                    JOptionPane.showMessageDialog(new JFrame(), exc.getMessage());
+                    return;
                 }
             }
         });
@@ -155,17 +131,11 @@ public class CreateProfilePage extends Page {
         return panel;
     }
 
-    public static boolean isNumber(String s){
-        try {
-            Integer.parseInt(s);
-            return true;
-        }catch (Exception e){return false;}
+    public void addToDisplay(Display d){
+        super.addToDisplay(d);
+        picture.reset();
+        nametext.setText("");
+        agetext.setText("");
     }
 
-    public static boolean isDouble(String s){
-        try {
-            Double.parseDouble(s);
-            return true;
-        }catch (Exception e){return false;}
-    }
 }

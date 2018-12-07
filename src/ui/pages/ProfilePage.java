@@ -1,21 +1,18 @@
-package ui.panels;
+package ui.pages;
 
+import debugging.Exceptions.InvalidInputException;
 import maincomponents.AvMinArm;
+import maincomponents.controllers.ProfileController;
+import maincomponents.controllers.UserController;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.CanvasCard;
 import ui.cards.ProfileCard;
-import maincomponents.ImageHandler;
-import ui.components.ImageButton;
-import user.Profile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Random;
 
 public class ProfilePage extends Page {
 
@@ -110,30 +107,14 @@ public class ProfilePage extends Page {
         commit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!namechange.getText().isEmpty()) {
-                    if (AvMinArm.user.hasProfile(namechange.getText())) {
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Name already taken by another profile!");
-                    } else {
-                        AvMinArm.profile.setName(namechange.getText());
-                    }
+                String name = namechange.getText();
+                String age = agechange.getText();
+                String imgName = selected.getSelected();
+                try {
+                    ProfileController.updateProfile(name, age, imgName);
+                } catch (InvalidInputException exc){
+                    JOptionPane.showMessageDialog(new JFrame(), exc.getMessage());
                 }
-                if(!agechange.getText().isEmpty()){
-                    if(!isNumber(agechange.getText())){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Age has to be a number!");
-                    }else{
-                        AvMinArm.profile.setAge(Integer.parseInt(agechange.getText()));
-                    }
-                }
-                if (selected.getSelected() != null){
-                    AvMinArm.profile.setPicture(selected.getSelected());
-                }
-
-                namechange.setText("");
-                agechange.setText("");
-                ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
-                profilePage.open();
             }
         });
 
@@ -143,9 +124,9 @@ public class ProfilePage extends Page {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
-                userpage.updateUsers();
-                Display.setPage(userpage);
+                UserPage userPage = (UserPage) PageHandler.getPage(PageHandler.USERPAGE);
+                userPage.updateUsers();
+                Display.setPage(userPage);
             }
         });
 
@@ -154,17 +135,7 @@ public class ProfilePage extends Page {
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int answer = JOptionPane.showConfirmDialog(new JFrame(),
-                        "Are you sure you want to delete this profile?",
-                        "Are you sure?",
-                        JOptionPane.YES_NO_OPTION);
-                if(answer == JOptionPane.YES_OPTION){
-                    AvMinArm.user.removeProfile(AvMinArm.profile);
-
-                    UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
-                    userpage.updateUsers();
-                    Display.setPage(userpage);
-                }
+                ProfileController.deleteProfile();
             }
         });
         buttons.add(commit);
@@ -180,18 +151,17 @@ public class ProfilePage extends Page {
 
     public void open(){
         String profilePicName = AvMinArm.profile.getProfilePictureName();
+        selected.setSelected(profilePicName);
+        update(profilePicName);
+    }
+
+    public void update(String profilePicName){
         pic.setPicture(profilePicName, 256);
         nametext.setText(AvMinArm.profile.getName());
         agetext.setText(Integer.toString(AvMinArm.profile.getAge()));
-        picturetext.setText("");
+        namechange.setText("");
+        agechange.setText("");
         validate();
         repaint();
-    }
-
-    public static boolean isNumber(String s){
-        try {
-            Integer.parseInt(s);
-            return true;
-        }catch (Exception e){return false;}
     }
 }

@@ -1,7 +1,7 @@
 package maincomponents;
 
 import ui.Display;
-import ui.panels.Page;
+import ui.pages.PageHandler;
 import user.Profile;
 import user.User;
 import user.UserHandler;
@@ -16,6 +16,6 @@ public class AvMinArm {
     public static void main( String[] args){
         ImageHandler.getInstance().init();
         UserHandler.getInstance().init();
-        Display.setPage(Page.LOGINPAGE);
+        Display.setPage(PageHandler.LOGINPAGE);
     }
 }

@@ -1,6 +1,5 @@
-package ui.panels;
+package ui.pages;
 
-import debugging.Logger;
 import maincomponents.AvMinArm;
 import maincomponents.Tickable;
 import maincomponents.Timer;

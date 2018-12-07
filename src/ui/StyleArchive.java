@@ -1,8 +1,11 @@
 package ui;
 
+import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class StyleArchive {
+
 
     protected static String font = "Arial Nova";
 
@@ -13,4 +16,7 @@ public class StyleArchive {
 
     //COLORS
     public static final Color COLOR_BACKGROUND = Color.WHITE;
+
+    //BORDERS
+    public static final Border UNDER_LINE_BORDER = BorderFactory.createMatteBorder(0,0,4,0, Color.LIGHT_GRAY);;
 }

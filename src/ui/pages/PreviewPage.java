@@ -1,12 +1,8 @@
-package ui.panels;
+package ui.pages;
 
-import maincomponents.SearchComparator;
 import maincomponents.controllers.PreviewController;
-import medias.types.Genre;
 import medias.Media;
-import medias.types.MediaTypes;
 import medias.types.SortTypes;
-import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.HeaderCard;
@@ -24,7 +20,10 @@ public class PreviewPage extends Page {
     private JPanel previewMenu;
     private JPanel noResult;
     private JTextField minRating, maxRating, minYear, maxYear;
+    private HeaderCard header;
     private int itemCount;
+    private JComboBox<String> sortTypeBox;
+    private ToggleImageButton sortingDir;
 
     protected PreviewPage(Display display){
         super();
@@ -64,7 +63,6 @@ public class PreviewPage extends Page {
         add(cardPreviewPanel, BorderLayout.CENTER);
 
         PreviewController.init(this);
-        PreviewController.displayMedia();
 
     }
 
@@ -76,7 +74,8 @@ public class PreviewPage extends Page {
 
         JLabel sortText = new JLabel("sort:");
         panel.add(sortText);
-        JComboBox<String> sortTypeBox = new JComboBox<String>(SortTypes.getSortTypeNames());
+        sortTypeBox = new JComboBox<String>(SortTypes.getSortTypeNames());
+        sortTypeBox.setBackground(StyleArchive.COLOR_BACKGROUND);
         sortTypeBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,16 +89,16 @@ public class PreviewPage extends Page {
         JLabel reverseText = new JLabel("Reverse:");
         panel.add(reverseText);
 
-        ToggleImageButton radioButton = new ToggleImageButton("up", "down");
-        radioButton.setBackground(StyleArchive.COLOR_BACKGROUND);
-        radioButton.setPrefferedWidth(30);
-        radioButton.addActionListener(new ActionListener() {
+        sortingDir = new ToggleImageButton("up", "down");
+        sortingDir.setBackground(StyleArchive.COLOR_BACKGROUND);
+        sortingDir.setPrefferedWidth(30);
+        sortingDir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PreviewController.reverseSorting();
             }
         });
-        panel.add(radioButton);
+        panel.add(sortingDir);
 
         Dimension deafaultSize = new Dimension(60, 20);
 
@@ -112,7 +111,6 @@ public class PreviewPage extends Page {
                     PreviewController.displayMedia();
                 }
             }
-
             public void keyTyped(KeyEvent e) {}
             public void keyReleased(KeyEvent e) {}
         };
@@ -203,4 +201,18 @@ public class PreviewPage extends Page {
         return maxRating;
     }
 
+
+    @Override
+    public void addToDisplay(Display display){
+        super.addToDisplay(display);
+        PreviewController.displayMedia();
+        PreviewController.resetBoundaries();
+        HeaderCard.getInstance().reset();
+        sortTypeBox.setSelectedIndex(0);
+        if (sortingDir.isActive()){
+            sortingDir.toggle();
+            PreviewController.reverseSorting();
+        }
+        PreviewController.displayMedia();
+    }
 }

@@ -1,16 +1,14 @@
 package ui.cards;
 
 import maincomponents.AvMinArm;
-import maincomponents.ImageHandler;
 import medias.Media;
 import ui.Display;
 import ui.StyleArchive;
 import ui.components.ImageButton;
 import ui.components.ToggleImageButton;
-import ui.panels.MediaPreviewPage;
-import ui.panels.Page;
+import ui.pages.MediaPreviewPage;
+import ui.pages.PageHandler;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +24,7 @@ public class MediaPreviewCard extends ImageButton {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MediaPreviewPage mediaPreview = (MediaPreviewPage) Page.getPage(Page.MEDIAPREVIEWPAGE);
+                MediaPreviewPage mediaPreview = (MediaPreviewPage) PageHandler.getPage(PageHandler.MEDIAPREVIEWPAGE);
                 mediaPreview.setMedia(media);
                 Display.setPage(mediaPreview);
             }

@@ -1,18 +1,15 @@
 package maincomponents.controllers;
 
-import javafx.scene.control.TreeTableColumn;
 import maincomponents.SearchComparator;
 import medias.Media;
 import medias.types.Genre;
 import medias.types.MediaTypes;
 import medias.types.SortTypes;
 import reader.MediaHandler;
-import ui.panels.Page;
-import ui.panels.PreviewPage;
+import ui.pages.PreviewPage;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class PreviewController extends Controller{

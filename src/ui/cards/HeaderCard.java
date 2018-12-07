@@ -7,8 +7,8 @@ import medias.types.MediaTypes;
 import ui.Display;
 import ui.StyleArchive;
 import ui.components.ImageButton;
-import ui.panels.Page;
-import ui.panels.PreviewPage;
+import ui.pages.PageHandler;
+import ui.pages.PreviewPage;
 import user.Profile;
 
 import javax.swing.*;
@@ -21,6 +21,8 @@ public class HeaderCard extends JPanel {
 
     private Display display;
     private ImageButton userButton;
+    private JTextField searchField;
+    private JComboBox<String> genreBox;
 
     private static HeaderCard instance;
     public static HeaderCard getInstance() {
@@ -55,10 +57,11 @@ public class HeaderCard extends JPanel {
         ImageButton startButton = new ImageButton("logo");
         startButton.setBorderPainted(false);
         startButton.setPrefferedHeight(30);
+        startButton.setBackground(StyleArchive.COLOR_BACKGROUND);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
+                PreviewPage previewPanel = (PreviewPage) PageHandler.getPage(PageHandler.PREVIEWPAGE);
                 PreviewController.displayMedia();
             }
         });
@@ -106,7 +109,7 @@ public class HeaderCard extends JPanel {
         userButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(Page.USERPAGE);
+                Display.setPage(PageHandler.USERPAGE);
             }
         });
         panel.add(userButton);
@@ -127,18 +130,18 @@ public class HeaderCard extends JPanel {
 
         JLabel genreText = new JLabel("categories:");
         panel.add(genreText);
-        JComboBox<String> categoriesBox = new JComboBox<String>(Genre.getGenreNames());
-        panel.add(categoriesBox);
+        genreBox = new JComboBox<String>(Genre.getGenreNames());
+        panel.add(genreBox);
 
-        JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension(100, 20));
-        panel.add(textField);
+        searchField = new JTextField();
+        searchField.setPreferredSize(new Dimension(100, 20));
+        panel.add(searchField);
 
-        textField.addActionListener(new ActionListener() {
+        searchField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String title = textField.getText();
-                Genre genre = Genre.getGenreByName((String) categoriesBox.getSelectedItem());
+                String title = searchField.getText();
+                Genre genre = Genre.getGenreByName((String) genreBox.getSelectedItem());
                 PreviewController.displayMedia(title, genre);
             }
         });
@@ -149,6 +152,11 @@ public class HeaderCard extends JPanel {
     public void setProfilePicture(Profile profile){
         userButton.setImage(profile.getImage());
         userButton.repaint();
+    }
+
+    public void reset(){
+        genreBox.setSelectedIndex(0);
+        searchField.setText("");
     }
 
 }

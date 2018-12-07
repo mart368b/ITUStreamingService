@@ -3,12 +3,9 @@ package ui;
 
 import debugging.LogTypes;
 import debugging.Logger;
-import medias.*;
-import medias.types.Genre;
-import ui.panels.MediaPreviewPage;
-import ui.panels.Page;
-import ui.panels.PreviewPage;
-import ui.panels.UserPage;
+import ui.pages.Page;
+import ui.pages.PageHandler;
+import ui.pages.UserPage;
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,9 +27,9 @@ public class Display extends JFrame  {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        Page.initializePages(this);
+        PageHandler.initializePages(this);
 
-        UserPage userPage = (UserPage) Page.getPage(Page.USERPAGE);
+        UserPage userPage = (UserPage) PageHandler.getPage(PageHandler.USERPAGE);
         Dimension d = userPage.getPreferredSize();
 
         d.width = (140 + 10)*7 + 100;
@@ -47,8 +44,8 @@ public class Display extends JFrame  {
     public static void setPage( Page newPage ) {
         Display ins = getInstance();
         int index = -1;
-        for (int i = 0; i < Page.pageCount(); i++) {
-            if (Page.getPage(i).equals(newPage)) {
+        for (int i = 0; i < PageHandler.pageCount(); i++) {
+            if (PageHandler.getPage(i).equals(newPage)) {
                 index = i;
                 break;
             }
@@ -58,7 +55,7 @@ public class Display extends JFrame  {
         }
         Page lastPanel = null;
         if (ins.currentPageIndex != -1) {
-            lastPanel = Page.getPage(ins.currentPageIndex);
+            lastPanel = PageHandler.getPage(ins.currentPageIndex);
         }
         ins.changePage(lastPanel, newPage, index);
     }
@@ -68,14 +65,14 @@ public class Display extends JFrame  {
         if ( pageIndex == ins.currentPageIndex ){
             return;
         }
-        if ( pageIndex < 0 && pageIndex >= Page.pageCount()){
+        if ( pageIndex < 0 && pageIndex >= PageHandler.pageCount()){
             Logger.log("Failed to find menu " + pageIndex, LogTypes.SOFTERROR);
         }else{
             Page lastPage = null;
             if (ins.currentPageIndex != -1){
-                lastPage = Page.getPage(ins.currentPageIndex);
+                lastPage = PageHandler.getPage(ins.currentPageIndex);
             }
-            Page nextPage = Page.getPage(pageIndex);
+            Page nextPage = PageHandler.getPage(pageIndex);
             ins.changePage(lastPage, nextPage, pageIndex);
         }
     }

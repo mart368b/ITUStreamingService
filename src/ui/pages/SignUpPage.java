@@ -1,7 +1,9 @@
-package ui.panels;
+package ui.pages;
 
+import debugging.Exceptions.InvalidInputException;
 import debugging.Logger;
 import maincomponents.AvMinArm;
+import maincomponents.controllers.UserController;
 import ui.Display;
 import ui.StyleArchive;
 import user.UserHandler;
@@ -37,7 +39,7 @@ public class SignUpPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(Page.LOGINPAGE);
+                Display.setPage(PageHandler.LOGINPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -99,30 +101,14 @@ public class SignUpPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(usertext.getText().isEmpty() || passtext.getPassword().length == 0 || conpasstext.getPassword().length == 0){
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "You have not filled in all the boxes! Try look!");
-                }else{
-                    if(!String.copyValueOf(passtext.getPassword()).equals(String.copyValueOf(conpasstext.getPassword()))){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Your password and confirmed password are not the same!");
-                        passtext.setText("");
-                        conpasstext.setText("");
-                    }else{
-                        if(UserHandler.getInstance().hasUser(usertext.getText())){
-                            JOptionPane.showMessageDialog(new JFrame(),
-                                    "A user with that name is already created!");
-                            passtext.setText("");
-                            conpasstext.setText("");
-                        }else{
-                            UserHandler.getInstance().signUpUser(usertext.getText(), String.copyValueOf(passtext.getPassword()));
-                            AvMinArm.user = UserHandler.getInstance().getUser(usertext.getText(), String.copyValueOf(passtext.getPassword()));
-                            Logger.log("New user created with name: " + usertext.getText());
-                            UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
-                            userpage.updateUsers();
-                            Display.setPage(userpage);
-                        }
-                    }
+                //usertext.text passtext.pass conpass.pass
+                String name = usertext.getText();
+                String kode = String.copyValueOf(passtext.getPassword());
+                String kodeCheck = String.copyValueOf(conpasstext.getPassword());
+                try {
+                    UserController.signUpUser(name, kode, kodeCheck);
+                } catch (InvalidInputException exc){
+                    JOptionPane.showMessageDialog(new JFrame(),exc.getMessage());
                 }
             }
         });
@@ -130,6 +116,14 @@ public class SignUpPage extends Page {
         panel.add(button);
 
         return panel;
+    }
+
+    @Override
+    public void addToDisplay(Display display){
+        super.addToDisplay(display);
+        usertext.setText("");
+        passtext.setText("");
+        conpasstext.setText("");
     }
 
 }

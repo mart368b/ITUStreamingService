@@ -1,4 +1,4 @@
-package ui.panels;
+package ui.pages;
 
 import maincomponents.AvMinArm;
 import reader.MediaHandler;
@@ -7,10 +7,8 @@ import ui.StyleArchive;
 import ui.cards.HeaderCard;
 import ui.cards.ProfileCard;
 import user.Profile;
-import user.User;
 
 import javax.swing.*;
-import javax.swing.text.Style;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,7 +45,7 @@ public class UserPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
-                Display.setPage(Page.LOGINPAGE);
+                Display.setPage(PageHandler.LOGINPAGE);
             }
         });
 
@@ -75,7 +73,7 @@ public class UserPage extends Page {
             admin.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Display.setPage(Page.ADMINPAGE);
+                    Display.setPage(PageHandler.ADMINPAGE);
                 }
             });
         }else{
@@ -121,7 +119,7 @@ public class UserPage extends Page {
                 AvMinArm.profile = profile;
                 HeaderCard.getInstance().setProfilePicture(profile);
                 MediaHandler.updateMediaCards(profile.getFavorites());
-                Display.setPage(Page.PREVIEWPAGE);
+                Display.setPage(PageHandler.PREVIEWPAGE);
             }
         });
         p.add(profilebutton);
@@ -136,7 +134,7 @@ public class UserPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
-                ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
+                ProfilePage profilePage = (ProfilePage) PageHandler.getPage(PageHandler.PROFILEPAGE);
                 profilePage.open();
                 Display.setPage(profilePage);
             }
@@ -161,7 +159,7 @@ public class UserPage extends Page {
         profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(Page.CREATEPROFILEPAGE);
+                Display.setPage(PageHandler.CREATEPROFILEPAGE);
             }
         });
 

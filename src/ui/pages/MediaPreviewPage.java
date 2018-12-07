@@ -1,4 +1,4 @@
-package ui.panels;
+package ui.pages;
 
 import medias.Movie;
 import medias.Serie;
@@ -12,7 +12,6 @@ import ui.components.PartialImageView;
 import maincomponents.ImageHandler;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -143,7 +142,7 @@ public class MediaPreviewPage extends Page {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(Page.PREVIEWPAGE);
+                Display.setPage(PageHandler.PREVIEWPAGE);
             }
         });
         actionWrapper.add(backButton);
@@ -152,7 +151,7 @@ public class MediaPreviewPage extends Page {
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
+                MediaPlayerPage playerPage = (MediaPlayerPage) PageHandler.getPage(PageHandler.MEDIAPLAYERPAGE);
                 playerPage.displayMovie((Movie) currentMedia, MediaPreviewPage.this);
                 Display.setPage(playerPage);
             }
@@ -181,8 +180,7 @@ public class MediaPreviewPage extends Page {
 
     private JPanel getTitlePanel(){
         JPanel titleWrapper = new JPanel();
-        Border underlineBorder = BorderFactory.createMatteBorder(0,0,4,0, Color.LIGHT_GRAY);
-        titleWrapper.setBorder(underlineBorder);
+        titleWrapper.setBorder(StyleArchive.UNDER_LINE_BORDER);
 
         title = new JLabel();
         title.setForeground(Color.BLACK);
@@ -270,7 +268,7 @@ public class MediaPreviewPage extends Page {
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
+                    MediaPlayerPage playerPage = (MediaPlayerPage) PageHandler.getPage(PageHandler.MEDIAPLAYERPAGE);
                     playerPage.displaySeries(episode, serie, (Page) MediaPreviewPage.this);
                     Display.setPage(playerPage);
                 }

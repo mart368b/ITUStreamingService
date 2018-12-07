@@ -1,12 +1,8 @@
-package ui.panels;
+package ui.pages;
 
 import ui.Display;
 
-import javax.swing.*;
-import java.awt.*;
-
-public abstract class Page extends JPanel {
-
+public class PageHandler {
 
     public final static int USERPAGE = 0;
     public final static int PREVIEWPAGE = 1;
@@ -20,30 +16,11 @@ public abstract class Page extends JPanel {
 
     private static Page[] pages = new Page[9];
 
-    public Page() {
-        super();
-    }
-
-    public Page(LayoutManager layoutManager) {
-        super(layoutManager);
-    }
-
-    public static Page getPage(int pageIndex) {
-        return pages[pageIndex];
-    }
-
-    public void addToDisplay(Display d){
-        Container con = d.getContentPane();
-        con.add(this);
-    }
-
-    public void removeFromDisplaye(Display d){
-        Container con = d.getContentPane();
-        con.remove(this);
-    }
-
     public static int pageCount(){
         return pages.length;
+    }
+    public static Page getPage(int pageIndex) {
+        return pages[pageIndex];
     }
 
     public static void initializePages(Display d){
@@ -57,4 +34,6 @@ public abstract class Page extends JPanel {
         pages[7] = new MediaPlayerPage();
         pages[8] = new AdminPage();
     }
+
+
 }

@@ -1,8 +1,10 @@
-package ui.panels;
+package ui.pages;
 
 
+import debugging.Exceptions.InvalidInputException;
 import debugging.Logger;
 import maincomponents.AvMinArm;
+import maincomponents.controllers.UserController;
 import ui.Display;
 import ui.StyleArchive;
 import user.User;
@@ -40,7 +42,7 @@ public class LogInPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Display.setPage(Page.SIGNUPPAGE);
+               Display.setPage(PageHandler.SIGNUPPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -93,24 +95,12 @@ public class LogInPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(usertext.getText().isEmpty() || passfield.getPassword().length == 0){
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "You have not filled in all the boxes! Try look!");
-                }else{
-                    User user = UserHandler.getInstance().getUser(usertext.getText(), String.copyValueOf(passfield.getPassword()));
-                    if(user == null){
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Password or username is wrong!");
-                        passfield.setText("");
-                    }else{
-                        AvMinArm.user = user;
-                        Logger.log("User with name: " + usertext.getText() + " logged in!");
-                        usertext.setText("");
-                        passfield.setText("");
-                        UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
-                        userpage.updateUsers();
-                        Display.setPage(userpage);
-                    }
+                String username = usertext.getText();
+                String password = String.copyValueOf(passfield.getPassword());
+                try {
+                    UserController.logInUser(username, password);
+                }catch (InvalidInputException exc){
+                    JOptionPane.showMessageDialog(new JFrame(), exc.getMessage());
                 }
             }
         });
@@ -128,5 +118,12 @@ public class LogInPage extends Page {
         passfield.setText("admin");
 
         return panel;
+    }
+
+    @Override
+    public void addToDisplay(Display display){
+        super.addToDisplay(display);
+        usertext.setText("");
+        passfield.setText("");
     }
 }
