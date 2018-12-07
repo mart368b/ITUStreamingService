@@ -16,7 +16,7 @@ public class Display extends JFrame  {
 
     private static Display instance = null;
 
-    public static Display getInstance(){
+    private static Display getInstance(){
         if ( instance == null ){
             instance = new Display();
         }
@@ -30,14 +30,6 @@ public class Display extends JFrame  {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        initializeDisplay();
-
-        pack();
-        setLocationRelativeTo(null);
-    }
-
-    private void initializeDisplay() {
-
         Page.initializePages(this);
 
         UserPage userPage = (UserPage) Page.getPage(Page.USERPAGE);
@@ -48,10 +40,12 @@ public class Display extends JFrame  {
         d.height += 700;
         setPreferredSize(d);
 
-        setPage(userPage);
+        pack();
+        setLocationRelativeTo(null);
     }
 
-    public void setPage( Page newPage ) {
+    public static void setPage( Page newPage ) {
+        Display ins = getInstance();
         int index = -1;
         for (int i = 0; i < Page.pageCount(); i++) {
             if (Page.getPage(i).equals(newPage)) {
@@ -63,25 +57,26 @@ public class Display extends JFrame  {
             return;
         }
         Page lastPanel = null;
-        if (currentPageIndex != -1) {
-            lastPanel = Page.getPage(currentPageIndex);
+        if (ins.currentPageIndex != -1) {
+            lastPanel = Page.getPage(ins.currentPageIndex);
         }
-        changePage(lastPanel, newPage, index);
+        ins.changePage(lastPanel, newPage, index);
     }
 
-    public void setPage( int pageIndex ){
-        if ( pageIndex == currentPageIndex ){
+    public static void setPage( int pageIndex ){
+        Display ins = getInstance();
+        if ( pageIndex == ins.currentPageIndex ){
             return;
         }
         if ( pageIndex < 0 && pageIndex >= Page.pageCount()){
             Logger.log("Failed to find menu " + pageIndex, LogTypes.SOFTERROR);
         }else{
             Page lastPage = null;
-            if (currentPageIndex != -1){
-                lastPage = Page.getPage(currentPageIndex);
+            if (ins.currentPageIndex != -1){
+                lastPage = Page.getPage(ins.currentPageIndex);
             }
             Page nextPage = Page.getPage(pageIndex);
-            changePage(lastPage, nextPage, pageIndex);
+            ins.changePage(lastPage, nextPage, pageIndex);
         }
     }
 
@@ -93,11 +88,5 @@ public class Display extends JFrame  {
         validate();
         repaint();
         currentPageIndex = nextIndex;
-    }
-
-    public void displayMedia(Media media){
-        MediaPreviewPage mediaPreview = (MediaPreviewPage) Page.getPage(Page.MEDIAPREVIEWPAGE);
-        mediaPreview.setMedia(media);
-        setPage(Page.MEDIAPREVIEWPAGE);
     }
 }

@@ -145,7 +145,7 @@ public class ProfilePage extends Page {
             public void actionPerformed(ActionEvent e) {
                 UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
                 userpage.updateUsers();
-                Display.getInstance().setPage(userpage);
+                Display.setPage(userpage);
             }
         });
 
@@ -163,7 +163,7 @@ public class ProfilePage extends Page {
 
                     UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
                     userpage.updateUsers();
-                    Display.getInstance().setPage(userpage);
+                    Display.setPage(userpage);
                 }
             }
         });

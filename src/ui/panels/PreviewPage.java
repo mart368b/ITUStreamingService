@@ -1,6 +1,7 @@
 package ui.panels;
 
 import maincomponents.SearchComparator;
+import maincomponents.controllers.PreviewController;
 import medias.types.Genre;
 import medias.Media;
 import medias.types.MediaTypes;
@@ -22,9 +23,8 @@ public class PreviewPage extends Page {
     private ArrayList<Media> displayedMedia = new ArrayList<Media>();
     private JPanel previewMenu;
     private JPanel noResult;
-    private SortTypes lastSort;
-    private boolean reversedSorting = false;
     private JTextField minRating, maxRating, minYear, maxYear;
+    private int itemCount;
 
     protected PreviewPage(Display display){
         super();
@@ -41,7 +41,7 @@ public class PreviewPage extends Page {
             public void componentResized(ComponentEvent componentEvent) {
                 int w = componentEvent.getComponent().getWidth();
                 if(w > 0){
-                    setViewPortWidth(componentEvent.getComponent().getWidth());
+                    setViewPortWidth(componentEvent.getComponent().getWidth(), itemCount);
                 }
             }
         });
@@ -63,8 +63,8 @@ public class PreviewPage extends Page {
         cardPreviewPanel.add(scrollPane, BorderLayout.CENTER);
         add(cardPreviewPanel, BorderLayout.CENTER);
 
-        setDisplayedMedia();
-        sortPreview(SortTypes.ALPHABETICLY, reversedSorting);
+        PreviewController.init(this);
+        PreviewController.displayMedia();
 
     }
 
@@ -81,8 +81,8 @@ public class PreviewPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String item = (String) sortTypeBox.getSelectedItem();
-                SortTypes sortTypes = SortTypes.valueOf(item.toUpperCase());
-                sortPreview(sortTypes, reversedSorting);
+                SortTypes sortType = SortTypes.valueOf(item.toUpperCase());
+                PreviewController.setSortingType(sortType);
             }
         });
         panel.add(sortTypeBox);
@@ -96,8 +96,7 @@ public class PreviewPage extends Page {
         radioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                reversedSorting = !reversedSorting;
-                sortPreview(lastSort, reversedSorting);
+                PreviewController.reverseSorting();
             }
         });
         panel.add(radioButton);
@@ -110,9 +109,7 @@ public class PreviewPage extends Page {
         KeyListener endFilterKey = new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    getAllMedia();
-                    filterBoundaries();
-                    updatePreview();
+                    PreviewController.displayMedia();
                 }
             }
 
@@ -149,24 +146,19 @@ public class PreviewPage extends Page {
         maxYear.addKeyListener(endFilterKey);
         panel.add(maxRating);
 
+        JButton resetLimit = new JButton("Reset limits");
+        resetLimit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PreviewController.resetBoundaries();
+            }
+        });
+        panel.add(resetLimit);
+
         return panel;
     }
 
-    public static boolean isNumber(String s){
-        try {
-            Integer.parseInt(s);
-            return true;
-        }catch (Exception e){return false;}
-    }
-
-    public static boolean isDouble(String s){
-        try {
-            Double.parseDouble(s);
-            return true;
-        }catch (Exception e){return false;}
-    }
-
-    public void updatePreview(){
+    public void updatePreview(List<Media> displayedMedia){
         previewMenu.removeAll();
         if (displayedMedia.size() == 0){
             previewMenu.add(noResult);
@@ -176,7 +168,7 @@ public class PreviewPage extends Page {
             }
         }
         Dimension d = getSize();
-        setViewPortWidth(d.width);
+        setViewPortWidth(d.width, displayedMedia.size());
         validate();
         repaint();
     }
@@ -187,139 +179,28 @@ public class PreviewPage extends Page {
         noResult.add(title);
     }
 
-    public void setViewPortWidth(int width) {
+    public void setViewPortWidth(int width, int itemCount) {
+        this.itemCount = itemCount;
         int rowSize = Math.floorDiv(width, 150);
-        int columnCount = -Math.floorDiv(-displayedMedia.size(), rowSize);
+        int columnCount = -Math.floorDiv(-itemCount, rowSize);
         Dimension d = new Dimension(width, columnCount*219 + 10);
         previewMenu.setPreferredSize(d);
     }
 
-    public void setDisplayedMedia(){
-        displayedMedia.clear();
-        getAllMedia();
-
-        sortPreview(lastSort, reversedSorting);
-        updatePreview();
+    public JTextField getMinYear(){
+        return minYear;
     }
 
-    public boolean validateLimits(){
-        if (minRating.getText().length() == 0){
-            double[] ratings = displayedMedia.stream().mapToDouble( Media::getRating).sorted().toArray();
-
-            minRating.setText(Double.toString(ratings[0]));
-            maxRating.setText(Double.toString(ratings[ratings.length - 1]));
-
-            int[] years = displayedMedia.stream().mapToInt( m -> {
-                String[] yearsPart = m.getYear().split("-");
-                return Integer.parseInt(yearsPart[yearsPart.length - 1]);
-            }).sorted().toArray();
-
-            minYear.setText(Integer.toString(years[0]));
-            maxYear.setText(Integer.toString(years[years.length - 1]));
-            return true;
-        }else{
-            if (!isNumber(minYear.getText())){
-                return false;
-            }
-            if (!isNumber(maxYear.getText())){
-                return false;
-            }
-            if(!isDouble(minRating.getText())){
-                return false;
-            }
-            if (!isDouble(maxRating.getText())){
-                return false;
-            }
-            return true;
-        }
+    public JTextField getMaxYear(){
+        return maxYear;
     }
 
-    public void getAllMedia(){
-        MediaHandler.getInstance().getAllMedia(displayedMedia);
-        filterBoundaries();
+    public JTextField getMinRating(){
+        return minRating;
     }
 
-    public void getAllMedia(MediaTypes mediaTypes){
-        MediaHandler.getInstance().getAllMedia(displayedMedia, mediaTypes);
-        filterBoundaries();
+    public JTextField getMaxRating(){
+        return maxRating;
     }
 
-    private void filterBoundaries() {
-        boolean valid = validateLimits();
-        if(!valid){
-            return;
-        }
-
-        int lowYearLimit = Integer.parseInt(minYear.getText());
-        int highYearLimit = Integer.parseInt(maxYear.getText());
-        double lowRatingLimit = Double.parseDouble(minRating.getText());
-        double highRatingLimit = Double.parseDouble(maxRating.getText());
-        for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
-            Media m = it.next();
-            String[] yearPart = m.getYear().split("-");
-            int year = Integer.parseInt(yearPart[yearPart.length - 1]);
-            double rating = m.getRating();
-            if (year < lowYearLimit || year > highYearLimit || rating < lowRatingLimit || rating > highRatingLimit){
-                it.remove();
-            }
-        }
-    }
-
-    public void setDisplayedMedia(MediaTypes mediaTypes){
-        displayedMedia.clear();
-        getAllMedia(mediaTypes);
-        sortPreview(lastSort, reversedSorting);
-        updatePreview();
-    }
-
-    public void setDisplayedMedia(Genre genre, String title){
-        displayedMedia.clear();
-        getAllMedia();
-        filterDisplayedMedia(genre);
-        SearchComparator c = SearchComparator.getSearchComparator(title);
-        displayedMedia.sort(c);
-        updatePreview();
-    }
-
-    public void setDisplayedMedia(List<Media> medias){
-        displayedMedia.clear();
-        getAllMedia();
-        filterDisplayedMedia(medias);
-        sortPreview(lastSort, reversedSorting);
-    }
-
-    public void filterDisplayedMedia(Genre genre){
-        if (genre.getName() != "Any"){
-            for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
-                Media m = it.next();
-                if (!m.hasGenre(genre)){
-                    it.remove();
-                }
-            }
-        }
-        updatePreview();
-    }
-
-    public void filterDisplayedMedia(List<Media> medias){
-        for (Iterator<Media> it = displayedMedia.iterator(); it.hasNext(); ) {
-            Media m = it.next();
-            if (!medias.contains(m)){
-                it.remove();
-            }
-        }
-        updatePreview();
-    }
-
-    public void sortPreview(SortTypes sortType, boolean reverse){
-        if (sortType == null){
-            return;
-        }
-        Comparator<Media> comp = sortType.getComparator();
-        if (reverse){
-            comp = Collections.reverseOrder(comp);
-        }
-        Collections.sort(displayedMedia, comp);
-        lastSort = sortType;
-        updatePreview();
-    }
 }

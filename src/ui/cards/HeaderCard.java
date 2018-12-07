@@ -1,6 +1,7 @@
 package ui.cards;
 
 import maincomponents.AvMinArm;
+import maincomponents.controllers.PreviewController;
 import medias.types.Genre;
 import medias.types.MediaTypes;
 import ui.Display;
@@ -58,7 +59,7 @@ public class HeaderCard extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-                previewPanel.setDisplayedMedia();
+                PreviewController.displayMedia();
             }
         });
         panel.add(startButton);
@@ -73,16 +74,14 @@ public class HeaderCard extends JPanel {
         addButton(panel, "Movies", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                PreviewPage previewPanel = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-                previewPanel.setDisplayedMedia(MediaTypes.MOVIE);
+                PreviewController.displayMedia(MediaTypes.MOVIE);
             }
         });
 
         addButton(panel, "Series", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-                previewPage.setDisplayedMedia(MediaTypes.SERIES);
+                PreviewController.displayMedia(MediaTypes.SERIES);
             }
         });
 
@@ -90,8 +89,7 @@ public class HeaderCard extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e){
                 Profile profile = AvMinArm.profile;
-                PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-                previewPage.setDisplayedMedia(profile.getFavorites());
+                PreviewController.displayMedia(profile.getFavorites());
             }
         });
 
@@ -108,7 +106,7 @@ public class HeaderCard extends JPanel {
         userButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getInstance().setPage(Page.USERPAGE);
+                Display.setPage(Page.USERPAGE);
             }
         });
         panel.add(userButton);
@@ -139,23 +137,13 @@ public class HeaderCard extends JPanel {
         textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                peformeSearch(textField, categoriesBox);
+                String title = textField.getText();
+                Genre genre = Genre.getGenreByName((String) categoriesBox.getSelectedItem());
+                PreviewController.displayMedia(title, genre);
             }
         });
 
         return panel;
-    }
-
-    private void peformeSearch(JTextField textField, JComboBox categoriesBox){
-        String genreName = (String) categoriesBox.getSelectedItem();
-        Genre genre = Genre.getGenreByName(genreName);
-
-        String searchedName = textField.getText();
-
-        PreviewPage previewPage = (PreviewPage) Page.getPage(Page.PREVIEWPAGE);
-        previewPage.setDisplayedMedia(genre, searchedName);
-        Display.getInstance().setPage(previewPage);
-        System.out.println( "Search for " + genre.getName() + " " + searchedName);
     }
 
     public void setProfilePicture(Profile profile){

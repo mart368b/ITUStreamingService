@@ -9,7 +9,7 @@ public class SearchComparator implements Comparator<Media> {
 
     public static SearchComparator instance;
 
-    public static SearchComparator getSearchComparator(String key){
+    public static SearchComparator getComparator(String key){
         if (SearchComparator.instance == null){
             instance = new SearchComparator();
         }
@@ -23,14 +23,14 @@ public class SearchComparator implements Comparator<Media> {
         return this;
     }
 
-    public int getScore(Media m){
+    private int getScore(Media m){
         String title = m.getTitle().toLowerCase();
         if (key.equals(title)){
             return 0;
         }
         int score = key.length();
         int maxSimilar = 0;
-        for (int offset = 0; offset < (title.length() - key.length()); offset++){
+        for (int offset = 0; offset < (title.length() - key.length() + 1); offset++){
             int similar = 0;
             for (int i = 0; i < key.length(); i++){
                 int index = i + offset;

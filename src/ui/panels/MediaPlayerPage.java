@@ -113,7 +113,7 @@ public class MediaPlayerPage extends Page implements Tickable {
                 }
                 updateWatchList();
                 displayedMedia = null;
-                Display.getInstance().setPage(MediaPlayerPage.this.previousPage);
+                Display.setPage(MediaPlayerPage.this.previousPage);
             }
         });
         panel.add(backButton);

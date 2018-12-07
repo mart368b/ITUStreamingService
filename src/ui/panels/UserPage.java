@@ -47,7 +47,7 @@ public class UserPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
-                Display.getInstance().setPage(Page.LOGINPAGE);
+                Display.setPage(Page.LOGINPAGE);
             }
         });
 
@@ -75,7 +75,7 @@ public class UserPage extends Page {
             admin.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Display.getInstance().setPage(Page.ADMINPAGE);
+                    Display.setPage(Page.ADMINPAGE);
                 }
             });
         }else{
@@ -120,8 +120,8 @@ public class UserPage extends Page {
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
                 HeaderCard.getInstance().setProfilePicture(profile);
-                MediaHandler.getInstance().updateMediaCards(profile.getFavorites());
-                Display.getInstance().setPage(Page.PREVIEWPAGE);
+                MediaHandler.updateMediaCards(profile.getFavorites());
+                Display.setPage(Page.PREVIEWPAGE);
             }
         });
         p.add(profilebutton);
@@ -138,7 +138,7 @@ public class UserPage extends Page {
                 AvMinArm.profile = profile;
                 ProfilePage profilePage = (ProfilePage) Page.getPage(Page.PROFILEPAGE);
                 profilePage.open();
-                Display.getInstance().setPage(profilePage);
+                Display.setPage(profilePage);
             }
         });
         p.add(profilebutton);
@@ -161,7 +161,7 @@ public class UserPage extends Page {
         profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getInstance().setPage(Page.CREATEPROFILEPAGE);
+                Display.setPage(Page.CREATEPROFILEPAGE);
             }
         });
 

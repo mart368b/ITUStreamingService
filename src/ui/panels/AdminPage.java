@@ -156,7 +156,7 @@ public class AdminPage extends Page {
                                 "All fields has to be filled!");
                         return;
                     }
-                    MediaHandler.getInstance().addMovie(titletext.getText(),
+                    MediaHandler.addMovie(titletext.getText(),
                             yeartext.getText(),
                             Double.parseDouble(ratetext.getText()),
                             agebox.getSelectedItem().toString(),
@@ -194,7 +194,7 @@ public class AdminPage extends Page {
                             return;
                         }
                     }
-                    MediaHandler.getInstance().addSeries(titletext.getText(),
+                    MediaHandler.addSeries(titletext.getText(),
                             Double.parseDouble(ratetext.getText()),
                             agebox.getSelectedItem().toString(),
                             oncategories.toArray(),
@@ -204,7 +204,7 @@ public class AdminPage extends Page {
                             seasons);
                 }
                 reset();
-                Display.getInstance().setPage(Page.USERPAGE);
+                Display.setPage(Page.USERPAGE);
             }
         });
         buttons.add(button);
@@ -215,7 +215,7 @@ public class AdminPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 reset();
-                Display.getInstance().setPage(Page.USERPAGE);
+                Display.setPage(Page.USERPAGE);
             }
         });
         buttons.add(back);

@@ -15,23 +15,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * class reasponsible for reading all medias
  */
 public class MediaHandler {
 
-    public static void main(String[]args){
-        MediaHandler.getInstance();
-    }
-
     // Make it a singleton since there is no reason to read all media multiple times
-    private static MediaHandler instance = new MediaHandler();
-    public static MediaHandler getInstance(){ return instance;}
+    private static MediaHandler instance;
+    public static MediaHandler getInstance(){
+        if (instance == null){
+            instance = new MediaHandler();
+        }
+        return instance;
+    }
 
     // Container of all media present in the project
     private List<Media> medias;
@@ -48,8 +48,8 @@ public class MediaHandler {
         }
     }
 
-    public void updateMediaCards(List<Media> favorites) {
-        for (Media media: medias){
+    public static void updateMediaCards(List<Media> favorites) {
+        for (Media media: instance.medias){
             MediaPreviewCard card = media.getPreviewCard();
             card.setActive(favorites.contains(media));
         }
@@ -109,25 +109,16 @@ public class MediaHandler {
         return null;
     }
 
-    public void getAllMedia(ArrayList<Media> mediaList){
-        mediaList.clear();
-        for (Media media: medias){
-            mediaList.add(media);
-        }
+    public static List<Media> getAllMedia(){
+        MediaHandler ins = getInstance();
+        List<Media> newMedia = new ArrayList<>(ins.medias);
+        return newMedia;
     }
 
-    public void getAllMedia(ArrayList<Media> mediaList, MediaTypes mediaTypes){
-        mediaList.clear();
-        for (Media media: medias){
-            if (mediaTypes.equals(media)){
-                mediaList.add(media);
-            }
-        }
-    }
-
-    public void addMovie(String title, String year, double rating, String age, String time, Object[] categories, BufferedImage image) {
+    public static void addMovie(String title, String year, double rating, String age, String time, Object[] categories, BufferedImage image) {
+        MediaHandler ins = getInstance();
         int id = 0;
-        for (Media med : medias) {
+        for (Media med : ins.medias) {
             if (med instanceof Movie) {
                 id++;
             }
@@ -142,7 +133,7 @@ public class MediaHandler {
             index++;
         }
         Movie movie = new Movie(id, title, year, cats, rating, age, time, image);
-        medias.add(movie);
+        ins.medias.add(movie);
 
         try {
             File file = new File("res/movies.csv");
@@ -157,11 +148,12 @@ public class MediaHandler {
         }
     }
 
-    public void addSeries(String title, double rating, String age, Object[] categories,
-                          BufferedImage image, String yearstart, String yearend,
-                          HashMap<Integer, ArrayList<String[]>> seasons){
+    public static void addSeries(String title, double rating, String age, Object[] categories,
+                                 BufferedImage image, String yearstart, String yearend,
+                                 HashMap<Integer, ArrayList<String[]>> seasons){
+        MediaHandler ins = getInstance();
         int id = 0;
-        for (Media med : medias) {
+        for (Media med : ins.medias) {
             if (med instanceof Serie) {
                 id++;
             }
@@ -193,7 +185,7 @@ public class MediaHandler {
 
         Serie serie = new Serie(id, title, rating, age, cats,
                 image, yearstart + "-" + yearend, seasonbuilder.toString());
-        medias.add(serie);
+        ins.medias.add(serie);
 
         try {
             File file = new File("res/series.csv");
@@ -207,8 +199,9 @@ public class MediaHandler {
         }
     }
 
-    public Media getMediaByID(int id){
-        for (Media media: medias){
+    public static Media getMediaByID(int id){
+        MediaHandler ins = getInstance();
+        for (Media media: ins.medias){
             if (media.getId() == id){
                 return media;
             }

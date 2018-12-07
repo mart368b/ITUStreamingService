@@ -37,7 +37,7 @@ public class SignUpPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getInstance().setPage(Page.LOGINPAGE);
+                Display.setPage(Page.LOGINPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -120,7 +120,7 @@ public class SignUpPage extends Page {
                             Logger.log("New user created with name: " + usertext.getText());
                             UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
                             userpage.updateUsers();
-                            Display.getInstance().setPage(userpage);
+                            Display.setPage(userpage);
                         }
                     }
                 }

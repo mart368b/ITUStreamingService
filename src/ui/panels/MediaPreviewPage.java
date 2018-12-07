@@ -143,7 +143,7 @@ public class MediaPreviewPage extends Page {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.getInstance().setPage(Page.PREVIEWPAGE);
+                Display.setPage(Page.PREVIEWPAGE);
             }
         });
         actionWrapper.add(backButton);
@@ -154,7 +154,7 @@ public class MediaPreviewPage extends Page {
             public void actionPerformed(ActionEvent e) {
                 MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
                 playerPage.displayMovie((Movie) currentMedia, MediaPreviewPage.this);
-                Display.getInstance().setPage(playerPage);
+                Display.setPage(playerPage);
             }
         });
         actionWrapper.add(playButton);
@@ -197,6 +197,7 @@ public class MediaPreviewPage extends Page {
         for (Genre genre: genres){
             genreContainer.add(genre.getGenreCard());
         }
+        genreContainer.validate();
     }
 
     public void setRating(double rating){
@@ -239,8 +240,8 @@ public class MediaPreviewPage extends Page {
         actionWrapper.removeAll();
         actionWrapper.add(playButton);
         actionWrapper.add(backButton);
-        validate();
-        repaint();
+        actionWrapper.validate();
+        actionWrapper.repaint();
     }
 
     private void addSeriesPlayButton(Serie serie) {
@@ -258,8 +259,8 @@ public class MediaPreviewPage extends Page {
             actionWrapper.add(episodeButton);
         }
         actionWrapper.add(backButton);
-        validate();
-        repaint();
+        actionWrapper.validate();
+        actionWrapper.repaint();
     }
 
     private void setEpisodePlayButton(ArrayList<SeriesEpisode> episodes, Serie serie){
@@ -271,13 +272,13 @@ public class MediaPreviewPage extends Page {
                 public void actionPerformed(ActionEvent e) {
                     MediaPlayerPage playerPage = (MediaPlayerPage) Page.getPage(Page.MEDIAPLAYERPAGE);
                     playerPage.displaySeries(episode, serie, (Page) MediaPreviewPage.this);
-                    Display.getInstance().setPage(playerPage);
+                    Display.setPage(playerPage);
                 }
             });
             actionWrapper.add(episodeButton);
         }
         actionWrapper.add(backToSelectionButton);
-        validate();
-        repaint();
+        actionWrapper.validate();
+        actionWrapper.repaint();
     }
 }

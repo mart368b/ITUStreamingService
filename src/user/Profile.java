@@ -53,13 +53,12 @@ public class Profile {
         this.age = age;
         this.picture = picture;
         this.favorites = new ArrayList<Media>();
-        MediaHandler handler = MediaHandler.getInstance();
         for(String s : favorites){
             if (s.length() == 0){
                 continue;
             }
             int mediaID = Integer.parseInt(s);
-            Media media = handler.getMediaByID(mediaID);
+            Media media = MediaHandler.getMediaByID(mediaID);
             if(media != null) this.favorites.add(media);
             else Logger.log("Found title in favoriteslist of username: " + name + ", that does not exist in Media!");
         }

@@ -40,7 +40,7 @@ public class LogInPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Display.getInstance().setPage(Page.SIGNUPPAGE);
+               Display.setPage(Page.SIGNUPPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -109,7 +109,7 @@ public class LogInPage extends Page {
                         passfield.setText("");
                         UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
                         userpage.updateUsers();
-                        Display.getInstance().setPage(userpage);
+                        Display.setPage(userpage);
                     }
                 }
             }

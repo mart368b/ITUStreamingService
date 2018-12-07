@@ -42,7 +42,7 @@ public class CreateProfilePage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetFields();
-                Display.getInstance().setPage(Page.USERPAGE);
+                Display.setPage(Page.USERPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -140,7 +140,7 @@ public class CreateProfilePage extends Page {
                                 UserPage userpage = (UserPage) Page.getPage(Page.USERPAGE);
                                 userpage.updateUsers();
                                 resetFields();
-                                Display.getInstance().setPage(userpage);
+                                Display.setPage(userpage);
                             }
                         }
                     }
