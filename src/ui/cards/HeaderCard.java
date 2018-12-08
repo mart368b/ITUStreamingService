@@ -124,13 +124,21 @@ public class HeaderCard extends JPanel {
         panel.add(newButton);
     }
 
-    private JPanel getSearchField(){
+    private JPanel getSearchField() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
         JLabel genreText = new JLabel("categories:");
         panel.add(genreText);
         genreBox = new JComboBox<String>(Genre.getGenreNames());
+        genreBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String title = searchField.getText();
+                Genre genre = Genre.getGenreByName((String) genreBox.getSelectedItem());
+                PreviewController.displayMedia(title, genre);
+            }
+        });
         panel.add(genreBox);
 
         searchField = new JTextField();
