@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public class UserHandler {
-    private final String PATH = "res/users.txt";
+    private final String PATH = "res/users.csv";
     private static UserHandler instance = new UserHandler();
     public static UserHandler getInstance() {
         return instance;

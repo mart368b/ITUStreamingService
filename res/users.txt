@@ -1,2 +1,0 @@
-root;admin;true;Mor,52,pig-red,,,%KID,0,pig-orange,,,%Timmy,7,pig-red,,,;
-Kaare;1234;false;Mor,46,default-green,20~83~34,,;
