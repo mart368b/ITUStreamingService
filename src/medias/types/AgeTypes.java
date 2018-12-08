@@ -32,6 +32,23 @@ public enum AgeTypes {
         return NONE;
     }
 
+    public int getAge(){
+        int age = 0;
+        try{
+            age = Integer.parseInt(name);
+        }catch (Exception e){}
+        if(age == 0){
+            switch (name){
+                case "PG": age = 3; break;
+                case "M": age = 16; break;
+                case "R": age = 18; break;
+                case "NONE": age = 7; break;
+                default: age = 0;
+            }
+        }
+        return age;
+    }
+
     public String getName(){
         return name;
     }

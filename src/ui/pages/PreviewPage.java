@@ -1,7 +1,9 @@
 package ui.pages;
 
+import maincomponents.AvMinArm;
 import maincomponents.controllers.PreviewController;
 import medias.Media;
+import medias.types.Genre;
 import medias.types.SortTypes;
 import ui.Display;
 import ui.StyleArchive;
@@ -162,6 +164,14 @@ public class PreviewPage extends Page {
             previewMenu.add(noResult);
         }else{
             for (Media media: displayedMedia){
+                if(AvMinArm.profile.getAge() <= 7){
+                    for(Genre genre : media.getGenres()){
+                        if(genre.getName().toLowerCase().equals("family")){
+                            previewMenu.add(media.getPreviewCard());
+                        }
+                    }
+                    continue;
+                }
                 previewMenu.add(media.getPreviewCard());
             }
         }
