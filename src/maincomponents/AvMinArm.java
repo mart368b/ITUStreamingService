@@ -1,5 +1,6 @@
 package maincomponents;
 
+import reader.MediaHandler;
 import ui.Display;
 import ui.pages.PageHandler;
 import user.Profile;
@@ -16,6 +17,7 @@ public class AvMinArm {
     public static void main( String[] args){
         ImageHandler.getInstance().init();
         UserHandler.getInstance().init();
+        MediaHandler.getInstance();
         Display.setPage(PageHandler.LOGINPAGE);
     }
 }

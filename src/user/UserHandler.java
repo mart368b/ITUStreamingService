@@ -33,7 +33,7 @@ public class UserHandler {
         // Creates new user list
         users = new ArrayList<User>();
         try {
-            CSVReader reader = new CSVReader(PATH, 4);
+            CSVReader reader = new CSVReader(PATH, new int[]{3,4});
             Iterator<String[]> ite = reader.getIterator();
             while(ite.hasNext()){
                 // gets the arguments of the line! Example of line [Bob;1234;true;Mor,48,default,Bob The Builder~Game Of Thrones%Far,52,default,;]

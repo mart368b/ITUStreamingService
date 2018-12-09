@@ -64,7 +64,7 @@ public class MediaHandler {
 
         CSVReader reader = null;
         try {
-            reader = new CSVReader(path, mediaType.getColumnCount());
+            reader = new CSVReader(path, new int[]{mediaType.getColumnCount()});
         } catch (MissingFileException e) {
             e.logError(LogTypes.SOFTERROR);
             return;

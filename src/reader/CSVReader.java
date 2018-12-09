@@ -18,7 +18,7 @@ public class CSVReader {
 
     // Indicate what character is used to separate values
     private final static String SEPARATOR = ";";
-    private int columnCount;
+    private int[] columnCount;
     // Container for all rows of values
     private List<String[]>  content;
 
@@ -28,7 +28,7 @@ public class CSVReader {
      * @param columnCount : specify how many columns the csv file should contain
      * @throws FileNotFoundException : If the file could not let the caller handle it
      */
-    public CSVReader( String url, int columnCount) throws MissingFileException, ResourceLoadingException {
+    public CSVReader( String url, int[] columnCount) throws MissingFileException, ResourceLoadingException {
         this.content = new ArrayList<>();
         this.columnCount = columnCount;
 
@@ -65,14 +65,18 @@ public class CSVReader {
             for ( int i = 0; i < lineContent.length; i++ ){
                 lineContent[i] = lineContent[i].trim();
             }
+            boolean found = false;
             // Check that the row contains specified amount of columns
-            if (lineContent.length != columnCount){
-                failedRows.add(line + "  " + lineContent.length);
-            }else{
-                // To avoid errors during creation of objects
-                // Only lines that fulfil the criteria is used
-                content.add(lineContent);
+            for(int i : columnCount){
+                if(lineContent.length == i){
+                    // To avoid errors during creation of objects
+                    // Only lines that fulfil the criteria is used
+                    content.add(lineContent);
+                    found = true;
+                    break;
+                }
             }
+            if(!found) failedRows.add(line + "  " + lineContent.length);
         }
 
         if ( failedRows.size() > 0 ){
