@@ -45,7 +45,7 @@ public class ProfileController extends Controller {
         if(!isNumber(age)){
             throw new InvalidInputException("Age has to be a number!");
         }
-        if(imgName.isEmpty()){
+        if(imgName == null || imgName.isEmpty()){
             throw new InvalidInputException("No picture chosen!");
         }
         Logger.log("New profile " + name + " for user: " + AvMinArm.user.getUsername());
