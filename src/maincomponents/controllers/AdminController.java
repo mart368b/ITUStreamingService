@@ -245,7 +245,7 @@ public class AdminController extends Controller {
             throw new InvalidInputException("Both fields must be filled!");
         }
         String[] info = new String[]{titletext.getText(), timetext.getText() + "min"};
-        seasons.get(index+1).add(info);
+        seasons.get(index + 1).add(info);
 
         seasonsmodel.setElementAt((index+1) + "-" + seasons.get(index+1).size(), index);
     }

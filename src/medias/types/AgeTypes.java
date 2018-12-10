@@ -5,21 +5,23 @@ import maincomponents.ImageHandler;
 import java.awt.image.BufferedImage;
 
 public enum AgeTypes {
-    AGE13("13"),
-    AGE15("15"),
-    AGE16("16"),
-    AGE18("18"),
-    GENERAL("G"),
-    MATURE("M"),
-    PARENTALGUIDANCE("PG"),
-    RESTRICTED("R"),
-    NONE("NONE");
+    GENERAL("G", 0),
+    AGE13("13", 13),
+    AGE15("15", 15),
+    AGE16("16", 16),
+    AGE18("18", 18),
+    MATURE("M", 14),
+    PARENTALGUIDANCE("PG", 14),
+    RESTRICTED("R", 19),
+    NONE("NONE", 0);
 
     private String name;
     private BufferedImage img;
+    private int age;
 
-    AgeTypes(final String name){
+    AgeTypes(final String name, final int age){
         this.name = name;
+        this.age = age;
         img = ImageHandler.getInstance().getImage(name);
     }
 
@@ -33,19 +35,6 @@ public enum AgeTypes {
     }
 
     public int getAge(){
-        int age = 0;
-        try{
-            age = Integer.parseInt(name);
-        }catch (Exception e){}
-        if(age == 0){
-            switch (name){
-                case "PG": age = 3; break;
-                case "M": age = 16; break;
-                case "R": age = 18; break;
-                case "NONE": age = 7; break;
-                default: age = 0;
-            }
-        }
         return age;
     }
 
