@@ -93,6 +93,7 @@ public class PreviewPage extends Page {
         panel.add(reverseText);
 
         sortingDir = new ToggleImageButton("up", "down");
+        sortingDir.setBorderPainted(false);
         sortingDir.setBackground(StyleArchive.COLOR_BACKGROUND);
         sortingDir.setPrefferedWidth(30);
         sortingDir.addActionListener(new ActionListener() {

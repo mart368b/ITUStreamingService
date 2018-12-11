@@ -15,6 +15,9 @@ public class ProfileController extends Controller {
 
     public static void updateProfile(String name, String age, String imgName) {
         if(!name.isEmpty()) {
+            if(name.length() > 10){
+                throw new InvalidInputException("Name is too long!\nMax 10 letters!");
+            }
             if (AvMinArm.user.hasProfile(name)) {
                 throw new InvalidInputException("Name already taken by another profile!");
             } else {
