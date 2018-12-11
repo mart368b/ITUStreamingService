@@ -36,6 +36,12 @@ public class ToggleImageButton extends ImageButton {
         }
     }
 
+    public void setInvsible(){
+        setOpaque(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+    }
+
     public boolean isActive(){
         return active;
     }

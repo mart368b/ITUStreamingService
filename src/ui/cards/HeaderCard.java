@@ -128,7 +128,7 @@ public class HeaderCard extends JPanel {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        JLabel genreText = new JLabel("categories:");
+        JLabel genreText = new JLabel("Categories:");
         panel.add(genreText);
         genreBox = new JComboBox<String>(Genre.getGenreNames());
         genreBox.addActionListener(new ActionListener() {
@@ -144,6 +144,7 @@ public class HeaderCard extends JPanel {
         searchField = new JTextField();
         searchField.setPreferredSize(new Dimension(100, 20));
         panel.add(searchField);
+        panel.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         searchField.addActionListener(new ActionListener() {
             @Override

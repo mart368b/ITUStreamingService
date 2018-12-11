@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 public class MediaPreviewPage extends Page {
 
-    public static Font titleFont = new Font("Arial", Font.PLAIN, 40);
     private ImageViewer imagePanel;
     private JLabel title;
     private JPanel genreContainer, ratingContainer, actionContainer, actionWrapper;
@@ -43,7 +42,7 @@ public class MediaPreviewPage extends Page {
         JPanel body = getBody();
         add(body, BorderLayout.CENTER);
 
-        backToSelectionButton = new JButton("back");
+        backToSelectionButton = new JButton("Back");
         backToSelectionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -184,7 +183,7 @@ public class MediaPreviewPage extends Page {
 
         title = new JLabel();
         title.setForeground(Color.BLACK);
-        title.setFont(titleFont);
+        title.setFont(StyleArchive.TITLEFONT);
         titleWrapper.add(title);
         return titleWrapper;
     }
