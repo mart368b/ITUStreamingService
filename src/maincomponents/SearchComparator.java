@@ -1,6 +1,7 @@
 package maincomponents;
 
 import medias.Media;
+import reader.MediaHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,19 +31,35 @@ public class SearchComparator implements Comparator<Media> {
         }
         int score = key.length();
         int maxSimilar = 0;
-        for (int offset = 0; offset < (title.length() - key.length() + 1); offset++){
-            int similar = 0;
+        int similar = 0;
+
+        if(key.length() > title.length()){
             for (int i = 0; i < key.length(); i++){
-                int index = i + offset;
-                if (index >= title.length()){
+                if (i >= title.length()){
                     break;
                 }
-                if (key.charAt(i) == title.charAt(index)){
+                if (key.charAt(i) == title.charAt(i)){
                     similar++;
                 }
             }
             if (similar > maxSimilar){
                 maxSimilar = similar;
+            }
+        }else {
+            for (int offset = 0; offset < (title.length() - key.length() + 1); offset++) {
+                similar = 0;
+                for (int i = 0; i < key.length(); i++) {
+                    int index = i + offset;
+                    if (index >= title.length()) {
+                        break;
+                    }
+                    if (key.charAt(i) == title.charAt(index)) {
+                        similar++;
+                    }
+                }
+                if (similar > maxSimilar) {
+                    maxSimilar = similar;
+                }
             }
         }
         score -= maxSimilar;
@@ -58,5 +75,50 @@ public class SearchComparator implements Comparator<Media> {
     @Override
     public boolean equals(Object obj) {
         return false;
+    }
+
+    //FOR TEST
+    public int getScore(String title){
+    /*    if (key.equals(title)){
+            return 0;
+        }
+        int score = key.length();
+        int maxSimilar = 0;
+        int similar = 0;
+
+        if(key.length() > title.length()){
+            for (int i = 0; i < key.length(); i++){
+                if (i >= title.length()){
+                    break;
+                }
+                if (key.charAt(i) == title.charAt(i)){
+                    similar++;
+                }
+            }
+            if (similar > maxSimilar){
+                maxSimilar = similar;
+            }
+        }else{
+            for (int offset = 0; offset < (title.length() - key.length() + 1); offset++){
+                similar = 0;
+                for (int i = 0; i < key.length(); i++){
+                    int index = i + offset;
+                    if (index >= title.length()){
+                        break;
+                    }
+                    if (key.charAt(i) == title.charAt(index)){
+                        similar++;
+                    }
+                }
+                if (similar > maxSimilar){
+                    maxSimilar = similar;
+                }
+            }
+        }
+
+        score -= maxSimilar;
+
+        return score;*/
+    return 0;
     }
 }
