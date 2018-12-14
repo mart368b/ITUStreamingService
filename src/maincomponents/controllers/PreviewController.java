@@ -41,7 +41,7 @@ public class PreviewController extends Controller{
         preview.updatePreview(displayedMedia);
     }
 
-    private static void filterMediaBoundaries() {
+    private static void filterDisplayedMediaByBoundaries() {
         boolean valid = validateLimits();
         if(!valid){
             return;
@@ -141,14 +141,14 @@ public class PreviewController extends Controller{
 
     public static void displayMedia(){
         resetDisplayedMedia();
-        filterMediaBoundaries();
+        filterDisplayedMediaByBoundaries();
         sortDisplayedMedia();
         updatePreview();
     }
 
     public static void displayMedia(MediaTypes mediaTypes){
         resetDisplayedMedia();
-        filterMediaBoundaries();
+        filterDisplayedMediaByBoundaries();
 
         Iterator<Media> iter = displayedMedia.iterator();
         while (iter.hasNext()){

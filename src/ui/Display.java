@@ -4,8 +4,8 @@ package ui;
 import debugging.LogTypes;
 import debugging.Logger;
 import ui.pages.Page;
-import ui.pages.PageHandler;
-import ui.pages.UserPage;
+import ui.pages.PageFactory;
+import ui.pages.ProfilePickerPage;
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,10 +27,10 @@ public class Display extends JFrame  {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        PageHandler.initializePages(this);
+        PageFactory.initializePages(this);
 
-        UserPage userPage = (UserPage) PageHandler.getPage(PageHandler.USERPAGE);
-        Dimension d = userPage.getPreferredSize();
+        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+        Dimension d = profilePickerPage.getPreferredSize();
 
         d.width = (140 + 10)*7 + 100;
         setMinimumSize(d);
@@ -44,18 +44,18 @@ public class Display extends JFrame  {
     public static void setPage( Page newPage ) {
         Display ins = getInstance();
         int index = -1;
-        for (int i = 0; i < PageHandler.pageCount(); i++) {
-            if (PageHandler.getPage(i).equals(newPage)) {
+        for (int i = 0; i < PageFactory.pageCount(); i++) {
+            if (PageFactory.getPage(i).equals(newPage)) {
                 index = i;
                 break;
             }
         }
-        if (index == -1) {
+        if (index == -1 || ins.currentPageIndex == index) {
             return;
         }
         Page lastPanel = null;
         if (ins.currentPageIndex != -1) {
-            lastPanel = PageHandler.getPage(ins.currentPageIndex);
+            lastPanel = PageFactory.getPage(ins.currentPageIndex);
         }
         ins.changePage(lastPanel, newPage, index);
     }
@@ -65,14 +65,14 @@ public class Display extends JFrame  {
         if ( pageIndex == ins.currentPageIndex ){
             return;
         }
-        if ( pageIndex < 0 && pageIndex >= PageHandler.pageCount()){
+        if ( pageIndex < 0 && pageIndex >= PageFactory.pageCount()){
             Logger.log("Failed to find menu " + pageIndex, LogTypes.SOFTERROR);
         }else{
             Page lastPage = null;
             if (ins.currentPageIndex != -1){
-                lastPage = PageHandler.getPage(ins.currentPageIndex);
+                lastPage = PageFactory.getPage(ins.currentPageIndex);
             }
-            Page nextPage = PageHandler.getPage(pageIndex);
+            Page nextPage = PageFactory.getPage(pageIndex);
             ins.changePage(lastPage, nextPage, pageIndex);
         }
     }

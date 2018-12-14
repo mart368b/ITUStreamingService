@@ -3,7 +3,6 @@ package ui.pages;
 import debugging.Exceptions.InvalidInputException;
 import maincomponents.AvMinArm;
 import maincomponents.controllers.ProfileController;
-import maincomponents.controllers.UserController;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.CanvasCard;
@@ -14,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ProfilePage extends Page {
+public class ProfileChangePage extends Page {
 
     private JPanel canvas, panel, grid, buttons, wrap;
     private ProfileCard pic;
@@ -23,7 +22,7 @@ public class ProfilePage extends Page {
     private JTextField namechange, agechange;
     public CanvasCard selected;
 
-    public ProfilePage(){
+    protected ProfileChangePage(){
         super();
         setLayout(new GridBagLayout());
 
@@ -50,7 +49,7 @@ public class ProfilePage extends Page {
         add(wrap);
     }
 
-    public JPanel getInformation(){
+    private JPanel getInformation(){
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(StyleArchive.COLOR_BACKGROUND);
@@ -102,7 +101,7 @@ public class ProfilePage extends Page {
 
         buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
-        commit = new JButton("Commit changes");
+        commit = new JButton("Apply changes");
         commit.setFont(StyleArchive.SMALL_BUTTON);
         commit.addActionListener(new ActionListener() {
             @Override
@@ -124,9 +123,9 @@ public class ProfilePage extends Page {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UserPage userPage = (UserPage) PageHandler.getPage(PageHandler.USERPAGE);
-                userPage.updateUsers();
-                Display.setPage(userPage);
+                ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+                profilePickerPage.updateUsers();
+                Display.setPage(profilePickerPage);
             }
         });
 
@@ -135,7 +134,7 @@ public class ProfilePage extends Page {
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ProfileController.deleteProfile();
+                ProfileController.deleteCurrentProfile();
             }
         });
         buttons.add(commit);

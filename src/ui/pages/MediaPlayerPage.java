@@ -35,7 +35,7 @@ public class MediaPlayerPage extends Page implements Tickable {
     private boolean playing = false;
     private Timer timer;
 
-    public MediaPlayerPage(){
+    protected MediaPlayerPage(){
         super(new BorderLayout());
         setBackground(StyleArchive.COLOR_BACKGROUND);
         playerView = getPlayerView();

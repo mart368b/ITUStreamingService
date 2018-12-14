@@ -142,7 +142,7 @@ public class MediaPreviewPage extends Page {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageHandler.PREVIEWPAGE);
+                Display.setPage(PageFactory.PREVIEWPAGE);
             }
         });
         actionWrapper.add(backButton);
@@ -151,7 +151,7 @@ public class MediaPreviewPage extends Page {
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MediaPlayerPage playerPage = (MediaPlayerPage) PageHandler.getPage(PageHandler.MEDIAPLAYERPAGE);
+                MediaPlayerPage playerPage = (MediaPlayerPage) PageFactory.getPage(PageFactory.MEDIAPLAYERPAGE);
                 playerPage.displayMovie((Movie) currentMedia, MediaPreviewPage.this);
                 Display.setPage(playerPage);
             }
@@ -268,7 +268,7 @@ public class MediaPreviewPage extends Page {
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MediaPlayerPage playerPage = (MediaPlayerPage) PageHandler.getPage(PageHandler.MEDIAPLAYERPAGE);
+                    MediaPlayerPage playerPage = (MediaPlayerPage) PageFactory.getPage(PageFactory.MEDIAPLAYERPAGE);
                     playerPage.displaySeries(episode, serie, (Page) MediaPreviewPage.this);
                     Display.setPage(playerPage);
                 }

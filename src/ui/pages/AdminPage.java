@@ -1,26 +1,16 @@
 package ui.pages;
 
 import debugging.Exceptions.InvalidInputException;
-import maincomponents.ImageHandler;
-import maincomponents.controllers.Controller;
 import maincomponents.controllers.AdminController;
 import medias.types.AgeTypes;
-import medias.types.Genre;
 import medias.types.MediaTypes;
-import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AdminPage extends Page {
 
@@ -36,7 +26,7 @@ public class AdminPage extends Page {
     private JScrollPane addlistScroller, removelistScroller, seasonsScroller;
 
 
-    public AdminPage(){
+    protected AdminPage(){
         super();
         AdminController.init(this);
         panel = new JPanel();
@@ -101,7 +91,7 @@ public class AdminPage extends Page {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageHandler.USERPAGE);
+                Display.setPage(PageFactory.PROFILEPICKERPAGE);
             }
         });
         buttons.add(back);

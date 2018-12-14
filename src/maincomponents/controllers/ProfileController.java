@@ -3,10 +3,12 @@ package maincomponents.controllers;
 import debugging.Exceptions.InvalidInputException;
 import debugging.Logger;
 import maincomponents.AvMinArm;
+import reader.MediaHandler;
 import ui.Display;
-import ui.pages.PageHandler;
-import ui.pages.ProfilePage;
-import ui.pages.UserPage;
+import ui.cards.HeaderCard;
+import ui.pages.PageFactory;
+import ui.pages.ProfileChangePage;
+import ui.pages.ProfilePickerPage;
 import user.Profile;
 
 import javax.swing.*;
@@ -31,7 +33,7 @@ public class ProfileController extends Controller {
 
         AvMinArm.profile.setPicture(imgName);
 
-        ProfilePage profilePage = (ProfilePage) PageHandler.getPage(PageHandler.PROFILEPAGE);
+        ProfileChangePage profilePage = (ProfileChangePage) PageFactory.getPage(PageFactory.CHANGEPROFILEPAGE);
         profilePage.update(AvMinArm.profile.getProfilePictureName());
     }
 
@@ -53,12 +55,12 @@ public class ProfileController extends Controller {
 
         AvMinArm.user.signUpProfile(profile);
 
-        UserPage userPage = (UserPage) PageHandler.getPage(PageHandler.USERPAGE);
-        userPage.updateUsers();
-        Display.setPage(userPage);
+        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+        profilePickerPage.updateUsers();
+        Display.setPage(profilePickerPage);
     }
 
-    public static void deleteProfile() {
+    public static void deleteCurrentProfile() {
         int answer = JOptionPane.showConfirmDialog(new JFrame(),
                 "Are you sure you want to delete this profile?",
                 "Are you sure?",
@@ -66,9 +68,16 @@ public class ProfileController extends Controller {
         if(answer == JOptionPane.YES_OPTION){
             AvMinArm.user.removeProfile(AvMinArm.profile);
 
-            UserPage userPage = (UserPage) PageHandler.getPage(PageHandler.USERPAGE);
-            userPage.updateUsers();
-            Display.setPage(userPage);
+            ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+            profilePickerPage.updateUsers();
+            Display.setPage(profilePickerPage);
         }
+    }
+
+    public static void setProfile(Profile profile) {
+        AvMinArm.profile = profile;
+        HeaderCard.getInstance().setProfilePicture(profile);
+        MediaHandler.updateMediaCards(profile.getFavorites());
+        Display.setPage(PageFactory.PREVIEWPAGE);
     }
 }

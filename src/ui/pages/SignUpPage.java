@@ -1,12 +1,9 @@
 package ui.pages;
 
 import debugging.Exceptions.InvalidInputException;
-import debugging.Logger;
-import maincomponents.AvMinArm;
 import maincomponents.controllers.UserController;
 import ui.Display;
 import ui.StyleArchive;
-import user.UserHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +18,7 @@ public class SignUpPage extends Page {
     private JTextField usertext;
     private JPasswordField passtext, conpasstext;
 
-    public SignUpPage(){
+    protected SignUpPage(){
         super();
 
         canvas = new JPanel();
@@ -39,7 +36,7 @@ public class SignUpPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageHandler.LOGINPAGE);
+                Display.setPage(PageFactory.LOGINPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -55,7 +52,7 @@ public class SignUpPage extends Page {
         add(canvas);
     }
 
-    public JPanel getSignUp(){
+    private JPanel getSignUp(){
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(300,200));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

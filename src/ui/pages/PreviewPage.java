@@ -175,6 +175,9 @@ public class PreviewPage extends Page {
                 previewMenu.add(media.getPreviewCard());
             }
         }
+        AdminPage adminPage = (AdminPage) PageFactory.getPage(PageFactory.ADMINPAGE);
+
+
         Dimension d = getSize();
         setViewPortWidth(d.width, displayedMedia.size());
         validate();

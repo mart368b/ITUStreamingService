@@ -2,13 +2,9 @@ package ui.pages;
 
 
 import debugging.Exceptions.InvalidInputException;
-import debugging.Logger;
-import maincomponents.AvMinArm;
 import maincomponents.controllers.UserController;
 import ui.Display;
 import ui.StyleArchive;
-import user.User;
-import user.UserHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +38,7 @@ public class LogInPage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Display.setPage(PageHandler.SIGNUPPAGE);
+               Display.setPage(PageFactory.SIGNUPPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -57,7 +53,7 @@ public class LogInPage extends Page {
         add(canvas);
     }
 
-    public JPanel getLogIn(){
+    private JPanel getLogIn(){
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         panel.setPreferredSize(new Dimension(300,200));

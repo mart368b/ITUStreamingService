@@ -1,14 +1,10 @@
 package ui.pages;
 
 import debugging.Exceptions.InvalidInputException;
-import debugging.Logger;
-import maincomponents.AvMinArm;
-import maincomponents.controllers.PreviewController;
 import maincomponents.controllers.ProfileController;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.CanvasCard;
-import user.Profile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +19,7 @@ public class CreateProfilePage extends Page {
     private JTextField nametext, agetext;
     private CanvasCard picture;
 
-    public CreateProfilePage(){
+    protected CreateProfilePage(){
         super();
 
         canvas = new JPanel();
@@ -44,7 +40,7 @@ public class CreateProfilePage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageHandler.USERPAGE);
+                Display.setPage(PageFactory.PROFILEPICKERPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -57,7 +53,7 @@ public class CreateProfilePage extends Page {
         add(canvas);
     }
 
-    public JPanel getCreate(){
+    private JPanel getCreate(){
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(300,340));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

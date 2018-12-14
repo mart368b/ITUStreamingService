@@ -101,7 +101,7 @@ public class CanvasCard extends ImageButton {
     }
 
     public void reset(){
-        selected = null;
+        selected = ImageHandler.types[0] + "-" + ImageHandler.colors[0];
         dx = 0;
         dy = 0;
     }

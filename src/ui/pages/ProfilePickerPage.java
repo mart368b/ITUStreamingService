@@ -1,10 +1,9 @@
 package ui.pages;
 
 import maincomponents.AvMinArm;
-import reader.MediaHandler;
+import maincomponents.controllers.ProfileController;
 import ui.Display;
 import ui.StyleArchive;
-import ui.cards.HeaderCard;
 import ui.cards.ProfileCard;
 import user.Profile;
 
@@ -14,14 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class UserPage extends Page {
+public class ProfilePickerPage extends Page {
 
     private JPanel panel, canvas, comp, p;
     private JPanel userprofiles = new JPanel();
     private JLabel label, profiletext;
     private JButton button, admin, profilebutton;
 
-    protected UserPage(){
+    protected ProfilePickerPage(){
         super();
 
         canvas = new JPanel();
@@ -45,7 +44,7 @@ public class UserPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
-                Display.setPage(PageHandler.LOGINPAGE);
+                Display.setPage(PageFactory.LOGINPAGE);
             }
         });
 
@@ -73,7 +72,7 @@ public class UserPage extends Page {
             admin.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Display.setPage(PageHandler.ADMINPAGE);
+                    Display.setPage(PageFactory.ADMINPAGE);
                 }
             });
         }else{
@@ -116,17 +115,14 @@ public class UserPage extends Page {
         profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AvMinArm.profile = profile;
-                HeaderCard.getInstance().setProfilePicture(profile);
-                MediaHandler.updateMediaCards(profile.getFavorites());
-                Display.setPage(PageHandler.PREVIEWPAGE);
+                ProfileController.setProfile(profile);
             }
         });
         p.add(profilebutton);
 
         p.add(Box.createRigidArea(new Dimension(0,10)));
 
-        profilebutton = new JButton("Profile");
+        profilebutton = new JButton("Update");
         profilebutton.setFont(StyleArchive.SMALL_BUTTON);
         profilebutton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -134,7 +130,7 @@ public class UserPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
-                ProfilePage profilePage = (ProfilePage) PageHandler.getPage(PageHandler.PROFILEPAGE);
+                ProfileChangePage profilePage = (ProfileChangePage) PageFactory.getPage(PageFactory.CHANGEPROFILEPAGE);
                 profilePage.open();
                 Display.setPage(profilePage);
             }
@@ -159,7 +155,7 @@ public class UserPage extends Page {
         profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageHandler.CREATEPROFILEPAGE);
+                Display.setPage(PageFactory.CREATEPROFILEPAGE);
             }
         });
 
