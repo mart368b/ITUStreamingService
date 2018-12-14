@@ -34,6 +34,7 @@ public class MediaPreviewCard extends ImageButton {
         GridBagConstraints c = new GridBagConstraints();
 
         button = new ToggleImageButton("add", "remove");
+        button.setInvsible();
         button.setPrefferedWidth(20);
         button.setBackground(StyleArchive.COLOR_BACKGROUND);
 

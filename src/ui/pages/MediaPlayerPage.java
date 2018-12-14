@@ -87,6 +87,7 @@ public class MediaPlayerPage extends Page implements Tickable {
         JPanel panel = new JPanel(new BorderLayout());
 
         progressBar = new JSlider();
+        progressBar.setBackground(StyleArchive.COLOR_BACKGROUND);
         progressBar.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -134,13 +135,18 @@ public class MediaPlayerPage extends Page implements Tickable {
         int minuteCount = minutes % 60;
         int hours = minutes/60;
         StringBuilder builder = new StringBuilder();
-        if (hours > 0){
-            builder.append(hours + ":");
-        }
+
+        if (hours > 0)builder.append(hours + ":");
+        else builder.append("0:");
+
         if (hours > 0 || minuteCount > 0){
-            builder.append(minuteCount + ":");
-        }
-        builder.append(secondCount);
+            if(minuteCount < 10) builder.append("0" + minuteCount + ":");
+            else builder.append(minuteCount + ":");
+        }else{ builder.append("00:");}
+
+        if(secondCount < 10) builder.append("0" + secondCount);
+        else builder.append(secondCount);
+
         timeStamp.setText(builder.toString());
         progressBar.setValue(seconds);
     }

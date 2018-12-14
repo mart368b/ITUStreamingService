@@ -74,8 +74,9 @@ public class PreviewPage extends Page {
 
         panel.setBorder(BorderFactory.createEmptyBorder());
 
-        JLabel sortText = new JLabel("sort:");
+        JLabel sortText = new JLabel("Sort:");
         panel.add(sortText);
+
         sortTypeBox = new JComboBox<String>(SortTypes.getSortTypeNames());
         sortTypeBox.setBackground(StyleArchive.COLOR_BACKGROUND);
         sortTypeBox.addActionListener(new ActionListener() {
@@ -92,6 +93,7 @@ public class PreviewPage extends Page {
         panel.add(reverseText);
 
         sortingDir = new ToggleImageButton("up", "down");
+        sortingDir.setBorderPainted(false);
         sortingDir.setBackground(StyleArchive.COLOR_BACKGROUND);
         sortingDir.setPrefferedWidth(30);
         sortingDir.addActionListener(new ActionListener() {
@@ -107,19 +109,16 @@ public class PreviewPage extends Page {
         JLabel yearText = new JLabel(" Release  min:");
         panel.add(yearText);
 
-        KeyListener endFilterKey = new KeyListener() {
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    PreviewController.displayMedia();
-                }
+        ActionListener endFilterKey = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PreviewController.displayMedia();
             }
-            public void keyTyped(KeyEvent e) {}
-            public void keyReleased(KeyEvent e) {}
         };
 
         minYear = new JTextField("");
         minYear.setPreferredSize(deafaultSize);
-        minYear.addKeyListener(endFilterKey);
+        minYear.addActionListener(endFilterKey);
         panel.add(minYear);
 
         JLabel m = new JLabel("max:");
@@ -127,7 +126,7 @@ public class PreviewPage extends Page {
 
         maxYear = new JTextField();
         maxYear.setPreferredSize(deafaultSize);
-        maxYear.addKeyListener(endFilterKey);
+        maxYear.addActionListener(endFilterKey);
         panel.add(maxYear);
 
         JLabel ratingText = new JLabel(" Rating  min:");
@@ -135,7 +134,7 @@ public class PreviewPage extends Page {
 
         minRating = new JTextField();
         minRating.setPreferredSize(deafaultSize);
-        minRating.addKeyListener(endFilterKey);
+        minRating.addActionListener(endFilterKey);
         panel.add(minRating);
 
         JLabel m1 = new JLabel("max:");
@@ -143,7 +142,7 @@ public class PreviewPage extends Page {
 
         maxRating = new JTextField();
         maxRating.setPreferredSize(deafaultSize);
-        maxYear.addKeyListener(endFilterKey);
+        maxRating.addActionListener(endFilterKey);
         panel.add(maxRating);
 
         JButton resetLimit = new JButton("Reset limits");
@@ -186,7 +185,9 @@ public class PreviewPage extends Page {
 
     private void initializeNoResultMessage() {
         noResult = new JPanel();
+        noResult.setBackground(StyleArchive.COLOR_BACKGROUND);
         JLabel title = new JLabel("Nothing is here yet");
+        noResult.setFont(StyleArchive.NORMAL);
         noResult.add(title);
     }
 

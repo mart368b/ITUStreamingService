@@ -2,6 +2,8 @@ package ui.pages;
 
 import maincomponents.AvMinArm;
 import maincomponents.controllers.ProfileController;
+import maincomponents.controllers.UserController;
+import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.ProfileCard;
@@ -18,7 +20,7 @@ public class ProfilePickerPage extends Page {
     private JPanel panel, canvas, comp, p;
     private JPanel userprofiles = new JPanel();
     private JLabel label, profiletext;
-    private JButton button, admin, profilebutton;
+    private JButton button, admin, delete, profilebutton;
 
     protected ProfilePickerPage(){
         super();
@@ -55,6 +57,19 @@ public class ProfilePickerPage extends Page {
         admin.setAlignmentX(Component.CENTER_ALIGNMENT);
         canvas.add(Box.createRigidArea(new Dimension(0, 5)));
         canvas.add(admin);
+
+        delete = new JButton("Delete user");
+        delete.setFont(StyleArchive.SMALL_BUTTON);
+        delete.setAlignmentX(Component.CENTER_ALIGNMENT);
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UserController.deleteUser();
+            }
+        });
+        canvas.add(Box.createRigidArea(new Dimension(0,5)));
+        canvas.add(delete);
+
         canvas.setBackground(StyleArchive.COLOR_BACKGROUND);
 
         setLayout(new GridBagLayout());

@@ -44,8 +44,8 @@ public class ImageButton extends JButton {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
+        //g.setColor(getBackground());
+        //g.fillRect(0, 0, getWidth(), getHeight());
         Image scaledImage = img.getScaledInstance(getWidth(), getHeight(), BufferedImage.SCALE_SMOOTH);
         g.drawImage(scaledImage, 0, 0, getWidth(), getHeight(), null);
     }

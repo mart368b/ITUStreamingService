@@ -32,6 +32,17 @@ public class UserController {
         Display.setPage(profilePickerPage);
     }
 
+    public static void deleteUser(){
+        int answer = JOptionPane.showConfirmDialog(new JFrame(),
+                "Are you sure you want to delete this user?",
+                "Are you sure?",
+                JOptionPane.YES_NO_OPTION);
+        if(answer == JOptionPane.YES_OPTION){
+            UserHandler.getInstance().removeUser(AvMinArm.user);
+            Display.setPage(PageHandler.LOGINPAGE);
+        }
+    }
+
     public static void logInUser(String username, String password) {
         if(username.isEmpty() || password.isEmpty()){
             throw new InvalidInputException("You have not filled in all the boxes!");

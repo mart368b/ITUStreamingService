@@ -97,4 +97,8 @@ public class CSVReader {
         return content.iterator();
     }
 
+    //FOR TESTING
+    public List<String[]> getContent(){
+        return content;
+    }
 }
