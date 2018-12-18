@@ -1,6 +1,4 @@
-package reader;
-
-
+import reader.CSVReader;
 
 public class CSVReaderTest {
 
