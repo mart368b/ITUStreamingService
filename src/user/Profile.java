@@ -182,7 +182,6 @@ public class Profile {
      */
     public void addFavorite(Media media){
         favorites.add(media);
-        System.out.println(media.getId());
     }
 
     /**

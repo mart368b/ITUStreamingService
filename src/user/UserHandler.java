@@ -133,7 +133,6 @@ public class UserHandler {
                         if ( mediaTypes == MediaTypes.SERIES ){
                             id |= 1;
                         }
-                        System.out.println(id);
                         favoritesdata.append(id);
                         // makes sure no ~ at the end
                         if(favIter.hasNext()) favoritesdata.append("~");
