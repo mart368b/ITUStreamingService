@@ -4,11 +4,14 @@ import debugging.Exceptions.MissingFileException;
 import debugging.Exceptions.ResourceLoadingException;
 import debugging.LogTypes;
 import debugging.Logger;
-import maincomponents.AvMinArm;
 import medias.Media;
+import medias.types.MediaTypes;
 import reader.CSVReader;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class UserHandler {
@@ -125,7 +128,13 @@ public class UserHandler {
                     while(favIter.hasNext()){
                         Media fav = favIter.next();
                         StringBuilder favoritesdata = new StringBuilder();
-                        favoritesdata.append(fav.getId());
+                        MediaTypes mediaTypes = MediaTypes.getMediaType(fav);
+                        int id = fav.getId() << 1;
+                        if ( mediaTypes == MediaTypes.SERIES ){
+                            id |= 1;
+                        }
+                        System.out.println(id);
+                        favoritesdata.append(id);
                         // makes sure no ~ at the end
                         if(favIter.hasNext()) favoritesdata.append("~");
                         profiledata.append(favoritesdata);
@@ -276,7 +285,7 @@ public class UserHandler {
     public User getUser(String username, String password){
         for(User user : users){
             if(user.getUsername().toLowerCase().equals(username.toLowerCase())
-                && user.getPassword().equals(password)){
+                    && user.getPassword().equals(password)){
                 return user;
             }
         }

@@ -1,5 +1,6 @@
 package maincomponents;
 
+import maincomponents.ImageHandler;
 import reader.MediaHandler;
 import ui.Display;
 import ui.pages.PageHandler;

@@ -1,5 +1,4 @@
-package maincomponents;
-
+import maincomponents.ImageHandler;
 import reader.MediaHandler;
 
 import javax.imageio.ImageIO;

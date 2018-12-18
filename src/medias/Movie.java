@@ -45,4 +45,16 @@ public class Movie extends Media{
     public int getDuration() {
         return duration;
     }
+
+    public String getFormattedTime(){
+        int hours = duration/3600;
+        int minutes = ((duration%3600)/60);
+
+        StringBuilder builder = new StringBuilder();
+        if (hours > 0){
+            builder.append(hours).append("h ");
+        }
+        builder.append(minutes).append("min");
+        return  builder.toString();
+    }
 }

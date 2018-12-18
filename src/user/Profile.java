@@ -58,7 +58,8 @@ public class Profile {
                 continue;
             }
             int mediaID = Integer.parseInt(s);
-            Media media = MediaHandler.getMediaByID(mediaID);
+            boolean isSeries = (mediaID & 1) == 1;
+            Media media = MediaHandler.getMediaByID(mediaID >> 1, isSeries);
             if(media != null) this.favorites.add(media);
             else Logger.log("Found title in favoriteslist of username: " + name + ", that does not exist in Media!");
         }
@@ -181,6 +182,7 @@ public class Profile {
      */
     public void addFavorite(Media media){
         favorites.add(media);
+        System.out.println(media.getId());
     }
 
     /**

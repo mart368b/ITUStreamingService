@@ -30,7 +30,7 @@ public class SeriesEpisode {
     }
 
     public String toString(){
-        return Integer.toString(seasonNumber) + "-" + Integer.toString(episodeNumber) + ":'" + title + "'-" + getFormattedTime();
+        return title + " - " + getFormattedTime();
     }
 
     public int getDuration() {

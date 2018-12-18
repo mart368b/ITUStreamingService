@@ -208,4 +208,16 @@ public class MediaHandler {
         }
         return null;
     }
+
+    public static Media getMediaByID(int id, boolean isSeries) {
+        MediaHandler ins = getInstance();
+        MediaTypes mediaTypes = isSeries ? MediaTypes.SERIES: MediaTypes.MOVIE;
+        System.out.println(isSeries);
+        for (Media media: ins.medias){
+            if (mediaTypes.equals(media) && media.getId() == id){
+                return media;
+            }
+        }
+        return null;
+    }
 }

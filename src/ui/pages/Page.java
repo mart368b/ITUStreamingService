@@ -20,7 +20,7 @@ public abstract class Page extends JPanel {
         con.add(this);
     }
 
-    public void removeFromDisplaye(Display d){
+    public void removeFromDisplay(Display d){
         Container con = d.getContentPane();
         con.remove(this);
     }

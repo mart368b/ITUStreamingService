@@ -1,4 +1,4 @@
-package maincomponents;
+import maincomponents.SearchComparator;
 
 public class SearchComparatorTest {
 

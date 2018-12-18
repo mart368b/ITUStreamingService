@@ -194,7 +194,6 @@ public class MediaPreviewPage extends Page {
         for (Genre genre: genres){
             genreContainer.add(genre.getGenreCard());
         }
-        genreContainer.validate();
     }
 
     public void setRating(double rating){
@@ -221,16 +220,17 @@ public class MediaPreviewPage extends Page {
     public void setMedia(Media media) {
         currentMedia = media;
         title.setText(media.getTitle());
-        setGenre(media.getGenres());
         setRating(media.getRating());
         restrictionImg.setImage(media.getAgeRestriction().getImage());
         imagePanel.setImage(media.getImage());
         yearText.setText("Release date: " + media.getYear());
         if (media instanceof Movie){
+            playButton.setText("Play - " + ((Movie) media).getFormattedTime());
             addDefaultPlayButton();
         }else if (media instanceof Serie){
             addSeriesPlayButton((Serie) media);
         }
+        setGenre(media.getGenres());
     }
 
     private void addDefaultPlayButton() {
@@ -246,7 +246,7 @@ public class MediaPreviewPage extends Page {
         HashMap<Integer, ArrayList<SeriesEpisode>> seasons = serie.getSeasons();
         for (int season: seasons.keySet()){
             ArrayList<SeriesEpisode> episodes = seasons.get(season);
-            JButton episodeButton = new JButton(season + " - " + episodes.size());
+            JButton episodeButton = new JButton("season " + season + " - " + episodes.size() + " episodes");
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -256,14 +256,14 @@ public class MediaPreviewPage extends Page {
             actionWrapper.add(episodeButton);
         }
         actionWrapper.add(backButton);
-        actionWrapper.validate();
-        actionWrapper.repaint();
+        validate();
+        repaint();
     }
 
     private void setEpisodePlayButton(ArrayList<SeriesEpisode> episodes, Serie serie){
         actionWrapper.removeAll();
         for (SeriesEpisode episode: episodes){
-            JButton episodeButton = new JButton(episode.toString());
+            JButton episodeButton = new JButton("Play: " + episode.toString());
             episodeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -275,7 +275,7 @@ public class MediaPreviewPage extends Page {
             actionWrapper.add(episodeButton);
         }
         actionWrapper.add(backToSelectionButton);
-        actionWrapper.validate();
-        actionWrapper.repaint();
+        validate();
+        repaint();
     }
 }

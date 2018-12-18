@@ -79,7 +79,7 @@ public class Display extends JFrame  {
 
     private void changePage(Page lastPage, Page nextPage, int nextIndex){
         if (lastPage != null){
-            lastPage.removeFromDisplaye(this);
+            lastPage.removeFromDisplay(this);
         }
         nextPage.addToDisplay(this);
         validate();
