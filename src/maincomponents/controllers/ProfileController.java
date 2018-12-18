@@ -6,7 +6,7 @@ import maincomponents.AvMinArm;
 import reader.MediaHandler;
 import ui.Display;
 import ui.cards.HeaderCard;
-import ui.pages.PageFactory;
+import ui.pages.PageHandler;
 import ui.pages.ProfileChangePage;
 import ui.pages.ProfilePickerPage;
 import user.Profile;
@@ -36,7 +36,7 @@ public class ProfileController extends Controller {
 
         AvMinArm.profile.setPicture(imgName);
 
-        ProfileChangePage profilePage = (ProfileChangePage) PageFactory.getPage(PageFactory.CHANGEPROFILEPAGE);
+        ProfileChangePage profilePage = (ProfileChangePage) PageHandler.getPage(PageHandler.CHANGEPROFILEPAGE);
         profilePage.update(AvMinArm.profile.getProfilePictureName());
     }
 
@@ -58,7 +58,7 @@ public class ProfileController extends Controller {
 
         AvMinArm.user.signUpProfile(profile);
 
-        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageHandler.getPage(PageHandler.PROFILEPICKERPAGE);
         profilePickerPage.updateUsers();
         Display.setPage(profilePickerPage);
     }
@@ -71,7 +71,7 @@ public class ProfileController extends Controller {
         if(answer == JOptionPane.YES_OPTION){
             AvMinArm.user.removeProfile(AvMinArm.profile);
 
-            ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+            ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageHandler.getPage(PageHandler.PROFILEPICKERPAGE);
             profilePickerPage.updateUsers();
             Display.setPage(profilePickerPage);
         }
@@ -81,6 +81,6 @@ public class ProfileController extends Controller {
         AvMinArm.profile = profile;
         HeaderCard.getInstance().setProfilePicture(profile);
         MediaHandler.updateMediaCards(profile.getFavorites());
-        Display.setPage(PageFactory.PREVIEWPAGE);
+        Display.setPage(PageHandler.PREVIEWPAGE);
     }
 }

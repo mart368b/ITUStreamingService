@@ -7,7 +7,7 @@ import medias.types.MediaTypes;
 import ui.Display;
 import ui.StyleArchive;
 import ui.components.ImageButton;
-import ui.pages.PageFactory;
+import ui.pages.PageHandler;
 import ui.pages.PreviewPage;
 import user.Profile;
 
@@ -61,7 +61,7 @@ public class HeaderCard extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PreviewPage previewPanel = (PreviewPage) PageFactory.getPage(PageFactory.PREVIEWPAGE);
+                PreviewPage previewPanel = (PreviewPage) PageHandler.getPage(PageHandler.PREVIEWPAGE);
                 PreviewController.displayMedia();
             }
         });
@@ -109,7 +109,7 @@ public class HeaderCard extends JPanel {
         userButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageFactory.PROFILEPICKERPAGE);
+                Display.setPage(PageHandler.PROFILEPICKERPAGE);
             }
         });
         panel.add(userButton);

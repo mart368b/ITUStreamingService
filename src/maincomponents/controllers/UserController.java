@@ -4,10 +4,12 @@ import debugging.Exceptions.InvalidInputException;
 import debugging.Logger;
 import maincomponents.AvMinArm;
 import ui.Display;
-import ui.pages.PageFactory;
+import ui.pages.PageHandler;
 import ui.pages.ProfilePickerPage;
 import user.User;
 import user.UserHandler;
+
+import javax.swing.*;
 
 public class UserController {
 
@@ -27,7 +29,7 @@ public class UserController {
         AvMinArm.user = UserHandler.getInstance().getUser(username, passwordCheck);
         Logger.log("New user created with name: " + username);
 
-        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageHandler.getPage(PageHandler.PROFILEPICKERPAGE);
         profilePickerPage.updateUsers();
         Display.setPage(profilePickerPage);
     }
@@ -53,7 +55,7 @@ public class UserController {
         }
         AvMinArm.user = user;
         Logger.log("User with name: " + username + " logged in!");
-        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+        ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageHandler.getPage(PageHandler.PROFILEPICKERPAGE);
         profilePickerPage.updateUsers();
         Display.setPage(profilePickerPage);
     }

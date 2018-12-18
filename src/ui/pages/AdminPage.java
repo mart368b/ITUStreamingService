@@ -91,7 +91,7 @@ public class AdminPage extends Page {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageFactory.PROFILEPICKERPAGE);
+                Display.setPage(PageHandler.PROFILEPICKERPAGE);
             }
         });
         buttons.add(back);

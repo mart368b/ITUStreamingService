@@ -123,7 +123,7 @@ public class ProfileChangePage extends Page {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageFactory.getPage(PageFactory.PROFILEPICKERPAGE);
+                ProfilePickerPage profilePickerPage = (ProfilePickerPage) PageHandler.getPage(PageHandler.PROFILEPICKERPAGE);
                 profilePickerPage.updateUsers();
                 Display.setPage(profilePickerPage);
             }

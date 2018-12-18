@@ -40,7 +40,7 @@ public class CreateProfilePage extends Page {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageFactory.PROFILEPICKERPAGE);
+                Display.setPage(PageHandler.PROFILEPICKERPAGE);
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

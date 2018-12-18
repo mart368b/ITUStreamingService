@@ -8,7 +8,7 @@ import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 import ui.pages.AdminPage;
-import ui.pages.PageFactory;
+import ui.pages.PageHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -128,7 +128,7 @@ public class AdminController extends Controller {
                     uploadimage, year, year2, seasons);
         }
 
-        Display.setPage(PageFactory.PROFILEPICKERPAGE);
+        Display.setPage(PageHandler.PROFILEPICKERPAGE);
     }
 
     public static void deleteSeason(int index, String selected){

@@ -3,7 +3,6 @@ package ui.pages;
 import maincomponents.AvMinArm;
 import maincomponents.controllers.ProfileController;
 import maincomponents.controllers.UserController;
-import reader.MediaHandler;
 import ui.Display;
 import ui.StyleArchive;
 import ui.cards.ProfileCard;
@@ -46,7 +45,7 @@ public class ProfilePickerPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.user = null;
-                Display.setPage(PageFactory.LOGINPAGE);
+                Display.setPage(PageHandler.LOGINPAGE);
             }
         });
 
@@ -87,7 +86,7 @@ public class ProfilePickerPage extends Page {
             admin.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Display.setPage(PageFactory.ADMINPAGE);
+                    Display.setPage(PageHandler.ADMINPAGE);
                 }
             });
         }else{
@@ -145,7 +144,7 @@ public class ProfilePickerPage extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AvMinArm.profile = profile;
-                ProfileChangePage profilePage = (ProfileChangePage) PageFactory.getPage(PageFactory.CHANGEPROFILEPAGE);
+                ProfileChangePage profilePage = (ProfileChangePage) PageHandler.getPage(PageHandler.CHANGEPROFILEPAGE);
                 profilePage.open();
                 Display.setPage(profilePage);
             }
@@ -170,7 +169,7 @@ public class ProfilePickerPage extends Page {
         profilebutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Display.setPage(PageFactory.CREATEPROFILEPAGE);
+                Display.setPage(PageHandler.CREATEPROFILEPAGE);
             }
         });
 

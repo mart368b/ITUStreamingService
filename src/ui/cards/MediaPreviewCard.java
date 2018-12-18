@@ -7,7 +7,7 @@ import ui.StyleArchive;
 import ui.components.ImageButton;
 import ui.components.ToggleImageButton;
 import ui.pages.MediaPreviewPage;
-import ui.pages.PageFactory;
+import ui.pages.PageHandler;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ public class MediaPreviewCard extends ImageButton {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MediaPreviewPage mediaPreview = (MediaPreviewPage) PageFactory.getPage(PageFactory.MEDIAPREVIEWPAGE);
+                MediaPreviewPage mediaPreview = (MediaPreviewPage) PageHandler.getPage(PageHandler.MEDIAPREVIEWPAGE);
                 mediaPreview.setMedia(media);
                 Display.setPage(mediaPreview);
             }

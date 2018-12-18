@@ -2,7 +2,7 @@ package ui.pages;
 
 import ui.Display;
 
-public class PageFactory {
+public class PageHandler {
     public final static int PROFILEPICKERPAGE = 0;
     public final static int PREVIEWPAGE = 1;
     public final static int LOGINPAGE = 2;
